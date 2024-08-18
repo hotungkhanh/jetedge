@@ -8,6 +8,8 @@ function App() {
 
   return (
     <>
+      <h2>Hallo World</h2>
+      <p>Check console for API link to backend :)</p>
     </>
   )
 }

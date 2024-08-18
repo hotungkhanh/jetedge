@@ -6,13 +6,15 @@ services:
     volumes:
       - ./backend:/usr/src/backend
 
-  frontend:
-    build: ./frontend
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/usr/src/frontend
-      - timetable:/usr/src/frontend/timetable
+#   frontend:
+#     build: 
+#       context: ./frontend
+#       dockerfile: Dockerfile.development
+#     ports:
+#       - 3000:3000
+#     volumes:
+#       - ./frontend:/usr/src/frontend
+#       - timetable:/usr/src/frontend/timetable
 
-volumes:
-  timetable:
+# volumes:
+#   timetable:
