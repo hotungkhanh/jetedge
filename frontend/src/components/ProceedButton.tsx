@@ -10,6 +10,6 @@ export default function ProceedButton({ fileChosen }:ProceedButtonProps) {
       if (fileChosen === null) {
         return <Button disabled> Proceed </Button>
       } else {
-        return <Button onClick={() => navigate("/seminfo")}> Proceed</Button>;
+        return <Button onClick={() => navigate("/seminfo/campus")}> Proceed</Button>;
       }
 }`      `
