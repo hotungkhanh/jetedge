@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom"
+import { Box } from "@mui/material";
+import "../styles/enrolment.css";
+import UploadPopUp from "../components/UploadPopUp.tsx";
 
-export default function Enrolment() {
+export default function StarterPage() {
   return (
-    <>
-      <h1>This is the page to upload enrolment data</h1>
-      <Link to="seminfo/campus" style={{ marginLeft: 240+"px" }}>Go to Next</Link>
-    </>
-  )
+    <Box className="app-container">
+      <Box className="header"></Box>
+      <Box className="content">
+        <UploadPopUp></UploadPopUp>
+      </Box>
+      <Box className="footer"></Box>
+    </Box>
+  );
 }
