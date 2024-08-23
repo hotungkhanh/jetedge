@@ -28,6 +28,15 @@ export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
     minSpareRows: 1,
     allowManualInsertColumn: false,
     includeHeadersOnDownload: true,
+    // toolbar:[
+    //   {
+    //       type: 'i',
+    //       id: 'undo',
+    //       content: 'undo',
+    //       onclick: function() {
+    //           undo();
+    //       }
+    //   }],
   };
 
   // mount: create spreadsheet using data from sessionStorage (if exist),
@@ -68,17 +77,21 @@ export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
     return cleanup;
   })
 
-  const addRow = () => {
-    if (jRef.current && jRef.current.jexcel) {
-      jRef.current.jexcel.insertRow();
-    }
-  };
+  // const addRow = () => {
+  //   if (jRef.current && jRef.current.jexcel) {
+  //     jRef.current.jexcel.insertRow();
+  //   }
+  // };
+
+  // const undo = () => {
+  //   if (jRef.current && jRef.current.jexcel) {
+  //     jRef.current.jexcel.undo();
+  //   }
+  // }
   
   return (
     <div>
       <div ref={jRef} />
-      <br />
-      <input type="button" onClick={addRow} value="Add new row" />
     </div>
   );
 }
