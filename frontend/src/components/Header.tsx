@@ -1,17 +1,19 @@
 import { Box } from "@mui/material";
+import VIT_Logo from '../assets/logo.png';
+
 export default function Header() {
     const headerStyle = {
         backgroundColor: "#F5F5f5",
         color: "white",
-        padding: "35px",
+        padding: "20px",
         textAlign: "left",
     };
     return (
       <Box className="header" sx={headerStyle}>
         <img
-          src="src/assets/logo.png"
+          src={VIT_Logo}
           alt="logo.exe"
-          width="200"
+          width="150"
           height="auto"
         />
       </Box>
