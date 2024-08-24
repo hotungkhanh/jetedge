@@ -13,7 +13,7 @@ export default function SemesterInfo() {
       <Sidebar width={240} marginTop={12.5}/>
 
       {/* Spreadsheet */}
-      <div style={{ marginLeft: 300 + "px", overflow: "scroll", height: "550px" }}>
+      <div style={{ marginLeft: 300 + "px" }}>
         <Outlet />
       </div>
 
