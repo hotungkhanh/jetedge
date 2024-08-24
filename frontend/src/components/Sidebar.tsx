@@ -9,17 +9,23 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 
 import { Link } from "react-router-dom";
 
+
+interface SidebarProps {
+  marginTop: number,
+  width: number,
+}
 const drawerWidth = 240;
 
-export default function Sidebar() {
+export default function Sidebar({ marginTop, width }: SidebarProps) {
   return (
     <Drawer
       sx={{
-        width: drawerWidth,
+        width: width,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
+          marginTop: marginTop,
         },
       }}
       variant="permanent"
