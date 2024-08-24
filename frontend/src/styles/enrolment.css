@@ -8,9 +8,28 @@
 /* Content area that grows to fill space */
 .content {
   flex: 1; /* This allows the content to grow and push the footer down */
-  padding: 20px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
+.description {
+  margin: 20%;
+}
+
+.description span {
+  font-size: 50px;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.description p {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.imageBox {
+  overflow: hidden; /* Hide any overflow content */
+  position: relative;
+}
 body {
     margin: 0;
     padding: 0;
