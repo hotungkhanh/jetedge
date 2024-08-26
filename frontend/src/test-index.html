@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Best website ever :D</h1>
+
+  <h3>Timeslots:</h3>
+  <form class="timeslot-form" id="time-1">
+    <input name="dayOfWeek" type="text" value="MONDAY" placeholder="dayOfWeek">
+    <input name="startTime" type="text" value="08:30:00" placeholder="startTime">
+    <input name="endTime" type="text" value="09:30:00" placeholder="endTime">
+  </form>
+  <form class="timeslot-form" id="time-2" style="margin-top: 3px;">
+    <input name="dayOfWeek" type="text" value="MONDAY" placeholder="dayOfWeek">
+    <input name="startTime" type="text" value="09:30:00" placeholder="startTime">
+    <input name="endTime" type="text" value="10:30:00" placeholder="endTime">
+  </form>
+
+  <h3>Rooms:</h3>
+  <form id="room-form">
+    <input name="roomName" type="text" value="Room A" placeholder="roomName">
+    <input name="roomName" type="text" value="Room B" placeholder="roomName">
+  </form>
+
+
+  <h3>Lessons:</h3>
+
+  <form class="lesson-form" id="lesson-form-1">
+    <input name="id" type="number" value="1" placeholder="id">
+    <input name="subject" type="text" value="Math" placeholder="subject">
+    <input name="teacher" type="text" value="A. Turing" placeholder="teacher">
+    <input name="studentGroup" type="text" value="9th grade" placeholder="studentGroup">
+  </form>
+
+  <form class="lesson-form" id="lesson-form-2" style="margin-top: 3px;">
+    <input name="id" type="number" value="2" placeholder="id">
+    <input name="subject" type="text" value="Chemistry" placeholder="subject">
+    <input name="teacher" type="text" value="M. Curie" placeholder="teacher">
+    <input name="studentGroup" type="text" value="9th grade" placeholder="studentGroup">
+  </form>
+
+  <form class="lesson-form" id="lesson-form-3" style="margin-top: 3px;">
+    <input name="id" type="number" value="3" placeholder="id">
+    <input name="subject" type="text" value="French" placeholder="subject">
+    <input name="teacher" type="text" value="M. Curie" placeholder="teacher">
+    <input name="studentGroup" type="text" value="10th grade" placeholder="studentGroup">
+  </form>
+
+  <form class="lesson-form" id="lesson-form-4" style="margin-top: 3px;">
+    <input name="id" type="number" value="4" placeholder="id">
+    <input name="subject" type="text" value="History" placeholder="subject">
+    <input name="teacher" type="text" value="I. Jones" placeholder="teacher">
+    <input name="studentGroup" type="text" value="10th grade" placeholder="studentGroup">
+  </form>
+
+  <br>
+  <button id="POST-btn">Send POST Request</button>
+  <button id="GET-btn">Send GET Request</button>
+
+  <div>
+    <h3>POST/GET Request response:</h3>
+    <textarea name="json-display" id="rp" rows="50" cols="100"></textarea>
+
+  </div>
+
+  <script src="test-script.js"></script>
+</body>
+</html>
