@@ -1,16 +1,36 @@
 # jetedge
 ## How to run the app
 ### Running the backend
-Setup docker container with `docker-compose up --build`
+Move into the backend folder with:
+`cd backend`
 
-After setup, you can run the container with `docker-compose up` going forward, no need to build again
+Package the project as a JAR file with (only needs to be done once):
+`./mvnw package`
 
-This will spin up a container for the Django backend ONLY.
+Build the Docker image with (only needs to be done once):
+`docker build -f src/main/docker/Dockerfile.jvm -t quarkus/backend-jvm .`
+
+Run the container with:
+`docker run -i --rm -p 8080:8080 quarkus/backend-jvm`
+
+This will spin up a container for the Quarkus backend ONLY.
+
+Access backend via:
+`http://localhost:8080/`
+
+Test by checking whether `http://localhost:8080/hello` gets a message from the backend.
 
 ### Running the frontend
-Move into the frontend folder with `cd frontend`
+No container for frontend.
 
-Install all the packages with `npm i`
+Move into the frontend folder with:
+`cd frontend`
 
-Run in development mode with `npm run dev`
+Install all the packages with (only needs to be done once):
+`npm i`
 
+Run in development mode with:
+`npm run dev`
+
+Access frontend via:
+`http://localhost:3000/`
