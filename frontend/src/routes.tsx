@@ -6,6 +6,7 @@ import Room from './pages/spreadsheets/Room.tsx'
 import Unit from './pages/spreadsheets/Unit.tsx'
 import Download from './pages/Download.tsx'
 import Enrolment from './pages/Enrolment.tsx'
+import Course from './pages/spreadsheets/Course.tsx'
 
 
 const routes = [
@@ -20,6 +21,7 @@ const routes = [
       { path: "campus", element: <Campus /> },
       { path: "building", element: <Building /> },
       { path: "room", element: <Room /> },
+      { path: "course", element: <Course /> },
       { path: "unit", element: <Unit /> },
     ],
   },
