@@ -59,6 +59,15 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
           </ListItemButton>
         </ListItem>
 
+        <ListItem key="Course" disablePadding>
+          <ListItemButton component={Link} to="course">
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Course" />
+          </ListItemButton>
+        </ListItem>
+
         <ListItem key="Unit" disablePadding>
           <ListItemButton component={Link} to="unit">
             <ListItemIcon>
@@ -67,6 +76,7 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
             <ListItemText primary="Unit" />
           </ListItemButton>
         </ListItem>
+
       </List>
     </Drawer>
   );
