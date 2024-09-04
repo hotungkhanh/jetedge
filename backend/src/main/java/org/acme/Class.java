@@ -7,6 +7,7 @@ import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @PlanningEntity
@@ -65,5 +66,27 @@ public class Class {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public boolean hasSameStudent(Class otherClass) {
+        for (Student student : students) {
+            if (otherClass.getStudents().contains(student)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int numSameStudent(Class otherClass) {
+        int num = 0;
+
+        for (Student student : students) {
+            if (otherClass.getStudents().contains(student)) {
+                num++;
+            }
+        }
+
+        return num;
     }
 }
