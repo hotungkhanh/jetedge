@@ -16,7 +16,7 @@ public class MyConstraintProvider implements ConstraintProvider {
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[] {
 //                overlaps(constraintFactory)
-                studentConstraint(constraintFactory)
+                softStudentConstraint(constraintFactory)
         };
     }
 
@@ -27,11 +27,19 @@ public class MyConstraintProvider implements ConstraintProvider {
                 .asConstraint("overlaps");
     }
 
-    private Constraint studentConstraint(ConstraintFactory constraintFactory) {
+    private Constraint hardStudentConstraint(ConstraintFactory constraintFactory) {
         return  constraintFactory.forEachUniquePair(Class.class,
-                equal(Class::getStudents), overlapping(Class::getStart, Class::getEnd))
+                        overlapping(Class::getStart, Class::getEnd))
+                .filter(Class::hasSameStudent)
                 .penalize(HardSoftScore.ONE_HARD)
-                .asConstraint("studentConstraint");
+                .asConstraint("hardStudentConstraint");
+    }
+
+    private Constraint softStudentConstraint(ConstraintFactory constraintFactory) {
+        return  constraintFactory.forEachUniquePair(Class.class,
+                overlapping(Class::getStart, Class::getEnd))
+                .penalize(HardSoftScore.ofSoft(1), Class::numSameStudent)
+                .asConstraint("softStudentConstraint");
     }
 
 }
