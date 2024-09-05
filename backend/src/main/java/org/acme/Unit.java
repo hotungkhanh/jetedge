@@ -2,16 +2,14 @@ package org.acme;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
-import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
 import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @PlanningEntity
-public class Class {
+public class Unit {
 
     @PlanningId
     String name;
@@ -23,10 +21,10 @@ public class Class {
 
     List<Student> students;
 
-    public Class() {
+    public Unit() {
     };
 
-    public Class(String name, Duration duration, List<Student> students) {
+    public Unit(String name, Duration duration, List<Student> students) {
         this.name = name;
         this.duration = duration;
         this.students = students;
@@ -68,9 +66,9 @@ public class Class {
         this.students = students;
     }
 
-    public boolean hasSameStudent(Class otherClass) {
+    public boolean hasSameStudent(Unit otherUnit) {
         for (Student student : students) {
-            if (otherClass.getStudents().contains(student)) {
+            if (otherUnit.getStudents().contains(student)) {
                 return true;
             }
         }
@@ -78,11 +76,11 @@ public class Class {
         return false;
     }
 
-    public int numSameStudent(Class otherClass) {
+    public int numSameStudent(Unit otherUnit) {
         int num = 0;
 
         for (Student student : students) {
-            if (otherClass.getStudents().contains(student)) {
+            if (otherUnit.getStudents().contains(student)) {
                 num++;
             }
         }

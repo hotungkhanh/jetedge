@@ -16,7 +16,7 @@ public class Schedule {
 //    List<Student> students;
 
     @PlanningEntityCollectionProperty
-    List<Class> classes;
+    List<Unit> units;
 
     @ValueRangeProvider
     List<LocalTime> startTimes;
@@ -28,8 +28,8 @@ public class Schedule {
 
     }
 
-    public Schedule(List<Class> classes, List<LocalTime> startTimes) {
-        this.classes = classes;
+    public Schedule(List<Unit> units, List<LocalTime> startTimes) {
+        this.units = units;
         this.startTimes = startTimes;
 //        this.students = students;
     }
@@ -42,12 +42,12 @@ public class Schedule {
 //        this.students = students;
 //    }
 
-    public List<Class> getClasses() {
-        return classes;
+    public List<Unit> getClasses() {
+        return units;
     }
 
-    public void setClasses(List<Class> classes) {
-        this.classes = classes;
+    public void setClasses(List<Unit> units) {
+        this.units = units;
     }
 
     public List<LocalTime> getStartTimes() {

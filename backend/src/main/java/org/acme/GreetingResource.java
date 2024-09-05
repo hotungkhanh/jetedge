@@ -24,22 +24,22 @@ public class GreetingResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Schedule hello() throws ExecutionException, InterruptedException {
 
-        Student a = new Student("alex");
-        Student b = new Student("bob");
-        Student c = new Student("bob");
-        Student d = new Student("bob");
-        Student e = new Student("bob");
-        Student f = new Student("bob");
-        Student g = new Student("bob");
-        Student h = new Student("bob");
-        Student i = new Student("bob");
+        Student a = new Student("a");
+        Student b = new Student("b");
+        Student c = new Student("c");
+        Student d = new Student("d");
+        Student e = new Student("e");
+        Student f = new Student("f");
+        Student g = new Student("g");
+        Student h = new Student("h");
+        Student i = new Student("i");
 
 
         var problem = new Schedule(
                 List.of(
-                        new Class("math", Duration.ofHours(2), List.of(a,b,c)),
-                        new Class("science", Duration.ofHours(4), List.of(a,b,c,d,g)),
-                        new Class("physics", Duration.ofMinutes(70), List.of(f,e,g,h,i))
+                        new Unit("math", Duration.ofHours(2), List.of(a,b,c)),
+                        new Unit("science", Duration.ofHours(4), List.of(a,b,c,d,g)),
+                        new Unit("physics", Duration.ofMinutes(70), List.of(f,e,g,h,i))
                         ),
                 List.of(LocalTime.of(15,0),
                         LocalTime.of(16,0),
