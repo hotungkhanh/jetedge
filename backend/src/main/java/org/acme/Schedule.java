@@ -3,10 +3,13 @@ package org.acme;
 import ai.timefold.solver.core.api.domain.solution.PlanningEntityCollectionProperty;
 import ai.timefold.solver.core.api.domain.solution.PlanningScore;
 import ai.timefold.solver.core.api.domain.solution.PlanningSolution;
+import ai.timefold.solver.core.api.domain.solution.ProblemFactCollectionProperty;
 import ai.timefold.solver.core.api.domain.valuerange.ValueRangeProvider;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @PlanningSolution
@@ -64,6 +67,23 @@ public class Schedule {
 
     public void setScore(HardSoftScore score) {
         this.score = score;
+    }
+
+
+    @ProblemFactCollectionProperty
+    public List<ConflictingUnit> calculateUnitConflictList() {
+        ArrayList<ConflictingUnit> out = new ArrayList<ConflictingUnit>();
+        for (var first : units) {
+            for (var second : units) {
+                if (first.getUnitID() >= second.getUnitID()) {
+                    continue;
+                }
+                if (!Collections.disjoint(first.getStudents(), second.getStudents())) {
+                    out.add(new ConflictingUnit(first, second));
+                }
+            }
+        }
+        return out;
     }
 
 }

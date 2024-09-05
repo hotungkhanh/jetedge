@@ -12,6 +12,8 @@ import java.util.List;
 public class Unit {
 
     @PlanningId
+    int unitID;
+
     String name;
 
     Duration duration;
@@ -24,10 +26,19 @@ public class Unit {
     public Unit() {
     };
 
-    public Unit(String name, Duration duration, List<Student> students) {
+    public Unit(int unitID, String name, Duration duration, List<Student> students) {
+        this.unitID = unitID;
         this.name = name;
         this.duration = duration;
         this.students = students;
+    }
+
+    public int getUnitID() {
+        return unitID;
+    }
+
+    public void setUnitID(int unitID) {
+        this.unitID = unitID;
     }
 
     public String getName() {
