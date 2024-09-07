@@ -34,19 +34,19 @@ public class GreetingResource {
         Student h = new Student("h");
         Student i = new Student("i");
 
-        Room r1 = new Room("Room1");
-        Room r2 = new Room("Room2");
-        Room r3 = new Room("Room3");
+        Room r1 = new Room("Room1", 1);
+        Room r2 = new Room("Room2", 2);
+        Room r3 = new Room("Room3", 3);
 
         var problem = new Schedule(
                 List.of(
-                        new Unit(1, "1", Duration.ofHours(2), List.of(a)),
-                        new Unit(2, "2", Duration.ofHours(2), List.of(a)),
-                        new Unit(3, "3", Duration.ofHours(2), List.of(b)),
-                        new Unit(4, "4", Duration.ofHours(2), List.of(b)),
-                        new Unit(5, "5", Duration.ofHours(2), List.of(c)),
-                        new Unit(6, "6", Duration.ofHours(2), List.of(c)),
-                        new Unit(7, "7", Duration.ofMinutes(120), List.of(d))
+                        new Unit(1, "1", Duration.ofHours(2), List.of(a,b)),
+                        new Unit(2, "2", Duration.ofHours(2), List.of(c,d,e)),
+                        new Unit(3, "3", Duration.ofHours(2), List.of(f,g,h,i)),
+                        new Unit(4, "4", Duration.ofHours(2), List.of(a,b)),
+                        new Unit(5, "5", Duration.ofHours(2), List.of(c,d,e)),
+                        new Unit(6, "6", Duration.ofHours(2), List.of(f,g,h,i))
+//                        new Unit(7, "7", Duration.ofMinutes(120), List.of(h))
                         ),
                 List.of(
                         LocalTime.of(15,0),
