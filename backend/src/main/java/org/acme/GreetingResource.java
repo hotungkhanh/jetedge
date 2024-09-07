@@ -37,24 +37,24 @@ public class GreetingResource {
 
         var problem = new Schedule(
                 List.of(
-                        new Unit(1, "1", Duration.ofHours(2), List.of(a,b,c,d)),
-                        new Unit(2, "2", Duration.ofHours(4), List.of(a,b,c,d,g)),
-                        new Unit(3, "3", Duration.ofMinutes(59), List.of(f,e,h,i)),
+                        new Unit(1, "1", Duration.ofHours(2), List.of(a,b,c,d,g)),
+                        new Unit(2, "2", Duration.ofHours(4), List.of(b,c,d)),
+                        new Unit(3, "3", Duration.ofMinutes(59), List.of(a,f,e,g,h,i)),
                         new Unit(4, "4", Duration.ofMinutes(59), List.of(a,f,e,g,h,i)),
                         new Unit(5, "5", Duration.ofMinutes(59), List.of(f,e,g,h,i)),
                         new Unit(6, "6", Duration.ofMinutes(59), List.of(f,e,h,i)),
                         new Unit(7, "7", Duration.ofMinutes(59), List.of(f,e,g,h,i))
 
                         ),
-                List.of(LocalTime.of(15,0),
+                List.of(LocalTime.of(10,0),
                         LocalTime.of(16,0),
-//                        LocalTime.of(17,0),
+                        LocalTime.of(17,0))
 //                        LocalTime.of(18,0),
 //                        LocalTime.of(19,0),
 //                        LocalTime.of(20,0),
 //                        LocalTime.of(21,0),
 //                        LocalTime.of(22,0),
-                        LocalTime.of(23,0))
+//                        LocalTime.of(23,0))
         );
 
 
