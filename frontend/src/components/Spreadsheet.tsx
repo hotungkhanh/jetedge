@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import jspreadsheet, { CellValue, JspreadsheetInstance, JspreadsheetInstanceElement, JSpreadsheetOptions } from "jspreadsheet-ce";
+import jspreadsheet, { CellValue, JspreadsheetInstance, JspreadsheetInstanceElement } from "jspreadsheet-ce";
 import "../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css";
 import "../styles/spreadsheet.css"
 import Button from "@mui/material/Button";
