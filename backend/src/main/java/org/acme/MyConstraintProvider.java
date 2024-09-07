@@ -17,7 +17,7 @@ public class MyConstraintProvider implements ConstraintProvider {
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[] {
 //                overlaps(constraintFactory)
-                unitStudentConflict(constraintFactory)
+                hardUnitStudentConflict(constraintFactory)
         };
     }
 
@@ -38,20 +38,32 @@ public class MyConstraintProvider implements ConstraintProvider {
 
     private Constraint softStudentConstraint(ConstraintFactory constraintFactory) {
         return  constraintFactory.forEachUniquePair(Unit.class,
-                overlapping(Unit::getStart, Unit::getEnd))
+                        overlapping(Unit::getStart, Unit::getEnd))
                 .penalize(HardSoftScore.ofSoft(1), Unit::numSameStudent)
                 .asConstraint("softStudentConstraint");
     }
 
-    private Constraint unitStudentConflict(ConstraintFactory constraintFactory) {
+    private Constraint hardUnitStudentConflict(ConstraintFactory constraintFactory) {
         return  constraintFactory.forEach(ConflictingUnit.class)
-                .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit, Function.identity()))
-                .join(Unit.class, Joiners.equal((conflictingUnit, conflict) -> conflictingUnit.getConflict(), Function.identity()),
-                        Joiners.overlapping((conflictingUnit, conflict) -> conflict.getStart(),
-                                (conflictingUnit, conflict) -> conflict.getEnd(),
+                .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
+                .join(Unit.class, Joiners.equal((conflictingUnit, unit2) -> conflictingUnit.getUnit2(), Function.identity()),
+                        Joiners.overlapping((conflictingUnit, unit2) -> unit2.getStart(),
+                                (conflictingUnit, unit2) -> unit2.getEnd(),
                                 Unit::getStart, Unit::getEnd))
                 .penalize(HardSoftScore.ONE_HARD)
-                .asConstraint("Unit student conflict");
+                .asConstraint("Hard unit student conflict");
+
+    }
+
+    private Constraint softUnitStudentConflict(ConstraintFactory constraintFactory) {
+        return  constraintFactory.forEach(ConflictingUnit.class)
+                .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
+                .join(Unit.class, Joiners.equal((conflictingUnit, unit2) -> conflictingUnit.getUnit2(), Function.identity()),
+                        Joiners.overlapping((conflictingUnit, unit2) -> unit2.getStart(),
+                                (conflictingUnit, unit2) -> unit2.getEnd(),
+                                Unit::getStart, Unit::getEnd))
+                .penalize(HardSoftScore.ofSoft(1))
+                .asConstraint("Soft unit student conflict");
 
     }
 
