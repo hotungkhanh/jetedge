@@ -1,29 +1,46 @@
 package org.acme;
 
 public class ConflictingUnit {
-    Unit unit;
+    Unit unit1;
 
-    Unit conflict;
+    Unit unit2;
+
+    int numStudent;
 
     public ConflictingUnit(Unit first, Unit second) {
-        this.unit = first;
-        this.conflict = second;
+        this.unit1 = first;
+        this.unit2 = second;
 
     }
 
-    public Unit getUnit() {
-        return unit;
+    public ConflictingUnit(Unit first, Unit second, int numStudent) {
+        this.unit1 = first;
+        this.unit2 = second;
+        this.numStudent = numStudent;
+
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
+    public Unit getUnit1() {
+        return unit1;
     }
 
-    public Unit getConflict() {
-        return conflict;
+    public void setUnit1(Unit unit1) {
+        this.unit1 = unit1;
     }
 
-    public void setConflict(Unit conflict) {
-        this.conflict = conflict;
+    public Unit getUnit2() {
+        return unit2;
+    }
+
+    public void setUnit2(Unit unit2) {
+        this.unit2 = unit2;
+    }
+
+    public int getNumStudent() {
+        return numStudent;
+    }
+
+    public void setNumStudent(int numStudent) {
+        this.numStudent = numStudent;
     }
 }
