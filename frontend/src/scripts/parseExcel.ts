@@ -30,8 +30,12 @@ function validateExcelHeader(inputHeader: Row) {
   }
 }
 
-//
+
 export function parseEnrolmentData(file: File | null) {
+  forStudentPrototypeBackend(file);
+}
+
+function testParsing(file: File | null) {
   if (!validateUploadedFile(file)) {
     return;
   }
@@ -51,11 +55,62 @@ export function parseEnrolmentData(file: File | null) {
     }
 
     sessionStorage.setItem("enrolmentData", JSON.stringify(enrolmentData));
-    const data = sessionStorage.getItem("enrolmentData");
+  });
+}
 
-    if (data) {
-      console.log(JSON.parse(data));
+
+/* WORKS WITH BACKEND: valid for commit a8c48da44dd17a0bdcb33db9d05f37ea1c4eb888 in branch student-prototype */
+
+type Student = {
+  name: string
+}
+
+export type Unit = {
+  unitID: number,
+  name: string,
+  duration: string,
+  students: Student[]
+  start?: string,
+  end?: string
+}
+
+// 1 hour, 1.5 hour, 2 hours, 3 hours
+const durations = ["PT1H", "PT1H", "PT1H", "PT1H", "PT1H30M", "PT1H30M", "PT2H", "PT3H"];
+
+function forStudentPrototypeBackend(file: File | null) {
+  if (!validateUploadedFile(file)) {
+    return;
+  }
+
+  readXlsxFile(file).then((rows) => {
+    const [header, ...body] = rows;
+
+    if (!validateExcelHeader(header)) {
+      return;
     }
 
+    const unitInfo = header.slice(14);
+    const units: Unit[] = unitInfo.map((value, index) => ({
+      unitID: index,
+      name: value.toString(),
+      duration: durations[Math.floor(Math.random()*durations.length)],   // randomise duration
+      students: []
+    }));
+
+    // check each row and add students to each unit they're enrolled in
+    for (let i = 0; i < body.length; i++) {
+      const enrolments = body[i].slice(14);
+      for (let j = 0; j < enrolments.length; j++) {
+        if (enrolments[j] === "ENRL") {
+          units[j].students.push({
+            name: body[i][0].toString()
+          })
+        }
+      }
+    }
+
+    sessionStorage.setItem("toBackend", JSON.stringify(units));
+
   });
+
 }

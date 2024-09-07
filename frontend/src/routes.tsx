@@ -7,6 +7,7 @@ import Unit from './pages/spreadsheets/Unit.tsx'
 import Download from './pages/Download.tsx'
 import Enrolment from './pages/Enrolment.tsx'
 import Course from './pages/spreadsheets/Course.tsx'
+import SendData from './pages/SendData.tsx'
 
 
 const routes = [
@@ -28,6 +29,10 @@ const routes = [
   {
     path: "timetablemod",
     element: <TimetableMod />,
+  },
+  {
+    path: "senddata",
+    element: <SendData />
   },
   {
     path: "download",

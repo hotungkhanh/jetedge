@@ -12,8 +12,19 @@ export default function Footer({ children } : { children?: React.ReactNode }) {
     zIndex: 10000,
   };
 
+  const linksContainerStyle = {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    gap: "500px"
+  }
+
   return (
   <Box sx={footerStyle}>
-    {children}
+    <div style={linksContainerStyle}>
+      {children}
+    </div>
   </Box>);
 }
