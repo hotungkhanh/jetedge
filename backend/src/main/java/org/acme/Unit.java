@@ -21,6 +21,9 @@ public class Unit {
     @PlanningVariable
     LocalTime start;
 
+    @PlanningVariable
+    private Room room;
+
     List<Student> students;
 
     public Unit() {
@@ -31,6 +34,14 @@ public class Unit {
         this.name = name;
         this.duration = duration;
         this.students = students;
+    }
+
+    public Unit(int unitID, String name, Duration duration, List<Student> students, Room room) {
+        this.unitID = unitID;
+        this.name = name;
+        this.duration = duration;
+        this.students = students;
+        this.room = room;
     }
 
     public int getUnitID() {
@@ -97,5 +108,15 @@ public class Unit {
         }
 
         return num;
+    }
+
+    // ---------------- Getters and Setters -----------------------//
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 }
