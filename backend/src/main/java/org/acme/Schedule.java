@@ -25,6 +25,10 @@ public class Schedule {
     @ValueRangeProvider
     List<LocalTime> startTimes;
 
+    @ProblemFactCollectionProperty
+    @ValueRangeProvider
+    private List<Room> rooms;
+
     @PlanningScore
     HardSoftScore score;
 
@@ -32,9 +36,10 @@ public class Schedule {
 
     }
 
-    public Schedule(List<Unit> units, List<LocalTime> startTimes) {
+    public Schedule(List<Unit> units, List<LocalTime> startTimes, List<Room> rooms) {
         this.units = units;
         this.startTimes = startTimes;
+        this.rooms = rooms;
 //        this.students = students;
     }
 
