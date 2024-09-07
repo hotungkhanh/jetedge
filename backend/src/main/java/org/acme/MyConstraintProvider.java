@@ -47,9 +47,9 @@ public class MyConstraintProvider implements ConstraintProvider {
     private Constraint hardUnitStudentConflict(ConstraintFactory constraintFactory) {
         return  constraintFactory.forEach(ConflictingUnit.class)
                 .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
-                .join(Unit.class, Joiners.equal((conflictingUnit, unit2) -> conflictingUnit.getUnit2(), Function.identity()),
-                        Joiners.overlapping((conflictingUnit, unit2) -> unit2.getStart(),
-                                (conflictingUnit, unit2) -> unit2.getEnd(),
+                .join(Unit.class, Joiners.equal((conflictingUnit, unit1) -> conflictingUnit.getUnit2(), Function.identity()),
+                        Joiners.overlapping((conflictingUnit, unit1) -> unit1.getStart(),
+                                (conflictingUnit, unit1) -> unit1.getEnd(),
                                 Unit::getStart, Unit::getEnd))
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Hard unit student conflict");
@@ -59,11 +59,11 @@ public class MyConstraintProvider implements ConstraintProvider {
     private Constraint softUnitStudentConflict(ConstraintFactory constraintFactory) {
         return  constraintFactory.forEach(ConflictingUnit.class)
                 .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
-                .join(Unit.class, Joiners.equal((conflictingUnit, unit2) -> conflictingUnit.getUnit2(), Function.identity()),
-                        Joiners.overlapping((conflictingUnit, unit2) -> unit2.getStart(),
-                                (conflictingUnit, unit2) -> unit2.getEnd(),
+                .join(Unit.class, Joiners.equal((conflictingUnit, unit1) -> conflictingUnit.getUnit2(), Function.identity()),
+                        Joiners.overlapping((conflictingUnit, unit1) -> unit1.getStart(),
+                                (conflictingUnit, unit1) -> unit1.getEnd(),
                                 Unit::getStart, Unit::getEnd))
-                .penalize(HardSoftScore.ofSoft(1))
+                .penalize(HardSoftScore.ofSoft(1), (conflictingUnit, unit1, unit2) -> conflictingUnit.getNumStudent())
                 .asConstraint("Soft unit student conflict");
 
     }
