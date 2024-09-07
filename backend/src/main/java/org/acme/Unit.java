@@ -110,6 +110,10 @@ public class Unit {
         return num;
     }
 
+    public int getStudentSize() {
+        return students.size();
+    }
+
     // ---------------- Getters and Setters -----------------------//
 
     public Room getRoom() {

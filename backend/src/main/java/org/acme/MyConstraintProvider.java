@@ -17,8 +17,9 @@ public class MyConstraintProvider implements ConstraintProvider {
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[] {
 //                overlaps(constraintFactory)
-                hardUnitStudentConflict(constraintFactory),
-                roomConflict(constraintFactory)
+                softUnitStudentConflict(constraintFactory),
+                roomConflict(constraintFactory),
+                roomCapacity(constraintFactory)
         };
     }
 
@@ -80,5 +81,12 @@ public class MyConstraintProvider implements ConstraintProvider {
                 // ... and penalize each pair with a hard weight.
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Room conflict");
+    }
+
+    Constraint roomCapacity(ConstraintFactory constraintFactory) {
+        return constraintFactory.forEach(Unit.class)
+                .filter(unit -> unit.getStudentSize() > unit.getRoom().getCapacity())
+                .penalize(HardSoftScore.ofSoft(1), unit -> unit.getStudentSize() - unit.getRoom().getCapacity())
+                .asConstraint("Room Capacity Constraint");
     }
 }
