@@ -2,7 +2,6 @@ import { Link, Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar.tsx";
 import Header from "../components/Header.tsx";
 import Footer from "../components/Footer.tsx";
-import '../styles/seminfo.css';
 import NextButton from "../components/NextButton.tsx";
 import BackButton from "../components/BackButton.tsx";
 
@@ -18,10 +17,8 @@ export default function SemesterInfo() {
       </div>
 
       <Footer>
-        <div className="links-container">
-          <Link to="../"><BackButton/></Link>
-          <Link to="../timetablemod"><NextButton/></Link>
-        </div>
+        <Link to="../"><BackButton/></Link>
+        <Link to="../senddata"><NextButton/></Link>
       </Footer>
 
     </div>

@@ -45,11 +45,11 @@ public class Schedule {
 //        this.students = students;
 //    }
 
-    public List<Unit> getClasses() {
+    public List<Unit> getUnits() {
         return units;
     }
 
-    public void setClasses(List<Unit> units) {
+    public void setUnits(List<Unit> units) {
         this.units = units;
     }
 

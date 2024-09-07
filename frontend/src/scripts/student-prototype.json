@@ -1,0 +1,69 @@
+{
+  "units": [
+    {
+      "unitID": 1,
+      "name": "One",
+      "duration": 7200,
+      "students": [
+        {
+          "name": "StudentA"
+        },
+        {
+          "name": "StudentB"
+        },
+        {
+          "name": "StudentC"
+        },
+        {
+          "name": "StudentD"
+        }
+      ]
+    },
+    {
+      "unitID": 2,
+      "name": "Two",
+      "duration": 14400,
+      "students": [
+        {
+          "name": "StudentA"
+        },
+        {
+          "name": "StudentB"
+        },
+        {
+          "name": "StudentC"
+        },
+        {
+          "name": "StudentD"
+        },
+        {
+          "name": "StudentG"
+        }
+      ]
+    },
+    {
+      "unitID": 3,
+      "name": "Three",
+      "duration": 4200,
+      "students": [
+        {
+          "name": "StudentF"
+        },
+        {
+          "name": "StudentE"
+        },
+        {
+          "name": "StudentH"
+        },
+        {
+          "name": "StudentI"
+        }
+      ]
+    }
+  ],
+  "startTimes": [
+    "15:00:00",
+    "16:00:00",
+    "17:00:00"
+  ]
+}
