@@ -6,10 +6,14 @@ import BackButton from "../components/BackButton";
 import NextButton from "../components/NextButton";
 import Header from "../components/Header";
 import { CellValue } from "jspreadsheet-ce";
+import { useState } from "react";
 
 export default function SendData() {
+  const generatedTimetable = sessionStorage.getItem("generatedTimetable");
+  const [btnEnable, setBtnEnable] = useState((generatedTimetable !== null && generatedTimetable !== undefined));
 
   function handlePOST() {
+    setBtnEnable(false);
     const unitInfo = sessionStorage.getItem("toBackend");
     if (!unitInfo) {
       alert("Missing units information");
@@ -43,9 +47,10 @@ export default function SendData() {
         cellvalues: data
       }
       sessionStorage.setItem("timetableSheet", JSON.stringify(opt));
+      setBtnEnable(true);
     })
     .catch((error) => {
-      console.log(error);
+      alert(error);
     })
   }
 
@@ -59,7 +64,11 @@ export default function SendData() {
       
       <Footer>
         <Link to="../seminfo/campus"><BackButton /></Link>
-        <Link to="../timetablemod"><NextButton /></Link>
+        { btnEnable ? (
+          <Link to="../timetablemod"><NextButton /></Link>
+        ) : (
+          <p style={{ color: "white" }}>Generating timetable...</p>
+        )}
       </Footer>
     </>
   )
