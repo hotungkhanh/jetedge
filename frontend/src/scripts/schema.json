@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "duration": {
+            "type": ["number", "string"]
+          },
+          "students": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        
+        "required": [
+          "unitID",
+          "name",
+          "duration",
+          "students"
+        ]
+      }
+    },
+
+    "startTimes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+
+  "required": [
+    "units",
+    "startTimes"
+  ]
+}
