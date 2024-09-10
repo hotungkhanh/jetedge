@@ -26,13 +26,15 @@ public class AEightCFour {
 
     @POST
     public Schedule handleRequest(Schedule problem) throws ExecutionException, InterruptedException {
+
+//        problem.setRooms(List.of(
+//                        new Room("Room1", 1),
+//                        new Room("Room2", 2),
+//                        new Room("Room3", 3)
+//                )
+//        );
+
         Schedule solution = solverManager.solve("job 1", problem).getFinalBestSolution();
-        solution.setRooms(List.of(
-                        new Room("Room1", 1),
-                        new Room("Room2", 2),
-                        new Room("Room3", 3)
-                )
-        );
 //        responses.add(solution);
 //        times = problem.getStartTimes();
         return solution;

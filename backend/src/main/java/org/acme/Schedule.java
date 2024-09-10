@@ -57,13 +57,13 @@ public class Schedule {
 //        this.students = students;
 //    }
 
-    public List<Unit> getClasses() {
-        return units;
-    }
-
-    public void setClasses(List<Unit> units) {
-        this.units = units;
-    }
+//    public List<Unit> getClasses() {
+//        return units;
+//    }
+//
+//    public void setClasses(List<Unit> units) {
+//        this.units = units;
+//    }
 
     public List<LocalTime> getStartTimes() {
         return startTimes;

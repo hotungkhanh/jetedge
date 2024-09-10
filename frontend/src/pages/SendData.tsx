@@ -28,6 +28,20 @@ export default function SendData() {
         "12:00:00",
         "15:00:00",
         "17:00:00"
+      ],
+      rooms: [
+        {
+          id: "1",
+          capacity: 1
+        },
+        {
+          id: "2",
+          capacity: 2
+        },
+        {
+          id: "3",
+          capacity: 3
+        }
       ]
     };
     
@@ -37,7 +51,12 @@ export default function SendData() {
       sessionStorage.setItem("generatedTimetable", response);
       const units = JSON.parse(response).units;
       const data: CellValue[][] = units.map((u: Unit) => {
-        return [u.unitID, u.name, parseInt(u.duration) / 60, u.start, u.end, (u.students.map(s => s.name)).toString()];
+        if (u.room !== undefined && u.room !== null) {
+          return [u.unitID, u.name, parseInt(u.duration) / 60, u.start, u.end, (u.students.map(s => s.name)).toString(), u.room.id, u.room.capacity];
+        }
+        else {
+          return [];
+        }
       })
       const opt = {
         cellvalues: data

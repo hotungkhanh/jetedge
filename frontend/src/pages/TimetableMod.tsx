@@ -16,7 +16,7 @@ export default function TimetableMod() {
         {generatedTimetable ? (
           <>
             <h3 style={{ color: "#d15700", margin: "3px" }}>Score: {JSON.parse(generatedTimetable).score}</h3>
-            <Spreadsheet headers={["Unit ID", "Unit Name", "Duration (minutes)", "Start", "End", "Students"]} storageKey="timetableSheet"/>
+            <Spreadsheet headers={["Unit ID", "Unit Name", "Duration (minutes)", "Start", "End", "Students", "Room ID", "Room Capacity"]} storageKey="timetableSheet"/>
           </>
         ) : (
           <h1>Timetable not generated (yet)</h1>
