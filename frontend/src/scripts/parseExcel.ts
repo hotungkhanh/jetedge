@@ -71,7 +71,11 @@ export type Unit = {
   duration: string,
   students: Student[]
   start?: string,
-  end?: string
+  end?: string,
+  room?: {
+    id: string,
+    capacity: number
+  }
 }
 
 // 1 hour, 1.5 hour, 2 hours, 3 hours
