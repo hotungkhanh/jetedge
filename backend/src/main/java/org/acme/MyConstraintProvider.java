@@ -17,7 +17,9 @@ public class MyConstraintProvider implements ConstraintProvider {
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[] {
 //                overlaps(constraintFactory)
-                unitStudentConflict(constraintFactory)
+                softUnitStudentConflict(constraintFactory),
+                roomConflict(constraintFactory),
+                roomCapacity(constraintFactory)
         };
     }
 
@@ -38,21 +40,53 @@ public class MyConstraintProvider implements ConstraintProvider {
 
     private Constraint softStudentConstraint(ConstraintFactory constraintFactory) {
         return  constraintFactory.forEachUniquePair(Unit.class,
-                overlapping(Unit::getStart, Unit::getEnd))
+                        overlapping(Unit::getStart, Unit::getEnd))
                 .penalize(HardSoftScore.ofSoft(1), Unit::numSameStudent)
                 .asConstraint("softStudentConstraint");
     }
 
-    private Constraint unitStudentConflict(ConstraintFactory constraintFactory) {
+    private Constraint hardUnitStudentConflict(ConstraintFactory constraintFactory) {
         return  constraintFactory.forEach(ConflictingUnit.class)
-                .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit, Function.identity()))
-                .join(Unit.class, Joiners.equal((conflictingUnit, conflict) -> conflictingUnit.getConflict(), Function.identity()),
-                        Joiners.overlapping((conflictingUnit, conflict) -> conflict.getStart(),
-                                (conflictingUnit, conflict) -> conflict.getEnd(),
+                .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
+                .join(Unit.class, Joiners.equal((conflictingUnit, unit1) -> conflictingUnit.getUnit2(), Function.identity()),
+                        Joiners.overlapping((conflictingUnit, unit1) -> unit1.getStart(),
+                                (conflictingUnit, unit1) -> unit1.getEnd(),
                                 Unit::getStart, Unit::getEnd))
                 .penalize(HardSoftScore.ONE_HARD)
-                .asConstraint("Unit student conflict");
+                .asConstraint("Hard unit student conflict");
 
     }
 
+    private Constraint softUnitStudentConflict(ConstraintFactory constraintFactory) {
+        return  constraintFactory.forEach(ConflictingUnit.class)
+                .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
+                .join(Unit.class, Joiners.equal((conflictingUnit, unit1) -> conflictingUnit.getUnit2(), Function.identity()),
+                        Joiners.overlapping((conflictingUnit, unit1) -> unit1.getStart(),
+                                (conflictingUnit, unit1) -> unit1.getEnd(),
+                                Unit::getStart, Unit::getEnd))
+                .penalize(HardSoftScore.ofSoft(1), (conflictingUnit, unit1, unit2) -> conflictingUnit.getNumStudent())
+                .asConstraint("Soft unit student conflict");
+
+    }
+
+    Constraint roomConflict(ConstraintFactory constraintFactory) {
+        // A room can accommodate at most one lesson at the same time.
+        return constraintFactory
+                // Select each pair of 2 different lessons ...
+                .forEachUniquePair(Unit.class,
+                        // ... in the same timeslot ...
+                        overlapping(Unit::getStart, Unit::getEnd),
+                        // ... in the same room ...
+                        Joiners.equal(Unit::getRoom))
+                // ... and penalize each pair with a hard weight.
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("Room conflict");
+    }
+
+    Constraint roomCapacity(ConstraintFactory constraintFactory) {
+        return constraintFactory.forEach(Unit.class)
+                .filter(unit -> unit.getStudentSize() > unit.getRoom().getCapacity())
+                .penalize(HardSoftScore.ofSoft(1), unit -> unit.getStudentSize() - unit.getRoom().getCapacity())
+                .asConstraint("Room Capacity Constraint");
+    }
 }
