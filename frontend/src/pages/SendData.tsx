@@ -51,8 +51,8 @@ export default function SendData() {
       sessionStorage.setItem("generatedTimetable", response);
       const units = JSON.parse(response).units;
       const data: CellValue[][] = units.map((u: Unit) => {
-        if (u.room !== undefined && u.room !== null) {
-          return [u.unitID, u.name, parseInt(u.duration) / 60, u.start, u.end, (u.students.map(s => s.name)).toString(), u.room.id, u.room.capacity];
+        if (u.room !== undefined && u.room !== null && u.studentSize !== undefined && u.studentSize !== null) {
+          return [u.unitID, u.name, parseInt(u.duration) / 60, u.start, u.end, (u.students.map(s => s.name)).toString(), u.studentSize, u.room.id, u.room.capacity];
         }
         else {
           return [];

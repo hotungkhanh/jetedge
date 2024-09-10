@@ -6,7 +6,7 @@ export default function Room() {
     <>
       <h3>Room</h3>
       <Spreadsheet 
-        headers={["Campus Name", "Building Name", "Room Code", "Available Time (start)", "Available Time (end)"]}
+        headers={["Campus Name", "Building Name", "Room Code", "Is Available?"]}
         storageKey='room'
       />
     </>
