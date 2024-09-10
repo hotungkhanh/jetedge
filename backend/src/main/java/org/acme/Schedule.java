@@ -6,6 +6,7 @@ import ai.timefold.solver.core.api.domain.solution.PlanningSolution;
 import ai.timefold.solver.core.api.domain.solution.ProblemFactCollectionProperty;
 import ai.timefold.solver.core.api.domain.valuerange.ValueRangeProvider;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
+import com.fasterxml.jackson.databind.BeanProperty;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class Schedule {
     @ValueRangeProvider
     List<LocalTime> startTimes;
 
+    @ProblemFactCollectionProperty
+    @ValueRangeProvider
+    private List<Room> rooms;
+
     @PlanningScore
     HardSoftScore score;
 
@@ -37,6 +42,13 @@ public class Schedule {
 //        this.students = students;
     }
 
+    public Schedule(List<Unit> units, List<LocalTime> startTimes, List<Room> rooms) {
+        this.units = units;
+        this.startTimes = startTimes;
+        this.rooms = rooms;
+//        this.students = students;
+    }
+
 //    public List<Student> getStudents() {
 //        return students;
 //    }
@@ -45,11 +57,11 @@ public class Schedule {
 //        this.students = students;
 //    }
 
-    public List<Unit> getUnits() {
+    public List<Unit> getClasses() {
         return units;
     }
 
-    public void setUnits(List<Unit> units) {
+    public void setClasses(List<Unit> units) {
         this.units = units;
     }
 
@@ -61,6 +73,22 @@ public class Schedule {
         this.startTimes = startTimes;
     }
 
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public List<Unit> getUnits() {
+        return units;
+    }
+
+    public void setUnits(List<Unit> units) {
+        this.units = units;
+    }
+
     public HardSoftScore getScore() {
         return score;
     }
@@ -70,16 +98,38 @@ public class Schedule {
     }
 
 
+//    @ProblemFactCollectionProperty
+//    public List<ConflictingUnit> calculateHardUnitConflictList() {
+//        ArrayList<ConflictingUnit> out = new ArrayList<ConflictingUnit>();
+//        for (var first : units) {
+//            for (var second : units) {
+//                if (first.getUnitID() >= second.getUnitID()) {
+//                    continue;
+//                }
+//                if (!Collections.disjoint(first.getStudents(), second.getStudents())) {
+//                    out.add(new ConflictingUnit(first, second));
+//                }
+//            }
+//        }
+//        return out;
+//    }
+
     @ProblemFactCollectionProperty
-    public List<ConflictingUnit> calculateUnitConflictList() {
+    public List<ConflictingUnit> calculateSoftUnitConflictList() {
         ArrayList<ConflictingUnit> out = new ArrayList<ConflictingUnit>();
         for (var first : units) {
             for (var second : units) {
                 if (first.getUnitID() >= second.getUnitID()) {
                     continue;
                 }
-                if (!Collections.disjoint(first.getStudents(), second.getStudents())) {
-                    out.add(new ConflictingUnit(first, second));
+                int numStudents = 0;
+                for (Student firstStudent : first.getStudents()) {
+                    if (second.getStudents().contains(firstStudent)) {
+                        numStudents++;
+                    }
+                }
+                if (numStudents > 0) {
+                    out.add(new ConflictingUnit(first, second, numStudents));
                 }
             }
         }

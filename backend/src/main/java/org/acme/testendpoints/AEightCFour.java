@@ -10,6 +10,7 @@ import ai.timefold.solver.core.api.solver.SolverManager;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.acme.Room;
 import org.acme.Schedule;
 import org.acme.Student;
 import org.acme.Unit;
@@ -17,8 +18,8 @@ import org.acme.Unit;
 @Path("/timetable")
 public class AEightCFour {
 
-    private List<Schedule> responses = new ArrayList<>();
-    private List<LocalTime> times = new ArrayList<>();
+//    private List<Schedule> responses = new ArrayList<>();
+//    private List<LocalTime> times = new ArrayList<>();
 
     @Inject
     SolverManager<Schedule, String> solverManager;
@@ -26,24 +27,30 @@ public class AEightCFour {
     @POST
     public Schedule handleRequest(Schedule problem) throws ExecutionException, InterruptedException {
         Schedule solution = solverManager.solve("job 1", problem).getFinalBestSolution();
-        responses.add(solution);
-        times = problem.getStartTimes();
+        solution.setRooms(List.of(
+                        new Room("Room1", 1),
+                        new Room("Room2", 2),
+                        new Room("Room3", 3)
+                )
+        );
+//        responses.add(solution);
+//        times = problem.getStartTimes();
         return solution;
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Schedule> getResponses() {
-        return responses;
-    }
-
-    @GET
-    @Path("/localtime")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<LocalTime> getTimes() {
-        List<LocalTime> sortedTimes = times.stream()
-                .sorted()  // or .sorted(Comparator.naturalOrder())
-                .collect(Collectors.toList());
-        return sortedTimes;
-    }
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Schedule> getResponses() {
+//        return responses;
+//    }
+//
+//    @GET
+//    @Path("/localtime")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<LocalTime> getTimes() {
+//        List<LocalTime> sortedTimes = times.stream()
+//                .sorted()  // or .sorted(Comparator.naturalOrder())
+//                .collect(Collectors.toList());
+//        return sortedTimes;
+//    }
 }
