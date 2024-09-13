@@ -8,6 +8,8 @@ import ai.timefold.solver.core.api.score.stream.Joiners;
 
 import java.util.function.Function;
 
+import static ai.timefold.solver.core.api.score.stream.Joiners.overlapping;
+
 /**
  * Provides the constraints for the timetabling problem.
  *
@@ -23,8 +25,8 @@ public class TimetableConstraintProvider implements ConstraintProvider {
     @Override
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[]{
-                studentConflict(constraintFactory)
-
+                studentConflict(constraintFactory),
+                roomConflict(constraintFactory)
         };
     }
 
@@ -35,7 +37,7 @@ public class TimetableConstraintProvider implements ConstraintProvider {
         return constraintFactory.forEach(ConflictingUnit.class)
                 .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
                 .join(Unit.class, Joiners.equal((conflictingUnit, unit1) -> conflictingUnit.getUnit2(), Function.identity()),
-                        Joiners.overlapping((conflictingUnit, unit1) -> unit1.getStart(),
+                        overlapping((conflictingUnit, unit1) -> unit1.getStart(),
                                 (conflictingUnit, unit1) -> unit1.getEnd(),
                                 Unit::getStart, Unit::getEnd))
                 .penalize(HardSoftScore.ofHard(1), (conflictingUnit, unit1, unit2) -> conflictingUnit.getNumStudent())
@@ -43,5 +45,21 @@ public class TimetableConstraintProvider implements ConstraintProvider {
 
     }
 
+    /**
+     * Penalize 1 hard score for each room with overlapping units.
+     */
+    Constraint roomConflict(ConstraintFactory constraintFactory) {
+        // A room can accommodate at most one lesson at the same time.
+        return constraintFactory
+                // Select each pair of 2 different lessons ...
+                .forEachUniquePair(Unit.class,
+                        // ... in the same timeslot ...
+                        overlapping(Unit::getStart, Unit::getEnd),
+                        // ... in the same room ...
+                        Joiners.equal(Unit::getRoom))
+                // ... and penalize each pair with a hard weight.
+                .penalize(HardSoftScore.ofHard(1))
+                .asConstraint("Room conflict");
+    }
 
 }
