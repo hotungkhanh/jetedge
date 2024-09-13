@@ -26,7 +26,8 @@ public class TimetableConstraintProvider implements ConstraintProvider {
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[]{
                 studentConflict(constraintFactory),
-                roomConflict(constraintFactory)
+                roomConflict(constraintFactory),
+                roomCapacity(constraintFactory)
         };
     }
 
@@ -60,6 +61,16 @@ public class TimetableConstraintProvider implements ConstraintProvider {
                 // ... and penalize each pair with a hard weight.
                 .penalize(HardSoftScore.ofHard(1))
                 .asConstraint("Room conflict");
+    }
+
+    /**
+     * Penalize 1 soft score for each student overflowing the capacity of the room.
+     */
+    Constraint roomCapacity(ConstraintFactory constraintFactory) {
+        return constraintFactory.forEach(Unit.class)
+                .filter(unit -> unit.getStudentSize() > unit.getRoom().getCapacity())
+                .penalize(HardSoftScore.ofSoft(1), unit -> unit.getStudentSize() - unit.getRoom().getCapacity())
+                .asConstraint("Room capacity conflict");
     }
 
 }
