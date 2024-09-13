@@ -11,6 +11,8 @@ import jakarta.ws.rs.core.MediaType;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.DayOfWeek;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -40,21 +42,24 @@ public class GreetingResource {
 
         var problem = new Schedule(
                 List.of(
-                        new Unit(1, "1", Duration.ofHours(2), List.of(a,b)),
-                        new Unit(2, "2", Duration.ofHours(2), List.of(c,d,e)),
-                        new Unit(3, "3", Duration.ofHours(2), List.of(f,g,h,i)),
-                        new Unit(4, "4", Duration.ofHours(2), List.of(a,b)),
-                        new Unit(5, "5", Duration.ofHours(2), List.of(c,d,e)),
-                        new Unit(6, "6", Duration.ofHours(2), List.of(f,g,h,i))
-//                        new Unit(7, "7", Duration.ofMinutes(120), List.of(h))
+                        new Unit(1, "1", Duration.ofHours(2), List.of(a)),
+                        new Unit(2, "2", Duration.ofHours(2), List.of(a)),
+                        new Unit(3, "3", Duration.ofHours(2), List.of(a)),
+                        new Unit(4, "4", Duration.ofHours(2), List.of(a)),
+                        new Unit(5, "5", Duration.ofHours(2), List.of(a)),
+                        new Unit(6, "6", Duration.ofHours(2), List.of(a)),
+                        new Unit(7, "7", Duration.ofMinutes(120), List.of(h))
                 ),
                 List.of(
-                        LocalTime.of(15,0),
-                        LocalTime.of(17,0)
-//                        LocalTime.of(16,0),
-//                        LocalTime.of(23,0)
+                        LocalTime.of(8,0),
+                        LocalTime.of(10,0)
                 ),
-                List.of(r1, r2, r3)
+                List.of(
+                        DayOfWeek.MONDAY,
+                        DayOfWeek.TUESDAY,
+                        DayOfWeek.WEDNESDAY
+                ),
+                List.of(r1)
         );
 
 

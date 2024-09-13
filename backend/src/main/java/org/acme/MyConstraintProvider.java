@@ -16,8 +16,8 @@ public class MyConstraintProvider implements ConstraintProvider {
     @Override
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[] {
-//                overlaps(constraintFactory)
-                softUnitStudentConflict(constraintFactory),
+//                overlaps(constraintFactory),
+                hardUnitStudentConflict(constraintFactory),
                 roomConflict(constraintFactory),
                 roomCapacity(constraintFactory)
         };
@@ -26,6 +26,7 @@ public class MyConstraintProvider implements ConstraintProvider {
     private Constraint overlaps(ConstraintFactory constraintFactory) {
         return constraintFactory.forEachUniquePair(Unit.class,
                         overlapping(Unit::getStart, Unit::getEnd))
+                .filter((unit1, unit2) -> unit1.getDayOfWeek() == unit2.getDayOfWeek())
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("overlaps");
     }
@@ -34,6 +35,7 @@ public class MyConstraintProvider implements ConstraintProvider {
         return  constraintFactory.forEachUniquePair(Unit.class,
                         overlapping(Unit::getStart, Unit::getEnd))
                 .filter(Unit::hasSameStudent)
+                .filter((unit1, unit2) -> unit1.getDayOfWeek() == unit2.getDayOfWeek())
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("hardStudentConstraint");
     }
@@ -41,6 +43,7 @@ public class MyConstraintProvider implements ConstraintProvider {
     private Constraint softStudentConstraint(ConstraintFactory constraintFactory) {
         return  constraintFactory.forEachUniquePair(Unit.class,
                         overlapping(Unit::getStart, Unit::getEnd))
+                .filter((unit1, unit2) -> unit1.getDayOfWeek() == unit2.getDayOfWeek())
                 .penalize(HardSoftScore.ofSoft(1), Unit::numSameStudent)
                 .asConstraint("softStudentConstraint");
     }
@@ -49,9 +52,11 @@ public class MyConstraintProvider implements ConstraintProvider {
         return  constraintFactory.forEach(ConflictingUnit.class)
                 .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
                 .join(Unit.class, Joiners.equal((conflictingUnit, unit1) -> conflictingUnit.getUnit2(), Function.identity()),
+                        Joiners.equal((conflictingUnit, unit1) -> unit1.getDayOfWeek(), Unit::getDayOfWeek),
                         Joiners.overlapping((conflictingUnit, unit1) -> unit1.getStart(),
                                 (conflictingUnit, unit1) -> unit1.getEnd(),
                                 Unit::getStart, Unit::getEnd))
+//                .filter((conflictingUnit, unit1, unit2) -> unit1.getDayOfWeek() == unit2.getDayOfWeek())
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Hard unit student conflict");
 
@@ -64,7 +69,8 @@ public class MyConstraintProvider implements ConstraintProvider {
                         Joiners.overlapping((conflictingUnit, unit1) -> unit1.getStart(),
                                 (conflictingUnit, unit1) -> unit1.getEnd(),
                                 Unit::getStart, Unit::getEnd))
-                .penalize(HardSoftScore.ofSoft(1), (conflictingUnit, unit1, unit2) -> conflictingUnit.getNumStudent())
+                .filter((conflictingUnit, unit1, unit2) -> unit1.getDayOfWeek() == unit2.getDayOfWeek())
+                .penalize(HardSoftScore.ofHard(1), (conflictingUnit, unit1, unit2) -> conflictingUnit.getNumStudent())
                 .asConstraint("Soft unit student conflict");
 
     }
@@ -74,10 +80,12 @@ public class MyConstraintProvider implements ConstraintProvider {
         return constraintFactory
                 // Select each pair of 2 different lessons ...
                 .forEachUniquePair(Unit.class,
+                        Joiners.equal(Unit::getDayOfWeek),
                         // ... in the same timeslot ...
                         overlapping(Unit::getStart, Unit::getEnd),
                         // ... in the same room ...
                         Joiners.equal(Unit::getRoom))
+//                .filter((unit1, unit2) -> unit1.getDayOfWeek() == unit2.getDayOfWeek())
                 // ... and penalize each pair with a hard weight.
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Room conflict");

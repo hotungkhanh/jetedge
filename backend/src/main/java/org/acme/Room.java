@@ -14,8 +14,6 @@ public class Room {
         this.capacity = capacity;
     }
 
-    //-----------------Getters and Setters--------------------//
-
     public String getId() {
         return id;
     }
