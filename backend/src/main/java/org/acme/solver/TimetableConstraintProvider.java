@@ -1,4 +1,4 @@
-package org.acme;
+package org.acme.solver;
 
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.score.stream.Constraint;
