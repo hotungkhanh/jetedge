@@ -9,30 +9,24 @@ import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 import java.util.List;
 import java.util.Objects;
 
-//@PlanningEntity
+/** Represents a student.
+ * @author Jet Edge
+ */
 public class Student {
 
-    //    String studentID;
+//    String studentID;
 //    @PlanningId
     String name;
-
-//    @PlanningListVariable
-//    List<Class> classes;
 
     public Student() {
     }
 
+    /** Creates a student with the specified name.
+     * @param name The student’s name.
+     */
     public Student(String name) {
         this.name = name;
     }
-
-//    public List<Class> getClasses() {
-//        return classes;
-//    }
-//
-//    public void setClasses(List<Class> classes) {
-//        this.classes = classes;
-//    }
 
     public String getName() {
         return name;
