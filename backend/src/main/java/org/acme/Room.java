@@ -2,7 +2,9 @@ package org.acme;
 
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 
-/** Represents a room.
+/**
+ * Represents a room.
+ *
  * @author Jet Edge
  */
 public class Room {
@@ -10,10 +12,13 @@ public class Room {
     private String id;
     private int capacity;
 
-    public Room() {}
+    public Room() {
+    }
 
-    /** Creates a room with its ID and capacity.
-     * @param id The room’s id.
+    /**
+     * Creates a room with its ID and capacity.
+     *
+     * @param id       The room’s id.
      * @param capacity The room's capacity.
      */
     public Room(String id, int capacity) {
