@@ -46,11 +46,11 @@ public class TimetableResource {
         var problem = new Timetable(
                 List.of(
                         new Unit(1, "1", Duration.ofHours(2), List.of(a, b)),
-                        new Unit(2, "2", Duration.ofHours(2), List.of(c, d, e)),
-                        new Unit(3, "3", Duration.ofHours(2), List.of(f, g, h, i)),
-                        new Unit(4, "4", Duration.ofHours(2), List.of(a, b)),
-                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
-                        new Unit(6, "6", Duration.ofHours(2), List.of(f, g, h, i))
+                        new Unit(2, "2", Duration.ofHours(2), List.of(a, c, d, e)),
+                        new Unit(3, "3", Duration.ofHours(2), List.of(a, f, g, h, i))
+//                        new Unit(4, "4", Duration.ofHours(2), List.of(a, b)),
+//                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
+//                        new Unit(6, "6", Duration.ofHours(2), List.of(f, g, h, i))
                 ),
                 List.of(
                         LocalTime.of(15, 0),

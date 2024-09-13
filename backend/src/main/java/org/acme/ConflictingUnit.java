@@ -1,7 +1,7 @@
 package org.acme;
 
 /**
- * Represents a pair of conflicting units.
+ * Represents a pair of conflicting units, which are units with common students.
  *
  * @author Jet Edge
  */
