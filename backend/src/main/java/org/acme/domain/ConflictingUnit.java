@@ -1,4 +1,4 @@
-package org.acme;
+package org.acme.domain;
 
 /**
  * Represents a pair of conflicting units, which are units with common students.

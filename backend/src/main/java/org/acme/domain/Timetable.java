@@ -1,4 +1,4 @@
-package org.acme;
+package org.acme.domain;
 
 import ai.timefold.solver.core.api.domain.solution.PlanningEntityCollectionProperty;
 import ai.timefold.solver.core.api.domain.solution.PlanningScore;
