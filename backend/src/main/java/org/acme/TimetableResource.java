@@ -6,6 +6,10 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.acme.domain.Room;
+import org.acme.domain.Student;
+import org.acme.domain.Timetable;
+import org.acme.domain.Unit;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -41,7 +45,7 @@ public class TimetableResource {
 
         Room r1 = new Room("Room1", 2);
         Room r2 = new Room("Room2", 3);
-        Room r3 = new Room("Room3", 3);
+        Room r3 = new Room("Room3", 4);
 
         var problem = new Timetable(
                 List.of(
@@ -58,7 +62,7 @@ public class TimetableResource {
 //                        LocalTime.of(16,0),
 //                        LocalTime.of(23,0)
                 ),
-                List.of(r1, r2)
+                List.of(r1, r2, r3)
         );
 
 
