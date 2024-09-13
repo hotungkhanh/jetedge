@@ -39,8 +39,8 @@ public class TimetableResource {
         Student h = new Student("h");
         Student i = new Student("i");
 
-        Room r1 = new Room("Room1", 1);
-        Room r2 = new Room("Room2", 2);
+        Room r1 = new Room("Room1", 2);
+        Room r2 = new Room("Room2", 3);
         Room r3 = new Room("Room3", 3);
 
         var problem = new Timetable(
