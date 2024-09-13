@@ -9,6 +9,8 @@ import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import com.fasterxml.jackson.databind.BeanProperty;
 
 import java.time.LocalTime;
+import java.time.DayOfWeek;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,14 +18,14 @@ import java.util.List;
 @PlanningSolution
 public class Schedule {
 
-////    @PlanningEntityCollectionProperty
-//    List<Student> students;
-
     @PlanningEntityCollectionProperty
     List<Unit> units;
 
     @ValueRangeProvider
     List<LocalTime> startTimes;
+
+    @ValueRangeProvider
+    List<DayOfWeek> daysOfWeek;
 
     @ProblemFactCollectionProperty
     @ValueRangeProvider
@@ -45,6 +47,14 @@ public class Schedule {
     public Schedule(List<Unit> units, List<LocalTime> startTimes, List<Room> rooms) {
         this.units = units;
         this.startTimes = startTimes;
+        this.rooms = rooms;
+//        this.students = students;
+    }
+
+    public Schedule(List<Unit> units, List<LocalTime> startTimes, List<DayOfWeek> daysOfWeek, List<Room> rooms) {
+        this.units = units;
+        this.startTimes = startTimes;
+        this.daysOfWeek = daysOfWeek;
         this.rooms = rooms;
 //        this.students = students;
     }
@@ -73,6 +83,14 @@ public class Schedule {
         this.startTimes = startTimes;
     }
 
+    public List<DayOfWeek> getDaysOfWeek() {
+        return daysOfWeek;
+    }
+
+    public void setDaysOfWeek(List<DayOfWeek> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
+    }
+
     public List<Room> getRooms() {
         return rooms;
     }
@@ -98,7 +116,7 @@ public class Schedule {
     }
 
 
-//    @ProblemFactCollectionProperty
+    //    @ProblemFactCollectionProperty
 //    public List<ConflictingUnit> calculateHardUnitConflictList() {
 //        ArrayList<ConflictingUnit> out = new ArrayList<ConflictingUnit>();
 //        for (var first : units) {

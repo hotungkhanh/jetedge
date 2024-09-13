@@ -6,6 +6,7 @@ import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.DayOfWeek;
 import java.util.List;
 
 @PlanningEntity
@@ -14,15 +15,18 @@ public class Unit {
     @PlanningId
     int unitID;
 
-    String name;
-
-    Duration duration;
-
     @PlanningVariable
     LocalTime start;
 
     @PlanningVariable
+    DayOfWeek dayOfWeek;
+
+    @PlanningVariable
     private Room room;
+
+    String name;
+
+    Duration duration;
 
     List<Student> students;
 
@@ -41,6 +45,39 @@ public class Unit {
         this.name = name;
         this.duration = duration;
         this.students = students;
+        this.room = room;
+    }
+
+    public boolean hasSameStudent(Unit otherUnit) {
+        for (Student student : students) {
+            if (otherUnit.getStudents().contains(student)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int numSameStudent(Unit otherUnit) {
+        int num = 0;
+
+        for (Student student : students) {
+            if (otherUnit.getStudents().contains(student)) {
+                num++;
+            }
+        }
+        return num;
+    }
+
+    public int getStudentSize() {
+        return students.size();
+    }
+
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
         this.room = room;
     }
 
@@ -88,39 +125,11 @@ public class Unit {
         this.students = students;
     }
 
-    public boolean hasSameStudent(Unit otherUnit) {
-        for (Student student : students) {
-            if (otherUnit.getStudents().contains(student)) {
-                return true;
-            }
-        }
-
-        return false;
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public int numSameStudent(Unit otherUnit) {
-        int num = 0;
-
-        for (Student student : students) {
-            if (otherUnit.getStudents().contains(student)) {
-                num++;
-            }
-        }
-
-        return num;
-    }
-
-    public int getStudentSize() {
-        return students.size();
-    }
-
-    // ---------------- Getters and Setters -----------------------//
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 }

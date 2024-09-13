@@ -9,15 +9,9 @@ import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 import java.util.List;
 import java.util.Objects;
 
-//@PlanningEntity
 public class Student {
 
-//    String studentID;
-//    @PlanningId
     String name;
-
-//    @PlanningListVariable
-//    List<Class> classes;
 
     public Student() {
     }
@@ -25,14 +19,6 @@ public class Student {
     public Student(String name) {
         this.name = name;
     }
-
-//    public List<Class> getClasses() {
-//        return classes;
-//    }
-//
-//    public void setClasses(List<Class> classes) {
-//        this.classes = classes;
-//    }
 
     public String getName() {
         return name;
