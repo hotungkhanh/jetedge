@@ -6,12 +6,14 @@ public class Room {
     @PlanningId
     private String id;
     private int capacity;
+    private boolean isLab;
 
     public Room() {}
 
-    public Room(String id, int capacity) {
+    public Room(String id, int capacity, boolean isLab) {
         this.id = id;
         this.capacity = capacity;
+        this.isLab = isLab;
     }
 
     public String getId() {
@@ -28,5 +30,13 @@ public class Room {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public boolean isLab() {
+        return isLab;
+    }
+
+    public void setLab(boolean lab) {
+        isLab = lab;
     }
 }

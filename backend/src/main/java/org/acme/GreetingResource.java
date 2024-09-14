@@ -36,30 +36,30 @@ public class GreetingResource {
         Student h = new Student("h");
         Student i = new Student("i");
 
-        Room r1 = new Room("Room1", 1);
-        Room r2 = new Room("Room2", 2);
-        Room r3 = new Room("Room3", 3);
+        Room r1 = new Room("Room1", 1, true);
+        Room r2 = new Room("Room2", 2, true);
+        Room r3 = new Room("Room3", 3, false);
 
         var problem = new Schedule(
                 List.of(
-                        new Unit(1, "1", Duration.ofHours(2), List.of(a)),
-                        new Unit(2, "2", Duration.ofHours(2), List.of(a)),
-                        new Unit(3, "3", Duration.ofHours(2), List.of(a)),
-                        new Unit(4, "4", Duration.ofHours(2), List.of(a)),
-                        new Unit(5, "5", Duration.ofHours(2), List.of(a)),
-                        new Unit(6, "6", Duration.ofHours(2), List.of(a)),
-                        new Unit(7, "7", Duration.ofMinutes(120), List.of(h))
+                        new Unit(1, "1", Duration.ofHours(2), true, List.of(a)),
+                        new Unit(2, "2", Duration.ofHours(2), true, List.of(b))
+//                        new Unit(3, "3", Duration.ofHours(2), true, List.of(c))
+//                        new Unit(4, "4", Duration.ofHours(2), false, List.of(a)),
+//                        new Unit(5, "5", Duration.ofHours(2), false, List.of(a)),
+//                        new Unit(6, "6", Duration.ofHours(2), false, List.of(a)),
+//                        new Unit(7, "7", Duration.ofMinutes(120), false, List.of(h))
                 ),
                 List.of(
-                        LocalTime.of(8,0),
-                        LocalTime.of(10,0)
+                        LocalTime.of(8,0)
+//                        LocalTime.of(10,0)
                 ),
                 List.of(
-                        DayOfWeek.MONDAY,
-                        DayOfWeek.TUESDAY,
-                        DayOfWeek.WEDNESDAY
+                        DayOfWeek.MONDAY
+//                        DayOfWeek.TUESDAY,
+//                        DayOfWeek.WEDNESDAY
                 ),
-                List.of(r1)
+                List.of(r1, r2)
         );
 
 
