@@ -40,9 +40,9 @@ public class TimetableConstraintProvider implements ConstraintProvider {
         return constraintFactory.forEach(ConflictingUnit.class)
                 .join(Unit.class, Joiners.equal(ConflictingUnit::getUnit1, Function.identity()))
                 .join(Unit.class, Joiners.equal((conflictingUnit, unit1) -> conflictingUnit.getUnit2(), Function.identity()),
-                        overlapping((conflictingUnit, unit1) -> unit1.getStart(),
+                        overlapping((conflictingUnit, unit1) -> unit1.getStartTime(),
                                 (conflictingUnit, unit1) -> unit1.getEnd(),
-                                Unit::getStart, Unit::getEnd))
+                                Unit::getStartTime, Unit::getEnd))
                 .penalize(HardSoftScore.ofHard(1), (conflictingUnit, unit1, unit2) -> conflictingUnit.getNumStudent())
                 .asConstraint("Student conflict");
 
@@ -57,7 +57,7 @@ public class TimetableConstraintProvider implements ConstraintProvider {
                 // Select each pair of 2 different lessons ...
                 .forEachUniquePair(Unit.class,
                         // ... in the same timeslot ...
-                        overlapping(Unit::getStart, Unit::getEnd),
+                        overlapping(Unit::getStartTime, Unit::getEnd),
                         // ... in the same room ...
                         Joiners.equal(Unit::getRoom))
                 // ... and penalize each pair with a hard weight.
