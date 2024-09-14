@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Student {
 
     //    String studentID;
-//    @PlanningId
+
     String name;
 
     public Student() {
