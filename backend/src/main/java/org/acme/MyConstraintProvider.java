@@ -19,7 +19,8 @@ public class MyConstraintProvider implements ConstraintProvider {
 //                overlaps(constraintFactory),
                 hardUnitStudentConflict(constraintFactory),
                 roomConflict(constraintFactory),
-                roomCapacity(constraintFactory)
+                roomCapacity(constraintFactory),
+                labConstraint(constraintFactory)
         };
     }
 
@@ -96,5 +97,13 @@ public class MyConstraintProvider implements ConstraintProvider {
                 .filter(unit -> unit.getStudentSize() > unit.getRoom().getCapacity())
                 .penalize(HardSoftScore.ofSoft(1), unit -> unit.getStudentSize() - unit.getRoom().getCapacity())
                 .asConstraint("Room Capacity Constraint");
+    }
+
+    Constraint labConstraint(ConstraintFactory constraintFactory) {
+        return constraintFactory.forEach(Unit.class)
+                .filter(unit -> unit.isLab() == true)
+                .filter(unit -> unit.getRoom().isLab() == false)
+                .penalize(HardSoftScore.ofSoft(1))
+                .asConstraint("Lab Constraint");
     }
 }

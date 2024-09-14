@@ -30,13 +30,16 @@ public class Unit {
 
     List<Student> students;
 
+    boolean isLab;
+
     public Unit() {
     };
 
-    public Unit(int unitID, String name, Duration duration, List<Student> students) {
+    public Unit(int unitID, String name, Duration duration, boolean isLab, List<Student> students) {
         this.unitID = unitID;
         this.name = name;
         this.duration = duration;
+        this.isLab = isLab;
         this.students = students;
     }
 
@@ -99,6 +102,14 @@ public class Unit {
 
     public void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    public boolean isLab() {
+        return isLab;
+    }
+
+    public void setLab(boolean lab) {
+        isLab = lab;
     }
 
     public void setStart(LocalTime start) {
