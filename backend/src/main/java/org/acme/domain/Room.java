@@ -10,7 +10,9 @@ import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 public class Room {
     @PlanningId
     private String id;
+
     private int capacity;
+    private boolean isLab;
 
     public Room() {
     }
@@ -20,10 +22,12 @@ public class Room {
      *
      * @param id       The room’s id.
      * @param capacity The room's capacity.
+     * @param isLab    Whether the room is a laboratory.
      */
-    public Room(String id, int capacity) {
+    public Room(String id, int capacity, boolean isLab) {
         this.id = id;
         this.capacity = capacity;
+        this.isLab = isLab;
     }
 
     public String getId() {
@@ -40,5 +44,13 @@ public class Room {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public boolean isLab() {
+        return isLab;
+    }
+
+    public void setLab(boolean lab) {
+        isLab = lab;
     }
 }
