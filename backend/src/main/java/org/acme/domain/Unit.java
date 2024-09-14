@@ -30,6 +30,8 @@ public class Unit {
     @PlanningVariable
     private Room room;
 
+    private boolean wantsLab;
+
     public Unit() {
     }
 
@@ -55,14 +57,14 @@ public class Unit {
      * @param name     The unit’s ID.
      * @param duration The unit’s duration.
      * @param students The list of students enrolled in the unit.
-     * @param room     The room assigned to the unit.
+     * @param wantsLab Whether the unit wants a laboratory room.
      */
-    public Unit(int unitID, String name, Duration duration, List<Student> students, Room room) {
+    public Unit(int unitID, String name, Duration duration, List<Student> students, boolean wantsLab) {
         this.unitID = unitID;
         this.name = name;
         this.duration = duration;
         this.students = students;
-        this.room = room;
+        this.wantsLab = wantsLab;
     }
 
     public int getUnitID() {
@@ -87,6 +89,14 @@ public class Unit {
 
     public void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public LocalTime getStartTime() {
@@ -126,11 +136,11 @@ public class Unit {
         this.room = room;
     }
 
-    public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
+    public boolean isWantsLab() {
+        return wantsLab;
     }
 
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setWantsLab(boolean wantsLab) {
+        this.wantsLab = wantsLab;
     }
 }
