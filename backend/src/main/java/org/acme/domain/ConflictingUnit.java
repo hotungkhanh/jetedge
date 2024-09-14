@@ -6,11 +6,11 @@ package org.acme.domain;
  * @author Jet Edge
  */
 public class ConflictingUnit {
-    Unit unit1;
+    private Unit unit1;
 
-    Unit unit2;
+    private Unit unit2;
 
-    int numStudent;
+    private int numStudent;
 
     /**
      * Creates a pair of conflicting units.
