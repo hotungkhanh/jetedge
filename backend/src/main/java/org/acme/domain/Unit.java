@@ -4,6 +4,7 @@ import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
@@ -17,23 +18,20 @@ import java.util.List;
 @PlanningEntity
 public class Unit {
 
-    @PlanningId
-    int unitID;
-
-    String name;
-
-    Duration duration;
-
-    @PlanningVariable
-    LocalTime start;
     List<Student> students;
+    @PlanningId
+    private int unitID;
+    private String name;
+    private Duration duration;
+    @PlanningVariable
+    private LocalTime startTime;
+    @PlanningVariable
+    private DayOfWeek dayOfWeek;
     @PlanningVariable
     private Room room;
 
     public Unit() {
     }
-
-    ;
 
     /**
      * Creates a unit.
@@ -91,16 +89,16 @@ public class Unit {
         this.duration = duration;
     }
 
-    public LocalTime getStart() {
-        return start;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setStart(LocalTime start) {
-        this.start = start;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
     public LocalTime getEnd() {
-        return start.plus(duration);
+        return startTime.plus(duration);
     }
 
     public List<Student> getStudents() {
@@ -126,5 +124,13 @@ public class Unit {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 }
