@@ -4,6 +4,7 @@ import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
@@ -17,23 +18,22 @@ import java.util.List;
 @PlanningEntity
 public class Unit {
 
+    private List<Student> students;
     @PlanningId
-    int unitID;
-
-    String name;
-
-    Duration duration;
-
+    private int unitID;
+    private String name;
+    private Duration duration;
     @PlanningVariable
-    LocalTime start;
-    List<Student> students;
+    private DayOfWeek dayOfWeek;
+    @PlanningVariable
+    private LocalTime startTime;
     @PlanningVariable
     private Room room;
 
+    private boolean wantsLab;
+
     public Unit() {
     }
-
-    ;
 
     /**
      * Creates a unit.
@@ -57,14 +57,14 @@ public class Unit {
      * @param name     The unit’s ID.
      * @param duration The unit’s duration.
      * @param students The list of students enrolled in the unit.
-     * @param room     The room assigned to the unit.
+     * @param wantsLab Whether the unit wants a laboratory room.
      */
-    public Unit(int unitID, String name, Duration duration, List<Student> students, Room room) {
+    public Unit(int unitID, String name, Duration duration, List<Student> students, boolean wantsLab) {
         this.unitID = unitID;
         this.name = name;
         this.duration = duration;
         this.students = students;
-        this.room = room;
+        this.wantsLab = wantsLab;
     }
 
     public int getUnitID() {
@@ -91,16 +91,24 @@ public class Unit {
         this.duration = duration;
     }
 
-    public LocalTime getStart() {
-        return start;
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setStart(LocalTime start) {
-        this.start = start;
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
     public LocalTime getEnd() {
-        return start.plus(duration);
+        return startTime.plus(duration);
     }
 
     public List<Student> getStudents() {
@@ -126,5 +134,13 @@ public class Unit {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public boolean isWantsLab() {
+        return wantsLab;
+    }
+
+    public void setWantsLab(boolean wantsLab) {
+        this.wantsLab = wantsLab;
     }
 }

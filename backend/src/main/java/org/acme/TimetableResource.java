@@ -11,6 +11,7 @@ import org.acme.domain.Student;
 import org.acme.domain.Timetable;
 import org.acme.domain.Unit;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
@@ -43,30 +44,39 @@ public class TimetableResource {
         Student h = new Student("h");
         Student i = new Student("i");
 
-        Room r1 = new Room("Room1", 2);
-        Room r2 = new Room("Room2", 3);
-        Room r3 = new Room("Room3", 4);
+        Room r1 = new Room("Room1", 2, true);
+        Room r2 = new Room("Room2", 4, false);
+        Room r3 = new Room("Room3", 4, false);
 
         var problem = new Timetable(
                 List.of(
-                        new Unit(1, "1", Duration.ofHours(2), List.of(a, b)),
-                        new Unit(2, "2", Duration.ofHours(2), List.of(a, c, d, e)),
-                        new Unit(3, "3", Duration.ofHours(2), List.of(f, g, h, i))
-//                        new Unit(4, "4", Duration.ofHours(2), List.of(a, b)),
+                        new Unit(1, "1", Duration.ofHours(2), List.of(a, b), true),
+                        new Unit(2, "2", Duration.ofHours(2), List.of(a, c, d, e), true),
+                        new Unit(3, "3", Duration.ofHours(2), List.of(f, g, h, i), false),
+                        new Unit(4, "4", Duration.ofHours(2), List.of(a, b), false)
 //                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
 //                        new Unit(6, "6", Duration.ofHours(2), List.of(f, g, h, i))
                 ),
+
                 List.of(
-                        LocalTime.of(15, 0),
-                        LocalTime.of(17, 0)
+                        DayOfWeek.MONDAY,
+                        DayOfWeek.TUESDAY,
+                        DayOfWeek.WEDNESDAY
+//                        DayOfWeek.THURSDAY,
+//                        DayOfWeek.FRIDAY
+                ),
+
+                List.of(
+                        LocalTime.of(15, 0)
+//                        LocalTime.of(17, 0)
 //                        LocalTime.of(16,0),
 //                        LocalTime.of(23,0)
                 ),
                 List.of(r1, r2, r3)
         );
 
-
         Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
+
         return solution;
     }
 
