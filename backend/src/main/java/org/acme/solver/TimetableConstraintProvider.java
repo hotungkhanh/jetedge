@@ -4,7 +4,6 @@ import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.score.stream.Constraint;
 import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
 import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
-import ai.timefold.solver.core.api.score.stream.Joiners;
 import org.acme.domain.ConflictingUnit;
 import org.acme.domain.Unit;
 
@@ -30,7 +29,8 @@ public class TimetableConstraintProvider implements ConstraintProvider {
         return new Constraint[]{
                 studentConflict(constraintFactory),
                 roomConflict(constraintFactory),
-                roomCapacity(constraintFactory)
+                roomCapacity(constraintFactory),
+                labPreference(constraintFactory)
         };
     }
 
@@ -53,7 +53,8 @@ public class TimetableConstraintProvider implements ConstraintProvider {
                                 (conflictingUnit, unit1) -> unit1.getEnd(),
                                 Unit::getStartTime, Unit::getEnd))
                 // ... and penalize each pair with a hard weight.
-                .penalize(HardSoftScore.ofHard(1), (conflictingUnit, unit1, unit2) -> conflictingUnit.getNumStudent())
+                .penalize(HardSoftScore.ofHard(1),
+                        (conflictingUnit, unit1, unit2) -> conflictingUnit.getNumStudent())
                 .asConstraint("Student conflict");
 
     }
@@ -85,8 +86,24 @@ public class TimetableConstraintProvider implements ConstraintProvider {
         return constraintFactory
                 .forEach(Unit.class)
                 .filter(unit -> unit.getStudentSize() > unit.getRoom().getCapacity())
-                .penalize(HardSoftScore.ofSoft(1), unit -> unit.getStudentSize() - unit.getRoom().getCapacity())
+                .penalize(HardSoftScore.ofSoft(1),
+                        unit -> unit.getStudentSize() - unit.getRoom().getCapacity())
                 .asConstraint("Room capacity conflict");
+    }
+
+    /**
+     * Penalize 1 soft score for each laboratory unit not assigned to a laboratory.
+     */
+    Constraint labPreference(ConstraintFactory constraintFactory) {
+        // Some units prefer to have a laboratory room.
+        return constraintFactory
+                .forEach(Unit.class)
+                // Select a laboratory unit ...
+                .filter(Unit::isWantsLab)
+                // ... in a non-lab room ...
+                .filter(unit -> !unit.getRoom().isLab())
+                .penalize(HardSoftScore.ofSoft(1))
+                .asConstraint("Unit laboratory preference");
     }
 
 }

@@ -45,15 +45,15 @@ public class TimetableResource {
         Student i = new Student("i");
 
         Room r1 = new Room("Room1", 2, true);
-        Room r2 = new Room("Room2", 3, false);
+        Room r2 = new Room("Room2", 4, false);
         Room r3 = new Room("Room3", 4, false);
 
         var problem = new Timetable(
                 List.of(
                         new Unit(1, "1", Duration.ofHours(2), List.of(a, b), true),
                         new Unit(2, "2", Duration.ofHours(2), List.of(a, c, d, e), true),
-                        new Unit(3, "3", Duration.ofHours(2), List.of(f, g, h, i), false)
-//                        new Unit(4, "4", Duration.ofHours(2), List.of(a, b)),
+                        new Unit(3, "3", Duration.ofHours(2), List.of(f, g, h, i), false),
+                        new Unit(4, "4", Duration.ofHours(2), List.of(a, b), false)
 //                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
 //                        new Unit(6, "6", Duration.ofHours(2), List.of(f, g, h, i))
                 ),
