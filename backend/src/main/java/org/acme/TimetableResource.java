@@ -11,6 +11,7 @@ import org.acme.domain.Student;
 import org.acme.domain.Timetable;
 import org.acme.domain.Unit;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
@@ -56,17 +57,26 @@ public class TimetableResource {
 //                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
 //                        new Unit(6, "6", Duration.ofHours(2), List.of(f, g, h, i))
                 ),
+
                 List.of(
-                        LocalTime.of(15, 0),
-                        LocalTime.of(17, 0)
+                        DayOfWeek.MONDAY,
+                        DayOfWeek.TUESDAY,
+                        DayOfWeek.WEDNESDAY
+//                        DayOfWeek.THURSDAY,
+//                        DayOfWeek.FRIDAY
+                ),
+
+                List.of(
+                        LocalTime.of(15, 0)
+//                        LocalTime.of(17, 0)
 //                        LocalTime.of(16,0),
 //                        LocalTime.of(23,0)
                 ),
                 List.of(r1, r2, r3)
         );
 
-
         Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
+
         return solution;
     }
 

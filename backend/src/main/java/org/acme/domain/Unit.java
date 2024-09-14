@@ -18,15 +18,15 @@ import java.util.List;
 @PlanningEntity
 public class Unit {
 
-    List<Student> students;
+    private List<Student> students;
     @PlanningId
     private int unitID;
     private String name;
     private Duration duration;
     @PlanningVariable
-    private LocalTime startTime;
-    @PlanningVariable
     private DayOfWeek dayOfWeek;
+    @PlanningVariable
+    private LocalTime startTime;
     @PlanningVariable
     private Room room;
 

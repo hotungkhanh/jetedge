@@ -20,18 +20,20 @@ import java.util.List;
 @PlanningSolution
 public class Timetable {
 
-    @PlanningEntityCollectionProperty
-    private List<Unit> units;
-
     @ValueRangeProvider
     private List<DayOfWeek> daysOfWeek;
     @ValueRangeProvider
     private List<LocalTime> startTimes;
-    @PlanningScore
-    private HardSoftScore score;
+
     @ProblemFactCollectionProperty
     @ValueRangeProvider
     private List<Room> rooms;
+
+    @PlanningEntityCollectionProperty
+    private List<Unit> units;
+
+    @PlanningScore
+    private HardSoftScore score;
 
     public Timetable() {
 
