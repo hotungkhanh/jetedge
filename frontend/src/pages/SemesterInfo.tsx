@@ -13,14 +13,14 @@ export default function SemesterInfo() {
       <Sidebar width={240} marginTop={12.5}/>
 
       {/* Spreadsheet */}
-      <div style={{ marginLeft: 300 + "px" }}>
+      <div style={{ marginLeft: 300 + "px", overflow: "hidden" }}>
         <Outlet />
       </div>
 
       <Footer>
         <div className="links-container">
           <Link to="../"><BackButton/></Link>
-          <Link to="../timetablemod"><NextButton/></Link>
+          <Link to="../senddata"><NextButton/></Link>
         </div>
       </Footer>
 
