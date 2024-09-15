@@ -1,16 +1,13 @@
 import { useRef, useEffect } from "react";
-import jspreadsheet, { CellValue, JspreadsheetInstance, JspreadsheetInstanceElement, JSpreadsheetOptions } from "jspreadsheet-ce";
+import jspreadsheet, { JspreadsheetInstance, JspreadsheetInstanceElement } from "jspreadsheet-ce";
 import "../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css";
 import "../styles/spreadsheet.css"
 import Button from "@mui/material/Button";
+import { getSpreadsheetData, storeSpreadsheetData } from "../scripts/persistence";
 
 interface SpreadsheetProps {
   headers: string[];
   storageKey: string;
-}
-
-type SavedSpreadsheetOpt = {
-  cellvalues: CellValue[][];
 }
 
 export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
@@ -70,7 +67,7 @@ export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
         }
       }
     });
-    
+
     return items;
   };
 
@@ -107,42 +104,42 @@ export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
     // ],
   };
 
-  // mount: create spreadsheet using data from sessionStorage (if exist),
+  // mount: create spreadsheet using data from indexedDB (if exist),
   //        otherwise create a blank default.
   useEffect(() => {
     // console.log(`Mount ${storageKey}`);
-    if (jRef.current && !jRef.current.jspreadsheet) {
-      const savedSpreadsheetData = sessionStorage.getItem(storageKey);
-
-      if (savedSpreadsheetData) {
-        const ssd: SavedSpreadsheetOpt = JSON.parse(savedSpreadsheetData);
-        options.data = ssd.cellvalues;
-      }
-
-      jspreadsheet(jRef.current, options);
-    }
+    getSpreadsheetData(storageKey)
+      .then((data) => {
+        if (data && jRef.current && !jRef.current.jspreadsheet) {
+          options.data = data;
+          jspreadsheet(jRef.current, options);
+        }
+    });
   });
 
-  // unmount: save spreadsheet data to sessionStorage
+  // unmount: save spreadsheet data to indexedDB
   useEffect(() => {
     const instanceElem: JspreadsheetInstanceElement | null = jRef.current;
 
     function cleanup() {
       // console.log(`Unmount ${storageKey}`);
-      if (instanceElem) {
-        const newOpts: SavedSpreadsheetOpt = {
-          cellvalues: instanceElem.jspreadsheet.getData(),
-        };
-        sessionStorage.setItem(storageKey, JSON.stringify(newOpts));
-      }
-      else {
-        throw new Error(
-          "JspreadsheetInstanceElement is null"
-        )
+      if (instanceElem && instanceElem.jspreadsheet) {
+        const data = instanceElem.jspreadsheet.getJson(false);
+        storeSpreadsheetData(data, storageKey);
       }
     }
-
     return cleanup;
+  })
+
+  // page refresh: save spreadsheet data to indexedDB
+  useEffect(() => {
+    window.addEventListener("beforeunload", () => {
+      const instanceElem: JspreadsheetInstanceElement | null = jRef.current;
+      if (instanceElem && instanceElem.jspreadsheet) {
+        const data = instanceElem.jspreadsheet.getJson(false);
+        storeSpreadsheetData(data, storageKey);
+      }
+    });
   })
 
   const addRow = () => {
