@@ -5,7 +5,7 @@ export default function Building() {
   return (
     <>
       <h3>Building</h3>
-      <Spreadsheet headers={["Building Name"]} storageKey='building' />
+      <Spreadsheet headers={["Campus", "Building Name"]} storageKey='buildings' />
     </>
   );
 };

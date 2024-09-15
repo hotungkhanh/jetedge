@@ -5,11 +5,11 @@ interface ProceedButtonProps {
   fileChosen: File | null;
 }
 
-export default function ProceedButton({ fileChosen }:ProceedButtonProps) {
-    const navigate = useNavigate();
-      if (fileChosen === null) {
-        return <Button disabled> Proceed </Button>
-      } else {
-        return <Button onClick={() => navigate("/seminfo/campus")}> Proceed</Button>;
-      }
-}`      `
+export default function ProceedButton({ fileChosen }: ProceedButtonProps) {
+  const navigate = useNavigate();
+  if (fileChosen === null) {
+    return <Button disabled> Proceed </Button>
+  } else {
+    return <Button onClick={() => navigate("/seminfo/building")}> Proceed</Button>;
+  }
+}
