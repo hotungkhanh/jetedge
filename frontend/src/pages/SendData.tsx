@@ -10,10 +10,10 @@ import { fetchTimetableSolution } from "../scripts/api";
 
 export default function SendData() {
 
-  const [isGenerated, setIsGenerated] = useState(false);
+  const [isGenerated, setIsGenerated] = useState("");
 
   function generateTimetable() {
-    setIsGenerated(false);
+    setIsGenerated("");
     Promise.all([getFile(), getSpreadsheetData(DB_ROOMS), getSpreadsheetData(DB_UNITS)])
     .then((responses) => {
       const [enrolment, roomData, unitData] = [...responses];
@@ -23,11 +23,14 @@ export default function SendData() {
       else if (!unitData) {
         throw new Error("Error: unit data not available");
       }
-      setIsGenerated(true); // this should be after a solution has been obtained
       return getTimetableProblem(enrolment, roomData, unitData);
     })
     .then((problem) => {
       return fetchTimetableSolution(problem);
+    })
+    .then((solution) => {
+      console.log(solution);
+      setIsGenerated(JSON.stringify(solution, null, 2));
     })
     .catch((error) => {
       alert(error);
@@ -37,7 +40,7 @@ export default function SendData() {
   return (
     <>
       <Header />
-      <div style={{ backgroundColor: "#ffefe3", minHeight: 70+"vh", maxWidth: 50+"vw", margin: "0 auto", marginTop: 20 }}>
+      <div style={{ backgroundColor: "#ffefe3", minHeight: 70+"vh", maxHeight: 70+"vh", maxWidth: 50+"vw", margin: "0 auto", marginTop: 20, overflow: "scroll" }}>
         <pre>{isGenerated.toString()}</pre>
       </div>
       <Footer>

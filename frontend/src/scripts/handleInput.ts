@@ -1,8 +1,7 @@
 import readXlsxFile, { Row } from 'read-excel-file';
 import { CellValue } from 'jspreadsheet-ce';
-import { TimetableProblem, Unit, Room, Student, Weekday } from './api';
+import { TimetableProblem, Unit, Room } from './api';
 import { DB_UNITS, storeSpreadsheetData } from './persistence';
-import { duration } from '@mui/material';
 
 function isExcelFile(file: File) {
   const fileExtension = file.name.split('.').pop();
