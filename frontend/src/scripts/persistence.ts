@@ -1,7 +1,10 @@
 import Dexie, { EntityTable } from "dexie";
-import { CellValue, JspreadsheetInstanceElement } from "jspreadsheet-ce";
+import { CellValue } from "jspreadsheet-ce";
 
 const DB_NAME = 'TimetableInput';
+const DB_BUILDINGS = 'buildings';
+const DB_ROOMS = 'rooms';
+const DB_UNITS = 'units';
 
 
 interface FileRecord {
@@ -30,35 +33,26 @@ db.version(1).stores({
 });
 
 export async function storeFile(file: File): Promise<number> {
-  try {
-    await db.files.clear();
-    const id = await db.files.add({
-      id: 0,
-      file: file
-    });
-    return id;
-  }
-  catch (error) {
-    throw error;
-  }
+  await db.files.clear();
+  const id = await db.files.add({
+    id: 0,
+    file: file
+  });
+  return id;
 }
 
-export async function getFile(): Promise<File | null> {
-  try {
-    const file = await db.files.orderBy('id').first();
-    if (file === undefined) {
-      return null;
-    }
-    return file.file;
+export async function getFile(): Promise<File> {
+  const file = await db.files.orderBy('id').first();
+
+  if (file === undefined) {
+    throw new Error(
+      "getFile() failed"
+    );
   }
-  catch (error) {
-    console.log(error);
-    return null;
-  }
+  return file.file;
 }
 
 export async function storeSpreadsheetData(data: Record<string, CellValue>[], storageObject: string) {
-  
   if (!data) {
     return;
   }
@@ -71,13 +65,13 @@ export async function storeSpreadsheetData(data: Record<string, CellValue>[], st
   });
 
   try {
-    if (storageObject === "buildings") {
+    if (storageObject === DB_BUILDINGS) {
       await db.buildings.bulkPut(records);
     }
-    else if (storageObject === "rooms") {
+    else if (storageObject === DB_ROOMS) {
       await db.rooms.bulkPut(records);
     }
-    else if (storageObject === "units") {
+    else if (storageObject === DB_UNITS) {
       await db.units.bulkPut(records);
     }
     else {
@@ -116,3 +110,5 @@ export async function getSpreadsheetData(storageObject: string): Promise<Record<
     return null;
   }
 }
+
+export { DB_BUILDINGS, DB_ROOMS, DB_UNITS }

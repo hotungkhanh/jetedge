@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { getFile, storeFile } from "../scripts/persistence";
+import { getUnitsList } from "../scripts/handleInput";
 
 interface InputFileUploadProps {
   setFileChosen: (file: File | null) => void;
@@ -28,6 +29,9 @@ export default function UploadButton ({ setFileChosen }: InputFileUploadProps) {
       storeFile(event.target.files[0])
       .then(() => {
         return getFile();
+      })
+      .then((file) => {
+        return getUnitsList(file);
       })
       .then((file) => {
         setFileChosen(file);
