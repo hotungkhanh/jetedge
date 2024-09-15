@@ -32,14 +32,6 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
       anchor="left"
     >
       <List>
-        <ListItem key="Campus" disablePadding>
-          <ListItemButton component={Link} to="campus">
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Campus" />
-          </ListItemButton>
-        </ListItem>
 
         <ListItem key="Building" disablePadding>
           <ListItemButton component={Link} to="building">
@@ -56,15 +48,6 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
               <InboxIcon />
             </ListItemIcon>
             <ListItemText primary="Room" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem key="Course" disablePadding>
-          <ListItemButton component={Link} to="course">
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Course" />
           </ListItemButton>
         </ListItem>
 
