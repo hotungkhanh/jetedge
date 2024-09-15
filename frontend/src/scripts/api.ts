@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/timetable';
+const API_URL = 'http://localhost:8080/timetabling';
 
 export type TimetableProblem = TimetableBase & {
   units: Unit[],
@@ -59,6 +59,7 @@ export async function fetchTimetableSolution(problem: TimetableProblem): Promise
     }
 
     const solution: TimetableSolution = await response.json();
+    console.log(solution);
     return solution;
   }
   catch (error) {
