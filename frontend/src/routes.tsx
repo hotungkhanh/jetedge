@@ -1,12 +1,11 @@
 import SemesterInfo from './pages/SemesterInfo.tsx'
 import TimetableMod from './pages/TimetableMod.tsx'
-import Campus from './pages/spreadsheets/Campus.tsx'
 import Building from './pages/spreadsheets/Building.tsx'
 import Room from './pages/spreadsheets/Room.tsx'
 import Unit from './pages/spreadsheets/Unit.tsx'
 import Download from './pages/Download.tsx'
 import Enrolment from './pages/Enrolment.tsx'
-import Course from './pages/spreadsheets/Course.tsx'
+import SendData from './pages/SendData.tsx'
 
 
 const routes = [
@@ -18,12 +17,14 @@ const routes = [
     path: "seminfo",
     element: <SemesterInfo />,
     children: [
-      { path: "campus", element: <Campus /> },
       { path: "building", element: <Building /> },
       { path: "room", element: <Room /> },
-      { path: "course", element: <Course /> },
       { path: "unit", element: <Unit /> },
     ],
+  },
+  {
+    path: "senddata",
+    element: <SendData />,
   },
   {
     path: "timetablemod",
