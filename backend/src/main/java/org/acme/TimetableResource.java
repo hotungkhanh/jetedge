@@ -3,6 +3,7 @@ package org.acme;
 import ai.timefold.solver.core.api.solver.SolverManager;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -29,6 +30,13 @@ public class TimetableResource {
 
     @Inject
     SolverManager<Timetable, String> solverManager;
+
+    @POST
+    public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
+
+        Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
+        return solution;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
