@@ -8,13 +8,17 @@ import { getSpreadsheetData, storeSpreadsheetData } from "../scripts/persistence
 interface SpreadsheetProps {
   headers: string[];
   storageKey: string;
+  columns?: jspreadsheet.Column[]
 }
 
-export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
+export default function Spreadsheet({ headers, storageKey, ...other }: SpreadsheetProps) {
   const jRef = useRef<null | JspreadsheetInstanceElement>(null);
 
   // spreadsheet init options: columns property
-  const columns = headers.map((headerName) => {
+  const columns: jspreadsheet.Column[] = headers.map((headerName, idx) => {
+    if (other.columns && other.columns.length > idx) {
+      return { title: headerName, width: 200, ...other.columns[idx] };
+    }
     return { title: headerName, width: 200 };
   });
 
@@ -76,7 +80,7 @@ export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
     columns: columns,
     data: [[]],
     minDimensions: [headers.length, 10],
-    minSpareRows: 1,
+    // minSpareRows: 1,
     allowManualInsertColumn: false,
     allowInsertColumn: false,
     includeHeadersOnDownload: true,
