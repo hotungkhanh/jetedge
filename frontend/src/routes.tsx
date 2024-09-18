@@ -5,6 +5,7 @@ import Room from './pages/spreadsheets/Room.tsx'
 import Unit from './pages/spreadsheets/Unit.tsx'
 import Download from './pages/Download.tsx'
 import Enrolment from './pages/Enrolment.tsx'
+import SendData from './pages/SendData.tsx'
 
 
 const routes = [
@@ -20,6 +21,10 @@ const routes = [
       { path: "room", element: <Room /> },
       { path: "unit", element: <Unit /> },
     ],
+  },
+  {
+    path: "senddata",
+    element: <SendData />,
   },
   {
     path: "timetablemod",
