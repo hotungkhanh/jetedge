@@ -2,16 +2,24 @@ package org.acme.domain;
 
 import java.util.Objects;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+
 /**
  * Represents a student.
  *
  * @author Jet Edge
  */
-public class Student {
+@Entity
+public class Student extends PanacheEntity{
 
     //    String studentID;
 
-    String name;
+    public String name;
+
+    @ManyToOne
+    public Unit unit;
 
     public Student() {
     }

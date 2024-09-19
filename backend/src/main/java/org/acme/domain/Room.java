@@ -1,18 +1,28 @@
 package org.acme.domain;
 
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 
 /**
  * Represents a room.
  *
  * @author Jet Edge
  */
-public class Room {
+@Entity
+public class Room extends PanacheEntity {
     @PlanningId
-    private String id;
+    private String roomCode;
 
-    private int capacity;
-    private boolean isLab;
+    public String buildingId;
+
+    public int capacity;
+
+    public boolean isLab;
+
+    @OneToOne
+    public Unit unit;
 
     public Room() {
     }
@@ -25,17 +35,17 @@ public class Room {
      * @param isLab    Whether the room is a laboratory.
      */
     public Room(String id, int capacity, boolean isLab) {
-        this.id = id;
+        this.roomCode = id;
         this.capacity = capacity;
         this.isLab = isLab;
     }
 
-    public String getId() {
-        return id;
+    public String getRoomCode() {
+        return roomCode;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setRoomCode(String id) {
+        this.roomCode = id;
     }
 
     public int getCapacity() {

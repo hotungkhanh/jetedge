@@ -3,6 +3,10 @@ package org.acme.domain;
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -15,22 +19,31 @@ import java.util.List;
  *
  * @author Jet Edge
  */
+@Entity
 @PlanningEntity
-public class Unit {
+public class Unit extends PanacheEntity {
 
-    private List<Student> students;
+    @OneToMany(mappedBy = "unit", orphanRemoval = false)
+    public List<Student> students;
+
     @PlanningId
-    private int unitID;
-    private String name;
-    private Duration duration;
-    @PlanningVariable
-    private DayOfWeek dayOfWeek;
-    @PlanningVariable
-    private LocalTime startTime;
-    @PlanningVariable
-    private Room room;
+    public int unitID;
 
-    private boolean wantsLab;
+    public String name;
+
+    public Duration duration;
+
+    @PlanningVariable
+    public DayOfWeek dayOfWeek;
+
+    @PlanningVariable
+    public LocalTime startTime;
+
+    @OneToOne(mappedBy = "unit", orphanRemoval = false)
+    @PlanningVariable
+    public Room room;
+
+    public boolean wantsLab;
 
     public Unit() {
     }
