@@ -1,76 +1,18 @@
-name: CI/CD Pipeline
+name: Deploy
 
 on:
   push:
     branches:
-      - deploy  # Adjust to your primary branch
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js for Frontend
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
+        working-directory: .frontend
         with:
-          node-version: '20.17.0'  # Specify your Node.js version
-
-      - name: Install Frontend Dependencies
-        run: |
-          cd frontend
-          npm install
-
-      - name: Build Frontend
-        run: |
-          cd frontend
-          npm run build  # Adjust if necessary
-
-      # - name: Set up Java for Backend
-      #   uses: actions/setup-java@v2
-      #   with:
-      #     java-version: '22.0.2'  # Specify your Java version
-
-      # - name: Build Backend
-      #   run: |
-      #     cd backend
-      #     mvn package  # Use ./gradlew build for Gradle
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build  # Ensure build job completes before deploying
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install Heroku CLI
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-
-      - name: Configure Git
-        run: |
-          git config --global user.email "tungkhanhh@student.unimelb.edu.au"
-          git config --global user.name "Tung Khanh Ho"  # Replace with your name
-
-      - name: Deploy Frontend to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          cd frontend
-          heroku git:remote -a jetedge-test
-          git add .  # Add all changes
-          git commit -m "Deploying Frontend" || echo "No changes to commit"
-          git push heroku master  # Push to Heroku
-      # - name: Deploy Backend to Heroku
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      #   run: |
-      #     cd backend
-      #     git init
-      #     heroku git:remote -a ${{ secrets.HEROKU_BACKEND_APP_NAME }}
-      #     git add .
-      #     git commit -m "Deploying Backend" || echo "No changes to commit"
-      #     git push heroku main --force  # Use --force for initial deployment
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: jetedge-test #Must be unique in Heroku
+          heroku_email: tungkhanhh@student.unimelb.edu.au
