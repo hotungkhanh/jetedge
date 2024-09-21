@@ -56,11 +56,11 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           cd frontend
-          git init
+          heroku login -i  # Login to Heroku using the API key
           heroku git:remote -a jetedge-test
-          git add .
+          git add .  # You might need to add files to deploy
           git commit -m "Deploying Frontend" || echo "No changes to commit"
-          git push heroku master --force  # Use --force for initial deployment
+          git push heroku main --force  # Ensure you're pushing to the correct branch
 
       # - name: Deploy Backend to Heroku
       #   env:
