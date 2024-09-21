@@ -46,22 +46,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure Git
+      - name: Install Heroku CLI
         run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
+          curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Deploy Frontend to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           cd frontend
-          heroku login -i  # Login to Heroku using the API key
-          heroku git:remote -a jetedge-test
-          git add .  # You might need to add files to deploy
+          heroku git:remote -a $HEROKU_APP_NAME
+          git add .  # Add all changes
           git commit -m "Deploying Frontend" || echo "No changes to commit"
-          git push heroku main --force  # Ensure you're pushing to the correct branch
-
+          git push heroku main --force  # Push to Heroku
+          
       # - name: Deploy Backend to Heroku
       #   env:
       #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
