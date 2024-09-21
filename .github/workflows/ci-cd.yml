@@ -63,7 +63,7 @@ jobs:
           heroku git:remote -a jetedge-test
           git add .  # Add all changes
           git commit -m "Deploying Frontend" || echo "No changes to commit"
-          git push heroku main --force  # Push to Heroku
+          git push heroku master  # Push to Heroku
       # - name: Deploy Backend to Heroku
       #   env:
       #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
