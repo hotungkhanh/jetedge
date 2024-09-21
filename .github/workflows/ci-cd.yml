@@ -50,6 +50,11 @@ jobs:
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
 
+      - name: Configure Git
+        run: |
+          git config --global user.email "tungkhanhh@student.unimelb.edu.au"
+          git config --global user.name "Tung Khanh Ho"  # Replace with your name
+
       - name: Deploy Frontend to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
