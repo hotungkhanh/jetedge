@@ -1,1 +1,1 @@
-web: java -jar target/quarkus-app/quarkus-run.jar
+java -Dquarkus.http.port=8080 -jar example-runner.java
