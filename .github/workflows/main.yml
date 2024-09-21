@@ -1,0 +1,69 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Adjust to your primary branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for Frontend
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.17.0'  # Specify your Node.js version
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build  # Adjust if necessary
+
+      # - name: Set up Java for Backend
+      #   uses: actions/setup-java@v2
+      #   with:
+      #     java-version: '22.0.2'  # Specify your Java version
+
+      # - name: Build Backend
+      #   run: |
+      #     cd backend
+      #     mvn package  # Use ./gradlew build for Gradle
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # Ensure build job completes before deploying
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Frontend to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          cd frontend
+          git init
+          heroku git:remote -a jetedge-test
+          git add .
+          git commit -m "Deploying Frontend" || echo "No changes to commit"
+          git push heroku main --force  # Use --force for initial deployment
+
+      # - name: Deploy Backend to Heroku
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      #   run: |
+      #     cd backend
+      #     git init
+      #     heroku git:remote -a ${{ secrets.HEROKU_BACKEND_APP_NAME }}
+      #     git add .
+      #     git commit -m "Deploying Backend" || echo "No changes to commit"
+      #     git push heroku main --force  # Use --force for initial deployment
