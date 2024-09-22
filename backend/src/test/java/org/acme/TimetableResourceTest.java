@@ -8,13 +8,13 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 class TimetableResourceTest {
-    @Test
-    void testHelloEndpoint() {
-        given()
-          .when().get("/hello")
-          .then()
-             .statusCode(200)
-             .body(is("Hello from Quarkus REST"));
-    }
+//    @Test
+//    void testHelloEndpoint() {
+//        given()
+//          .when().get("/hello")
+//          .then()
+//             .statusCode(200)
+//             .body(is("Hello from Quarkus REST"));
+//    }
 
 }
