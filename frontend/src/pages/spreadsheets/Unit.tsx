@@ -9,7 +9,7 @@ export default function Unit() {
       <Spreadsheet 
         headers={["Unit Code ", "Duration (Lecture)", "Duration (Tutorial)", "Duration (Lab)"]}
         storageKey={DB_UNITS}
-        // columns={[{readOnly: true}]}
+        columns={[{readOnly: true}]}
       />
     </>
   );

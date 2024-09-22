@@ -55,11 +55,13 @@ export async function fetchTimetableSolution(problem: TimetableProblem): Promise
     });
 
     if (!response.ok) {
+      if (response.status === 500) {
+        alert(response.statusText + " " + response.status + ": server was not able to solve the problem. Please check for missing input (i.e. make sure there are at least 1 available room and no rooms with duplicate ID).");
+      }
       throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
     }
 
     const solution: TimetableSolution = await response.json();
-    console.log(solution);
     return solution;
   }
   catch (error) {
