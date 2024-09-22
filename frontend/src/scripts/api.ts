@@ -1,4 +1,7 @@
+/* Timetable solver backend endpoint URL */
 const API_URL = 'http://localhost:8080/timetabling';
+
+/* =========================================== Defining types =========================================== */
 
 export type TimetableProblem = TimetableBase & {
   units: Unit[],
@@ -42,8 +45,15 @@ export type Weekday = "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY"
 
 export type Time = string;
 
+/* ====================================================================================================== */
 
-// API function(s)
+
+/**
+ * Sends the timetabling problem to backend for solving. Return the solution received.
+ * 
+ * @param problem A TimetableProblem is a list of units with no allocated time and room.
+ * @returns A TimetableSolution with all units allocated a time and a room.
+ */
 export async function fetchTimetableSolution(problem: TimetableProblem): Promise<TimetableSolution | null> {
   try {
     const response = await fetch(API_URL, {

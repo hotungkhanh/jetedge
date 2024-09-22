@@ -1,6 +1,10 @@
 import Spreadsheet from '../../components/Spreadsheet.tsx'
 import { DB_ROOMS } from '../../scripts/persistence.ts';
 
+/**
+ * 
+ * @returns Spreadsheet input page for rooms information.
+ */
 export default function Room() {
 
   return (

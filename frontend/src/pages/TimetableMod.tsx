@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
 
+/**
+ * Renders the TimetableMod component to display and modify the generated 
+ * timetable.
+ * Allows users to navigate back to the campus information page and proceed to 
+ * the download page.
+ * @returns JSX element containing the page content with navigation links
+ */
 export default function TimetableMod() {
   return (
     <>
