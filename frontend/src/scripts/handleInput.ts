@@ -3,9 +3,12 @@ import { CellValue } from 'jspreadsheet-ce';
 import { TimetableProblem, Unit, Room } from './api';
 import { DB_UNITS, storeSpreadsheetData } from './persistence';
 
-/*
- * Return true if file is an Excel file
-*/
+/**
+ * Function to validate uploaded enrolment data file.
+ * 
+ * @param file enrolment data Excel file
+ * @returns true if uploaded file is an Excel file
+ */
 function isExcelFile(file: File) {
   const fileExtension = file.name.split('.').pop();
   if (fileExtension === undefined || !['xlsx', 'xls'].includes(fileExtension)) {
@@ -15,9 +18,12 @@ function isExcelFile(file: File) {
   return true;
 }
 
-/*
- * Return true if enrolment data header file matches expected format
-*/
+/**
+ * Function to validate uploaded enrolment data file.
+ * 
+ * @param inputHeader header row of enrolment data Excel file
+ * @returns true if header row matches expected format for parsing.
+ */
 function validateEnrolmentHeader(inputHeader: Row) {
   const header = ['StudentID', 'Student Name', 'Personal Email', 'University Email',
     'Student Type', 'Offer Type', 'Course Name', 'Campus', 'Original COE Start Date',
@@ -32,6 +38,12 @@ function validateEnrolmentHeader(inputHeader: Row) {
   }
 }
 
+/**
+ * Extract list of units from enrolment data and prefill spreadsheet input page.
+ * 
+ * @param enrolmentExcel enrolment data Excel file
+ * @returns enrolment data Excel file
+ */
 export async function getUnitsList(enrolmentExcel: File) {
   if (!isExcelFile(enrolmentExcel)) {
     throw new Error(
@@ -58,6 +70,14 @@ export async function getUnitsList(enrolmentExcel: File) {
   return enrolmentExcel;
 }
 
+/**
+ * Parse user input to create the timetabling problem.
+ * 
+ * @param enrolmentExcel enrolment data Excel file
+ * @param roomSpreadsheet information of all rooms (spreadsheet input from user)
+ * @param unitSpreadsheet information of all units (spreadsheet input from user)
+ * @returns a TimetableProblem, which includes all available rooms, start times and unallocated units
+ */
 export async function getTimetableProblem(enrolmentExcel: File, roomSpreadsheet: Record<string, CellValue>[], unitSpreadsheet: Record<string, CellValue>[]) {
   if (!isExcelFile(enrolmentExcel)) {
     throw new Error(

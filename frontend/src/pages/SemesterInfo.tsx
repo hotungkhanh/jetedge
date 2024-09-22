@@ -6,6 +6,12 @@ import '../styles/seminfo.css';
 import NextButton from "../components/NextButton.tsx";
 import BackButton from "../components/BackButton.tsx";
 
+/**
+ * Renders the SemesterInfo component with a header, sidebar, spreadsheet, 
+ * and navigation buttons.
+ * 
+ * @returns JSX element representing the SemesterInfo component
+ */
 export default function SemesterInfo() {
   return (
     <div>

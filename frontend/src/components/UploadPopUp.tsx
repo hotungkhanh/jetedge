@@ -7,6 +7,13 @@ import { Button } from "@mui/material";
 import ProceedButton from "./ProceedButton.tsx";
 import DisplayFile from "./DisplayFile.tsx";
 
+/**
+ * UploadPopUp component for displaying a modal with file upload functionality.
+ * Manages the state of the modal being open or closed and the file chosen
+ * for upload.
+ * 
+ * @returns A button to open a modal with file display, upload button, and proceed button.
+ */
 export default function UploadPopUp() {
   const [open, setOpen] = useState(false);
   const [fileChosen, setFileChosen] = useState<File | null>(null);
