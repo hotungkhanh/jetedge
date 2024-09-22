@@ -1,6 +1,10 @@
 import { Box } from "@mui/material";
 import VIT_Logo from '../assets/logo.png';
 
+/**
+ * React component for rendering the header section.
+ * @returns JSX element representing the header with a logo.
+ */
 export default function Header() {
     const headerStyle = {
         backgroundColor: "#F5F5f5",

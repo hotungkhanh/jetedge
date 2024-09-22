@@ -11,6 +11,16 @@ interface SpreadsheetProps {
   columns?: jspreadsheet.Column[]
 }
 
+/**
+ * Component for rendering a spreadsheet with customisable headers and storage 
+ * functionality.
+ * 
+ * @param {SpreadsheetProps} props - The properties passed to Spreadsheet component 
+ * @param {SpreadsheetProps.headers} props.headers - Array of header names for the spreadsheet columns.
+ * @param {SpreadsheetProps.storageKey} props.storageKey - Key for storing and retrieving spreadsheet data 
+ * in storage (i.e. indexedDB).
+ * @return Div containing a spreadsheet and button to add row.
+ */
 export default function Spreadsheet({ headers, storageKey, ...other }: SpreadsheetProps) {
   const jRef = useRef<null | JspreadsheetInstanceElement>(null);
 

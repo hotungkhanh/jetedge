@@ -1,13 +1,11 @@
-/* Make sure the entire viewport height is used */
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Full viewport height */
+  min-height: 100vh;
 }
 
-/* Content area that grows to fill space */
 .content {
-  flex: 1; /* This allows the content to grow and push the footer down */
+  flex: 1;
   padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -27,7 +25,7 @@
 }
 
 .imageBox {
-  overflow: hidden; /* Hide any overflow content */
+  overflow: hidden;
   position: relative;
 }
 body {

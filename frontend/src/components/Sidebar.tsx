@@ -16,6 +16,15 @@ interface SidebarProps {
 }
 const drawerWidth = 240;
 
+/**
+ * Renders a sidebar component with navigation links to Campus, Building, Room, 
+ * Course, and Unit.
+ * 
+ * @param {SidebarProps} props - The properties passed to Sidebar component
+ * @param {number} props.marginTop - The top margin of the sidebar.
+ * @param {number} props.width - The width of the sidebar.
+ * @returns Sidebar component with navigation links.
+ */
 export default function Sidebar({ marginTop, width }: SidebarProps) {
   return (
     <Drawer

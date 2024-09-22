@@ -7,7 +7,12 @@ import Download from './pages/Download.tsx'
 import Enrolment from './pages/Enrolment.tsx'
 import SendData from './pages/SendData.tsx'
 
-
+/**
+ * Defines the routes configuration for the application.
+ * Each route specifies a path and the corresponding component to render.
+ * 
+ * An array of route objects, each containing path and element information.
+ */
 const routes = [
   {
     path: "/",
