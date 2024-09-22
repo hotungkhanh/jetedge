@@ -1,4 +1,4 @@
-package org.acme.schooltimetabling.domain;
+package org.acme.domain;
 
 import java.util.List;
 

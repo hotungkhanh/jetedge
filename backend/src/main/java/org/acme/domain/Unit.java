@@ -4,14 +4,21 @@ import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
@@ -23,7 +30,10 @@ import java.util.List;
 @PlanningEntity
 public class Unit extends PanacheEntity {
 
-    @OneToMany(mappedBy = "unit", orphanRemoval = false)
+    // TODO: change unit to be the owner, rather than the student being owner
+    @JsonIgnoreProperties("units")
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonManagedReference
     public List<Student> students;
 
     @PlanningId
@@ -39,11 +49,24 @@ public class Unit extends PanacheEntity {
     @PlanningVariable
     public LocalTime startTime;
 
-    @OneToOne(mappedBy = "unit", orphanRemoval = false)
+    /* 
+        currently each unit only has 1 'slot' on the timetable, so it can only
+        be associated with one room, but in the final product, we would most 
+        likely have to change this to a many-to-many relationship 
+        i.e. list of Rooms
+    */
+    @JsonIgnoreProperties("units")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_id")
     @PlanningVariable
     public Room room;
 
     public boolean wantsLab;
+
+    @JsonIgnoreProperties("units")
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonManagedReference
+    public List<Timetable> timetables = new ArrayList<Timetable>();
 
     public Unit() {
     }
@@ -61,6 +84,7 @@ public class Unit extends PanacheEntity {
         this.name = name;
         this.duration = duration;
         this.students = students;
+        this.setStudentsUnits();
     }
 
     /**
@@ -78,6 +102,7 @@ public class Unit extends PanacheEntity {
         this.duration = duration;
         this.students = students;
         this.wantsLab = wantsLab;
+        this.setStudentsUnits();
     }
 
     public int getUnitID() {
@@ -121,6 +146,7 @@ public class Unit extends PanacheEntity {
     }
 
     public LocalTime getEnd() {
+        if (startTime == null) return null;
         return startTime.plus(duration);
     }
 
@@ -130,6 +156,13 @@ public class Unit extends PanacheEntity {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+        this.setStudentsUnits();;
+    }
+
+    public void setStudentsUnits() {
+        for (Student student : this.students) {
+            student.units.add(this);
+        }
     }
 
     /**

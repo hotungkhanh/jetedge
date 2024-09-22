@@ -1,10 +1,19 @@
 package org.acme.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 /**
  * Represents a student.
@@ -18,8 +27,15 @@ public class Student extends PanacheEntity{
 
     public String name;
 
-    @ManyToOne
-    public Unit unit;
+    @JsonIgnoreProperties("students")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+        name = "student_unit",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "unit_id")
+    )
+    @JsonManagedReference
+    public List<Unit> units = new ArrayList<Unit>();
 
     public Student() {
     }
