@@ -1,6 +1,10 @@
 import Spreadsheet from '../../components/Spreadsheet.tsx'
 import { DB_UNITS } from '../../scripts/persistence.ts';
 
+/**
+ * 
+ * @returns Spreadsheet input page for units information.
+ */
 export default function Unit() {
 
   return (
