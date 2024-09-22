@@ -66,12 +66,15 @@ export async function storeSpreadsheetData(data: Record<string, CellValue>[], st
 
   try {
     if (storageObject === DB_BUILDINGS) {
+      await db.buildings.clear();
       await db.buildings.bulkPut(records);
     }
     else if (storageObject === DB_ROOMS) {
+      await db.rooms.clear();
       await db.rooms.bulkPut(records);
     }
     else if (storageObject === DB_UNITS) {
+      await db.units.clear();
       await db.units.bulkPut(records);
     }
     else {

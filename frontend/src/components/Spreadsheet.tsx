@@ -79,7 +79,7 @@ export default function Spreadsheet({ headers, storageKey, ...other }: Spreadshe
   const options: jspreadsheet.JSpreadsheetOptions = {
     columns: columns,
     data: [[]],
-    minDimensions: [headers.length, 10],
+    minDimensions: [headers.length, 1],
     // minSpareRows: 1,
     allowManualInsertColumn: false,
     allowInsertColumn: false,
