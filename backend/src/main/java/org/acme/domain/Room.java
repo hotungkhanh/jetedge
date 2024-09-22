@@ -1,9 +1,18 @@
 package org.acme.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 /**
  * Represents a room.
@@ -13,7 +22,7 @@ import jakarta.persistence.OneToOne;
 @Entity
 public class Room extends PanacheEntity {
     @PlanningId
-    private String roomCode;
+    public String roomCode;
 
     public String buildingId;
 
@@ -21,8 +30,14 @@ public class Room extends PanacheEntity {
 
     public boolean isLab;
 
-    @OneToOne
-    public Unit unit;
+    @JsonIgnoreProperties("room")
+    @OneToMany(mappedBy = "room", orphanRemoval = false)
+    public List<Unit> unit;
+
+    @JsonIgnoreProperties("rooms")
+    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonManagedReference
+    public List<Timetable> timetables = new ArrayList<Timetable>();
 
     public Room() {
     }

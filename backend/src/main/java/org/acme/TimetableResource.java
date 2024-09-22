@@ -2,6 +2,7 @@ package org.acme;
 
 import ai.timefold.solver.core.api.solver.SolverManager;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -38,7 +39,15 @@ public class TimetableResource {
         return solution;
     }
 
+    @Path("/view")
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Timetable> view() {
+        return Timetable.listAll();
+    }
+
+    @GET
+    @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public Timetable hello() throws ExecutionException, InterruptedException {
 
@@ -56,12 +65,14 @@ public class TimetableResource {
         Room r2 = new Room("Room2", 4, false);
         Room r3 = new Room("Room3", 4, false);
 
+        Unit u1 = new Unit(1, "1", Duration.ofHours(2), List.of(a, b), true);
+        Unit u2 = new Unit(2, "2", Duration.ofHours(2), List.of(a, c, d, e), true);
+        Unit u3 = new Unit(3, "3", Duration.ofHours(2), List.of(f, g, h, i), false);
+        Unit u4 = new Unit(4, "4", Duration.ofHours(2), List.of(a, b), false);
+
         var problem = new Timetable(
                 List.of(
-                        new Unit(1, "1", Duration.ofHours(2), List.of(a, b), true),
-                        new Unit(2, "2", Duration.ofHours(2), List.of(a, c, d, e), true),
-                        new Unit(3, "3", Duration.ofHours(2), List.of(f, g, h, i), false),
-                        new Unit(4, "4", Duration.ofHours(2), List.of(a, b), false)
+                        u1, u2, u3, u4
 //                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
 //                        new Unit(6, "6", Duration.ofHours(2), List.of(f, g, h, i))
                 ),
@@ -83,7 +94,11 @@ public class TimetableResource {
                 List.of(r1, r2, r3)
         );
 
+        problem.persist();
+
         Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
+
+        // solution.persist();
 
         return solution;
     }
