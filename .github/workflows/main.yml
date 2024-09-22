@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for Frontend
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.17.0'  # Specify your Node.js version
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build  # Adjust if necessary
+
+      # - name: Set up Java for Backend
+      #   uses: actions/setup-java@v2
+      #   with:
+      #     java-version: '22.0.2'  # Specify your Java version
+
+      # - name: Build Backend
+      #   run: |
+      #     cd backend
+      #     mvn package  # Use ./gradlew build for Gradle
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_FRONTEND_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          appdir: "frontend"
+
+      # - uses: akhileshns/heroku-deploy@v3.13.15
+      #   with:
+      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+      #     heroku_app_name: ${{secrets.HEROKU_BACKEND_APP_NAME}}
+      #     heroku_email: ${{secrets.HEROKU_EMAIL}}
+      #     appdir: "backend"
