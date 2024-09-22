@@ -3,6 +3,9 @@ import { CellValue } from 'jspreadsheet-ce';
 import { TimetableProblem, Unit, Room } from './api';
 import { DB_UNITS, storeSpreadsheetData } from './persistence';
 
+/*
+ * Return true if file is an Excel file
+*/
 function isExcelFile(file: File) {
   const fileExtension = file.name.split('.').pop();
   if (fileExtension === undefined || !['xlsx', 'xls'].includes(fileExtension)) {
@@ -12,6 +15,9 @@ function isExcelFile(file: File) {
   return true;
 }
 
+/*
+ * Return true if enrolment data header file matches expected format
+*/
 function validateEnrolmentHeader(inputHeader: Row) {
   const header = ['StudentID', 'Student Name', 'Personal Email', 'University Email',
     'Student Type', 'Offer Type', 'Course Name', 'Campus', 'Original COE Start Date',
@@ -44,7 +50,7 @@ export async function getUnitsList(enrolmentExcel: File) {
   // console.log(header.slice(14));
   const unitsList = header.slice(14).map(elem => elem.toString());
   const unitsData: Record<string, CellValue>[] = unitsList.map((u) => {
-    return { 0: u };
+    return { 0: u, 1: '', 2: '', 3: '' };
   });
 
   storeSpreadsheetData(unitsData, DB_UNITS);
@@ -79,10 +85,14 @@ export async function getTimetableProblem(enrolmentExcel: File, roomSpreadsheet:
   });
 
   unitSpreadsheet.map((record, index) => {
-    const totalDuration = (parseInt(record['1'].toString()) + parseInt(record['2'].toString()) + parseInt(record['3'].toString())) * 60;
-    const wantsLab = parseInt(record['3'].toString()) > 0;
-    units[index].duration = totalDuration;
-    units[index].wantsLab = wantsLab;
+    if (index >= units.length) {
+    }
+    else {
+      const totalDuration = (Number(record['1']) + Number(record['2']) + Number(record['3'])) * 60;
+      const wantsLab = Number(record['3']) > 0;
+      units[index].duration = totalDuration;
+      units[index].wantsLab = wantsLab;
+    }
   })
 
   // check each row and add students to each unit they're enrolled in
