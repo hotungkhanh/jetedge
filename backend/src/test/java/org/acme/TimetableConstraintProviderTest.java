@@ -25,19 +25,20 @@ public class TimetableConstraintProviderTest {
     private static final Student STUDENT1 = new Student("student1");
     private static final Student STUDENT2 = new Student("student2");
     private static final Student STUDENT3 = new Student("student3");
-    private static final Unit UNIT1 = new Unit(1, "unit1", Duration.ofMinutes(120), List.of(STUDENT1,STUDENT2),true);
-    private static final Unit UNIT2 = new Unit(2, "unit2", Duration.ofMinutes(120), List.of(STUDENT2,STUDENT3),false);
 
     @Inject
     ConstraintVerifier<TimetableConstraintProvider, Timetable> constraintVerifier;
 
+    /**
+     * Penalize 1 if a room is occupied by two units at the same time.
+     */
     @Test
     void roomConflict() {
-        Unit firstUnit = new Unit(1, "unit1", Duration.ofMinutes(120), List.of(STUDENT1),true, ROOM1);
-        Unit conflictingUnit = new Unit(2, "unit2", Duration.ofMinutes(120), List.of(STUDENT2),true, ROOM1);
-        Unit nonConflictingUnit = new Unit(3, "unit3", Duration.ofMinutes(120), List.of(STUDENT2),true, ROOM2);
+        Unit firstUnit = new Unit(1, "unit1", DayOfWeek.MONDAY, LocalTime.of(8, 0), Duration.ofMinutes(120), List.of(STUDENT1),true, ROOM1);
+        Unit conflictingUnit = new Unit(2, "unit2", DayOfWeek.MONDAY, LocalTime.of(8, 0), Duration.ofMinutes(120), List.of(STUDENT2),true, ROOM1);
+        Unit nonConflictingUnit = new Unit(3, "unit3", DayOfWeek.MONDAY, LocalTime.of(8, 0), Duration.ofMinutes(120), List.of(STUDENT3),true, ROOM2);
         constraintVerifier.verifyThat(TimetableConstraintProvider::roomConflict)
-                .given(firstUnit, conflictingUnit,nonConflictingUnit)
+                .given(firstUnit, conflictingUnit, nonConflictingUnit)
                 .penalizesBy(1);
     }
 
