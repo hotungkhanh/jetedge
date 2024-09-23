@@ -77,9 +77,11 @@ public class Unit {
      * @param wantsLab Whether the unit wants a laboratory room.
      * @param room The unit's room.
      */
-    public Unit(int unitID, String name, Duration duration, List<Student> students, boolean wantsLab, Room room) {
+    public Unit(int unitID, String name, DayOfWeek dayOfWeek, LocalTime startTime, Duration duration, List<Student> students, boolean wantsLab, Room room) {
         this.unitID = unitID;
         this.name = name;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
         this.duration = duration;
         this.students = students;
         this.wantsLab = wantsLab;
