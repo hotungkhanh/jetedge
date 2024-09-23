@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -32,7 +33,7 @@ public class Unit extends PanacheEntity {
 
     // TODO: change unit to be the owner, rather than the student being owner
     @JsonIgnoreProperties("units")
-    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonManagedReference
     public List<Student> students;
 
@@ -56,16 +57,18 @@ public class Unit extends PanacheEntity {
         i.e. list of Rooms
     */
     @JsonIgnoreProperties("units")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "room_id")
+    @JsonManagedReference
     @PlanningVariable
     public Room room;
 
     public boolean wantsLab;
 
     @JsonIgnoreProperties("units")
-    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonManagedReference
+    @JsonIgnore
     public List<Timetable> timetables = new ArrayList<Timetable>();
 
     public Unit() {
@@ -180,6 +183,7 @@ public class Unit extends PanacheEntity {
 
     public void setRoom(Room room) {
         this.room = room;
+        this.room.units.add(this);
     }
 
     public boolean isWantsLab() {
@@ -189,4 +193,5 @@ public class Unit extends PanacheEntity {
     public void setWantsLab(boolean wantsLab) {
         this.wantsLab = wantsLab;
     }
+
 }
