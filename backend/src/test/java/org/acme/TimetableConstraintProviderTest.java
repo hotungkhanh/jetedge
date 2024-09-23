@@ -78,4 +78,17 @@ public class TimetableConstraintProviderTest {
                 .given(firstUnit, conflictingUnit, nonConflictingUnit)
                 .penalizesBy(1);
     }
+
+    /**
+     * Lab Constraint: Penalize 1 if a non-lab room is occupied by a lab unit.
+     */
+    @Test
+    void labConflict() {
+        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),true, ROOM1);
+        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2),true, ROOM2);
+        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT5),true, ROOM3);
+        constraintVerifier.verifyThat(TimetableConstraintProvider::labPreference)
+                .given(firstUnit, conflictingUnit, nonConflictingUnit)
+                .penalizesBy(1);
+    }
 }
