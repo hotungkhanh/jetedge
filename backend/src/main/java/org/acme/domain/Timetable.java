@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -47,7 +48,7 @@ public class Timetable extends PanacheEntity {
      * campus, hence the many-to-many relationship
      */
     @JsonIgnoreProperties("timetables")
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(
         name = "room_timetable",
         joinColumns = @JoinColumn(name = "timetable_id"),
@@ -55,6 +56,7 @@ public class Timetable extends PanacheEntity {
     )
     @JsonManagedReference
     @ProblemFactCollectionProperty
+    @JsonIgnore
     @ValueRangeProvider
     public List<Room> rooms;
 
@@ -64,7 +66,7 @@ public class Timetable extends PanacheEntity {
      * multiple campuses, so may appear in multiple timetables
      */
     @JsonIgnoreProperties("timetables")
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(
         name = "unit_timetable",
         joinColumns = @JoinColumn(name = "timetable_id"),
