@@ -1,20 +1,14 @@
-package org.acme;
+package org.acme.solver;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.acme.domain.Unit;
-import org.acme.domain.Room;
-import org.acme.domain.Student;
-import org.acme.domain.Timetable;
-import org.acme.domain.ConflictingUnit;
+import org.acme.domain.*;
 
 import jakarta.inject.Inject;
 import ai.timefold.solver.test.api.score.stream.ConstraintVerifier;
-import org.acme.solver.TimetableConstraintProvider;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -41,16 +35,17 @@ public class TimetableConstraintProviderTest {
     /**
      * Student Constraint: Penalize 1 if a student is attending two units at the same time.
      */
-//    @Test
-//    void studentConflict() {
-//        Unit unit1 = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),true, ROOM1);
-//        Unit unit2 = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),false, ROOM2);
-//        Unit unit3 = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT3),true, ROOM3);
-//
-//        constraintVerifier.verifyThat(TimetableConstraintProvider::studentConflict)
-//                .given(unit1, unit2, unit3)
-//                .penalizesBy(1);
-//    }
+    @Test
+    void studentConflictTest() {
+        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),true, ROOM1);
+        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),false, ROOM2);
+        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2),true, ROOM3);
+        ConflictingUnit conflictingUnitPair = new ConflictingUnit(firstUnit, conflictingUnit, 1);
+
+        constraintVerifier.verifyThat(TimetableConstraintProvider::studentConflict)
+                .given(firstUnit, conflictingUnit, nonConflictingUnit, conflictingUnitPair)
+                .penalizesBy(1);
+    }
 
 
     /**
