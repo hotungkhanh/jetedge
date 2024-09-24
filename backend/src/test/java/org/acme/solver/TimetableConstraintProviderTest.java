@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @QuarkusTest
 public class TimetableConstraintProviderTest {
     private static final Room ROOM1 = new Room("1", 2, true);
@@ -36,10 +34,10 @@ public class TimetableConstraintProviderTest {
      * Student Constraint: Penalize 1 if a student is attending two units at the same time.
      */
     @Test
-    void studentConflictTest() {
-        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),true, ROOM1);
-        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),false, ROOM2);
-        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2),true, ROOM3);
+    void studentConflict() {
+        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1), true, ROOM1);
+        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1), false, ROOM2);
+        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2), true, ROOM3);
         ConflictingUnit conflictingUnitPair = new ConflictingUnit(firstUnit, conflictingUnit, 1);
 
         constraintVerifier.verifyThat(TimetableConstraintProvider::studentConflict)
@@ -47,15 +45,14 @@ public class TimetableConstraintProviderTest {
                 .penalizesBy(1);
     }
 
-
     /**
      * Room Constraint: Penalize 1 if a room is occupied by two units at the same time.
      */
     @Test
     void roomConflict() {
-        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),true, ROOM1);
-        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2),true, ROOM1);
-        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT3),false, ROOM2);
+        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1), true, ROOM1);
+        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2), true, ROOM1);
+        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT3), false, ROOM2);
         constraintVerifier.verifyThat(TimetableConstraintProvider::roomConflict)
                 .given(firstUnit, conflictingUnit, nonConflictingUnit)
                 .penalizesBy(1);
@@ -66,9 +63,9 @@ public class TimetableConstraintProviderTest {
      */
     @Test
     void roomCapacityConflict() {
-        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),true, ROOM1);
-        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2, STUDENT3, STUDENT4),false, ROOM2);
-        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT5),true, ROOM3);
+        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1), true, ROOM1);
+        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2, STUDENT3, STUDENT4), false, ROOM2);
+        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT5), true, ROOM3);
         constraintVerifier.verifyThat(TimetableConstraintProvider::roomCapacity)
                 .given(firstUnit, conflictingUnit, nonConflictingUnit)
                 .penalizesBy(1);
@@ -79,9 +76,9 @@ public class TimetableConstraintProviderTest {
      */
     @Test
     void labConflict() {
-        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1),true, ROOM1);
-        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2),true, ROOM2);
-        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT5),true, ROOM3);
+        Unit firstUnit = new Unit(1, "unit1", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1), true, ROOM1);
+        Unit conflictingUnit = new Unit(2, "unit2", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2), true, ROOM2);
+        Unit nonConflictingUnit = new Unit(3, "unit3", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT5), true, ROOM3);
         constraintVerifier.verifyThat(TimetableConstraintProvider::labPreference)
                 .given(firstUnit, conflictingUnit, nonConflictingUnit)
                 .penalizesBy(1);
