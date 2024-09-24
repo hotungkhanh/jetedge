@@ -37,7 +37,7 @@ public class TimetableConstraintProvider implements ConstraintProvider {
     /**
      * Penalize 1 hard score for each student with overlapping units.
      */
-    private Constraint studentConflict(ConstraintFactory constraintFactory) {
+    public Constraint studentConflict(ConstraintFactory constraintFactory) {
         // A student can be in at most one unit at the same time.
         return constraintFactory
                 // Select each pair of conflicting units.
@@ -62,7 +62,7 @@ public class TimetableConstraintProvider implements ConstraintProvider {
     /**
      * Penalize 1 hard score for each room with overlapping units.
      */
-    Constraint roomConflict(ConstraintFactory constraintFactory) {
+    public Constraint roomConflict(ConstraintFactory constraintFactory) {
         // A room can accommodate at most one unit at the same time.
         return constraintFactory
                 // Select each pair of 2 different units ...
@@ -81,7 +81,7 @@ public class TimetableConstraintProvider implements ConstraintProvider {
     /**
      * Penalize 1 soft score for each student overflowing the capacity of the room.
      */
-    Constraint roomCapacity(ConstraintFactory constraintFactory) {
+    public Constraint roomCapacity(ConstraintFactory constraintFactory) {
         // A room cannot accommodate more students than its capacity.
         return constraintFactory
                 .forEach(Unit.class)
@@ -94,7 +94,7 @@ public class TimetableConstraintProvider implements ConstraintProvider {
     /**
      * Penalize 1 soft score for each laboratory unit not assigned to a laboratory.
      */
-    Constraint labPreference(ConstraintFactory constraintFactory) {
+    public Constraint labPreference(ConstraintFactory constraintFactory) {
         // Some units prefer to have a laboratory room.
         return constraintFactory
                 .forEach(Unit.class)
