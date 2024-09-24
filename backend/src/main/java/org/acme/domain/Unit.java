@@ -67,6 +67,27 @@ public class Unit {
         this.wantsLab = wantsLab;
     }
 
+    /**
+     * Creates a unit.
+     *
+     * @param unitID   The unit’s ID.
+     * @param name     The unit’s ID.
+     * @param duration The unit’s duration.
+     * @param students The list of students enrolled in the unit.
+     * @param wantsLab Whether the unit wants a laboratory room.
+     * @param room The unit's room.
+     */
+    public Unit(int unitID, String name, DayOfWeek dayOfWeek, LocalTime startTime, Duration duration, List<Student> students, boolean wantsLab, Room room) {
+        this.unitID = unitID;
+        this.name = name;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.students = students;
+        this.wantsLab = wantsLab;
+        this.room = room;
+    }
+
     public int getUnitID() {
         return unitID;
     }
