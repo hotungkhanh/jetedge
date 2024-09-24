@@ -8,7 +8,7 @@ export type TimetableProblem = TimetableBase & {
 }
 
 export type TimetableSolution = TimetableBase & {
-  units: Required<Unit>,
+  units: Required<Unit>[],
 }
 
 export type TimetableBase = {
@@ -27,7 +27,7 @@ export type Unit = {
   room?: Room,
   studentSize?: number
   dayOfWeek?: Weekday,
-  start?: Time,
+  startTime?: Time,
   end?: Time,
 };
 
