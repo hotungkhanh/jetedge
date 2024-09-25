@@ -1,23 +1,34 @@
 import { useRef, useEffect } from "react";
-import jspreadsheet, { CellValue, JspreadsheetInstance, JspreadsheetInstanceElement, JSpreadsheetOptions } from "jspreadsheet-ce";
+import jspreadsheet, { JspreadsheetInstance, JspreadsheetInstanceElement } from "jspreadsheet-ce";
 import "../../node_modules/jspreadsheet-ce/dist/jspreadsheet.css";
 import "../styles/spreadsheet.css"
 import Button from "@mui/material/Button";
+import { getSpreadsheetData, storeSpreadsheetData } from "../scripts/persistence";
 
 interface SpreadsheetProps {
   headers: string[];
   storageKey: string;
+  columns?: jspreadsheet.Column[]
 }
 
-type SavedSpreadsheetOpt = {
-  cellvalues: CellValue[][];
-}
-
-export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
+/**
+ * Component for rendering a spreadsheet with customisable headers and storage 
+ * functionality.
+ * 
+ * @param {SpreadsheetProps} props - The properties passed to Spreadsheet component 
+ * @param {SpreadsheetProps.headers} props.headers - Array of header names for the spreadsheet columns.
+ * @param {SpreadsheetProps.storageKey} props.storageKey - Key for storing and retrieving spreadsheet data 
+ * in storage (i.e. indexedDB).
+ * @return Div containing a spreadsheet and button to add row.
+ */
+export default function Spreadsheet({ headers, storageKey, ...other }: SpreadsheetProps) {
   const jRef = useRef<null | JspreadsheetInstanceElement>(null);
 
   // spreadsheet init options: columns property
-  const columns = headers.map((headerName) => {
+  const columns: jspreadsheet.Column[] = headers.map((headerName, idx) => {
+    if (other.columns && other.columns.length > idx) {
+      return { title: headerName, width: 200, ...other.columns[idx] };
+    }
     return { title: headerName, width: 200 };
   });
 
@@ -70,7 +81,7 @@ export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
         }
       }
     });
-    
+
     return items;
   };
 
@@ -78,8 +89,8 @@ export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
   const options: jspreadsheet.JSpreadsheetOptions = {
     columns: columns,
     data: [[]],
-    minDimensions: [headers.length, 10],
-    minSpareRows: 1,
+    minDimensions: [headers.length, 1],
+    // minSpareRows: 1,
     allowManualInsertColumn: false,
     allowInsertColumn: false,
     includeHeadersOnDownload: true,
@@ -107,42 +118,42 @@ export default function Spreadsheet({ headers, storageKey }: SpreadsheetProps) {
     // ],
   };
 
-  // mount: create spreadsheet using data from sessionStorage (if exist),
+  // mount: create spreadsheet using data from indexedDB (if exist),
   //        otherwise create a blank default.
   useEffect(() => {
     // console.log(`Mount ${storageKey}`);
-    if (jRef.current && !jRef.current.jspreadsheet) {
-      const savedSpreadsheetData = sessionStorage.getItem(storageKey);
-
-      if (savedSpreadsheetData) {
-        const ssd: SavedSpreadsheetOpt = JSON.parse(savedSpreadsheetData);
-        options.data = ssd.cellvalues;
-      }
-
-      jspreadsheet(jRef.current, options);
-    }
+    getSpreadsheetData(storageKey)
+      .then((data) => {
+        if (data && jRef.current && !jRef.current.jspreadsheet) {
+          options.data = data;
+          jspreadsheet(jRef.current, options);
+        }
+    });
   });
 
-  // unmount: save spreadsheet data to sessionStorage
+  // unmount: save spreadsheet data to indexedDB
   useEffect(() => {
     const instanceElem: JspreadsheetInstanceElement | null = jRef.current;
 
     function cleanup() {
       // console.log(`Unmount ${storageKey}`);
-      if (instanceElem) {
-        const newOpts: SavedSpreadsheetOpt = {
-          cellvalues: instanceElem.jspreadsheet.getData(),
-        };
-        sessionStorage.setItem(storageKey, JSON.stringify(newOpts));
-      }
-      else {
-        throw new Error(
-          "JspreadsheetInstanceElement is null"
-        )
+      if (instanceElem && instanceElem.jspreadsheet) {
+        const data = instanceElem.jspreadsheet.getJson(false);
+        storeSpreadsheetData(data, storageKey);
       }
     }
-
     return cleanup;
+  })
+
+  // page refresh: save spreadsheet data to indexedDB
+  useEffect(() => {
+    window.addEventListener("beforeunload", () => {
+      const instanceElem: JspreadsheetInstanceElement | null = jRef.current;
+      if (instanceElem && instanceElem.jspreadsheet) {
+        const data = instanceElem.jspreadsheet.getJson(false);
+        storeSpreadsheetData(data, storageKey);
+      }
+    });
   })
 
   const addRow = () => {
