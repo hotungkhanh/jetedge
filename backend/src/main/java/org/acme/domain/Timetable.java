@@ -76,9 +76,8 @@ public class Timetable extends PanacheEntity {
     @PlanningEntityCollectionProperty
     public List<Unit> units;
 
-    @Transient
     @PlanningScore
-    private HardSoftScore score;
+    public HardSoftScore score;
 
     public Timetable() {
 
