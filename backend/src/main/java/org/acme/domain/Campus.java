@@ -1,4 +1,4 @@
-package org.acme.schooltimetabling.domain;
+package org.acme.domain;
 
 // import java.util.List;
 import jakarta.persistence.*;
@@ -9,11 +9,9 @@ public class Campus extends PanacheEntity {
 
     public String name;
 
-    // empty constructor 
     public Campus() {
     }
 
-    // constructor with name input 
     public Campus(String name) {
         this.name = name;
     }

@@ -1,4 +1,4 @@
-package org.acme.schooltimetabling.domain;
+package org.acme.domain;
 
 import java.util.List;
 
@@ -11,20 +11,19 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/campuses")
-public class CampusResource {
-
+@Path("/units")
+public class UnitResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Campus> list() {
-        return Campus.listAll();
+    public List<Unit> list() {
+        return Unit.listAll();
     }
 
     @POST
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createCampus(Campus campus) {
-        campus.persist();
-        return Response.status(Response.Status.CREATED).entity(campus).build();
+    public Response createCampus(Unit unit) {
+        unit.persist();
+        return Response.status(Response.Status.CREATED).entity(unit).build();
     }
 }

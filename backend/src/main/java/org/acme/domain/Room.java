@@ -1,18 +1,53 @@
 package org.acme.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 /**
  * Represents a room.
  *
  * @author Jet Edge
  */
-public class Room {
+@Entity
+public class Room extends PanacheEntity {
     @PlanningId
-    private String id;
+    public String roomCode;
 
-    private int capacity;
-    private boolean isLab;
+    public String buildingId;
+
+    public int capacity;
+
+    public boolean isLab;
+
+    /**
+     * A list of units that are taught in a Room
+     */
+    @JsonIgnoreProperties("room")
+    @OneToMany(mappedBy = "room", orphanRemoval = false)
+    @JsonManagedReference
+    @JsonIgnore
+    public List<Unit> units = new ArrayList<Unit>();
+
+    /**
+     * A list of timetables that the Room is a part of
+     */
+    @JsonIgnoreProperties("rooms")
+    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    @JsonIgnore
+    public List<Timetable> timetables = new ArrayList<Timetable>();
 
     public Room() {
     }
@@ -25,17 +60,17 @@ public class Room {
      * @param isLab    Whether the room is a laboratory.
      */
     public Room(String id, int capacity, boolean isLab) {
-        this.id = id;
+        this.roomCode = id;
         this.capacity = capacity;
         this.isLab = isLab;
     }
 
-    public String getId() {
-        return id;
+    public String getRoomCode() {
+        return roomCode;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setRoomCode(String id) {
+        this.roomCode = id;
     }
 
     public int getCapacity() {

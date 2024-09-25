@@ -3,11 +3,23 @@ package org.acme.domain;
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
@@ -15,22 +27,53 @@ import java.util.List;
  *
  * @author Jet Edge
  */
+@Entity
 @PlanningEntity
-public class Unit {
+public class Unit extends PanacheEntity {
 
-    private List<Student> students;
+    // TODO: change unit to be the owner, rather than the student being owner
+    @JsonIgnoreProperties("units")
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    public List<Student> students;
+
     @PlanningId
-    private int unitID;
-    private String name;
-    private Duration duration;
-    @PlanningVariable
-    private DayOfWeek dayOfWeek;
-    @PlanningVariable
-    private LocalTime startTime;
-    @PlanningVariable
-    private Room room;
+    public int unitID;
 
-    private boolean wantsLab;
+    public String name;
+
+    public Duration duration;
+
+    @PlanningVariable
+    public DayOfWeek dayOfWeek;
+
+    @PlanningVariable
+    public LocalTime startTime;
+
+    /*
+     * currently each unit only has 1 'slot' on the timetable, so it can only
+     * be associated with one room, but in the final product, we would most 
+     * likely have to change this to a many-to-many relationship 
+     * i.e. list of Rooms, because we might want to separate lecture/tutorial
+     * etc.
+     */
+    @JsonIgnoreProperties("units")
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "room_id")
+    @JsonManagedReference
+    @PlanningVariable
+    public Room room;
+
+    public boolean wantsLab;
+
+    /*
+     * The timetables that the Unit object belongs to
+     */
+    @JsonIgnoreProperties("units")
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    @JsonIgnore
+    public List<Timetable> timetables = new ArrayList<Timetable>();
 
     public Unit() {
     }
@@ -48,6 +91,7 @@ public class Unit {
         this.name = name;
         this.duration = duration;
         this.students = students;
+        this.setStudentsUnits();
     }
 
     /**
@@ -65,6 +109,7 @@ public class Unit {
         this.duration = duration;
         this.students = students;
         this.wantsLab = wantsLab;
+        this.setStudentsUnits();
     }
 
     /**
@@ -129,6 +174,7 @@ public class Unit {
     }
 
     public LocalTime getEnd() {
+        if (startTime == null) return null;
         return startTime.plus(duration);
     }
 
@@ -138,6 +184,17 @@ public class Unit {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+        this.setStudentsUnits();;
+    }
+
+    /**
+     * This is to ensure that many-to-many relationship can be properly setup
+     * in the database
+     */
+    public void setStudentsUnits() {
+        for (Student student : this.students) {
+            student.units.add(this);
+        }
     }
 
     /**
@@ -155,6 +212,7 @@ public class Unit {
 
     public void setRoom(Room room) {
         this.room = room;
+        this.room.units.add(this);
     }
 
     public boolean isWantsLab() {
@@ -164,4 +222,5 @@ public class Unit {
     public void setWantsLab(boolean wantsLab) {
         this.wantsLab = wantsLab;
     }
+
 }
