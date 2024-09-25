@@ -1,11 +1,14 @@
+/* Timetable solver backend endpoint URL */
 const API_URL = 'http://localhost:8080/timetabling';
+
+/* =========================================== Defining types =========================================== */
 
 export type TimetableProblem = TimetableBase & {
   units: Unit[],
 }
 
 export type TimetableSolution = TimetableBase & {
-  units: Required<Unit>,
+  units: Required<Unit>[],
 }
 
 export type TimetableBase = {
@@ -24,7 +27,7 @@ export type Unit = {
   room?: Room,
   studentSize?: number
   dayOfWeek?: Weekday,
-  start?: Time,
+  startTime?: Time,
   end?: Time,
 };
 
@@ -42,8 +45,15 @@ export type Weekday = "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY"
 
 export type Time = string;
 
+/* ====================================================================================================== */
 
-// API function(s)
+
+/**
+ * Sends the timetabling problem to backend for solving. Return the solution received.
+ * 
+ * @param problem A TimetableProblem is a list of units with no allocated time and room.
+ * @returns A TimetableSolution with all units allocated a time and a room.
+ */
 export async function fetchTimetableSolution(problem: TimetableProblem): Promise<TimetableSolution | null> {
   try {
     const response = await fetch(API_URL, {
@@ -55,11 +65,13 @@ export async function fetchTimetableSolution(problem: TimetableProblem): Promise
     });
 
     if (!response.ok) {
+      if (response.status === 500) {
+        alert(response.statusText + " " + response.status + ": server was not able to solve the problem. Please check for missing input (i.e. make sure there are at least 1 available room and no rooms with duplicate ID).");
+      }
       throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
     }
 
     const solution: TimetableSolution = await response.json();
-    console.log(solution);
     return solution;
   }
   catch (error) {
