@@ -8,6 +8,9 @@ import moment from 'moment';
  * Check that output matches expected output.
  */
 describe('fetchTimetableSolution', () => {
+  /**
+   * Validate end-to-end scheduling and data consistency of 1 API method call.
+   */
   it('return TimetableSolution', async () => {
     const problem: TimetableProblem = {
       units: [{ unitID: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
@@ -26,6 +29,25 @@ describe('fetchTimetableSolution', () => {
     expect(solution?.startTimes).toEqual(problem.startTimes);
     expect(solution?.rooms).toEqual(problem.rooms);
     
+  });
+
+  /**
+   * Validate that backend server can handle multiple solve requests concurrently.
+   */
+  it ('can be called multiple times', async () => {
+    const problem: TimetableProblem = {
+      units: [{ unitID: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
+      daysOfWeek: ["MONDAY"],
+      startTimes: ["11:00:00"],
+      rooms: [{ id: "Room A", capacity: 10, lab: true }]
+    };
+
+    const solutions = await Promise.all([fetchTimetableSolution(problem), fetchTimetableSolution(problem), fetchTimetableSolution(problem)]);
+    
+    for (let i = 0; i < solutions.length; i++) {
+      expect(solutions[i]).not.toBeNull();
+    }
+
   });
   
 });
