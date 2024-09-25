@@ -9,11 +9,9 @@ public class Campus extends PanacheEntity {
 
     public String name;
 
-    // empty constructor 
     public Campus() {
     }
 
-    // constructor with name input 
     public Campus(String name) {
         this.name = name;
     }
