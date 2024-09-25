@@ -1,6 +1,10 @@
 import Spreadsheet from '../../components/Spreadsheet.tsx'
 import { DB_BUILDINGS } from '../../scripts/persistence.ts';
 
+/**
+ * 
+ * @returns Spreadsheet input page for buildings information.
+ */
 export default function Building() {
 
   return (

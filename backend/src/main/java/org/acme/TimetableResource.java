@@ -32,10 +32,14 @@ public class TimetableResource {
     @Inject
     SolverManager<Timetable, String> solverManager;
 
+    private int jobId = 0;
+
     @POST
     public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
+        jobId += 1;
+        String name = "Job" + Integer.toString(jobId);
 
-        Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
+        Timetable solution = solverManager.solve(name, problem).getFinalBestSolution();
         return solution;
     }
 
@@ -49,7 +53,7 @@ public class TimetableResource {
     @GET
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
-    public Timetable hello() throws ExecutionException, InterruptedException {
+    public Timetable solveExample() throws ExecutionException, InterruptedException {
 
         Student a = new Student("a");
         Student b = new Student("b");

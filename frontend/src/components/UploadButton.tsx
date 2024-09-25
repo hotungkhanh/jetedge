@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -21,6 +20,13 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+/**
+ * Functional component for an upload button that allows users to select and 
+ * upload a file.
+ * 
+ * @param {InputFileUploadProps.setFileChosen} setFileChosen - Callback function to set the chosen file.
+ * @returns Upload button component with file selection and upload functionality.
+ */
 export default function UploadButton ({ setFileChosen }: InputFileUploadProps) {
 
   // Handler for file selection

@@ -8,6 +8,14 @@ import { getTimetableProblem } from "../scripts/handleInput";
 import { useState } from "react";
 import { fetchTimetableSolution } from "../scripts/api";
 
+/**
+ * Page for containing UI elements that allow user to send input data to backend.
+ * Temporarily has a display for backend's response to confirm successful sending 
+ *                      (will remove and replace with display page in next sprint).
+ * 
+ * @returns button for sending timetable problem and temporary display for timetable solution.
+ * TODO: change button and UI elements to fit with VIT themes.
+ */
 export default function SendData() {
 
   const [isGenerated, setIsGenerated] = useState("");
