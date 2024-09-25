@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -35,6 +36,7 @@ public class Student extends PanacheEntity{
         inverseJoinColumns = @JoinColumn(name = "unit_id")
     )
     @JsonManagedReference
+    @JsonIgnore
     public List<Unit> units = new ArrayList<Unit>();
 
     public Student() {

@@ -31,12 +31,18 @@ public class Room extends PanacheEntity {
 
     public boolean isLab;
 
+    /**
+     * A list of units that are taught in a Room
+     */
     @JsonIgnoreProperties("room")
     @OneToMany(mappedBy = "room", orphanRemoval = false)
     @JsonManagedReference
     @JsonIgnore
     public List<Unit> units = new ArrayList<Unit>();
 
+    /**
+     * A list of timetables that the Room is a part of
+     */
     @JsonIgnoreProperties("rooms")
     @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonManagedReference

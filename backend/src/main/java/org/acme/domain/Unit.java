@@ -50,12 +50,13 @@ public class Unit extends PanacheEntity {
     @PlanningVariable
     public LocalTime startTime;
 
-    /* 
-        currently each unit only has 1 'slot' on the timetable, so it can only
-        be associated with one room, but in the final product, we would most 
-        likely have to change this to a many-to-many relationship 
-        i.e. list of Rooms
-    */
+    /*
+     * currently each unit only has 1 'slot' on the timetable, so it can only
+     * be associated with one room, but in the final product, we would most 
+     * likely have to change this to a many-to-many relationship 
+     * i.e. list of Rooms, because we might want to separate lecture/tutorial
+     * etc.
+     */
     @JsonIgnoreProperties("units")
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "room_id")
@@ -65,6 +66,9 @@ public class Unit extends PanacheEntity {
 
     public boolean wantsLab;
 
+    /*
+     * The timetables that the Unit object belongs to
+     */
     @JsonIgnoreProperties("units")
     @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonManagedReference
@@ -162,6 +166,10 @@ public class Unit extends PanacheEntity {
         this.setStudentsUnits();;
     }
 
+    /**
+     * This is to ensure that many-to-many relationship can be properly setup
+     * in the database
+     */
     public void setStudentsUnits() {
         for (Student student : this.students) {
             student.units.add(this);
