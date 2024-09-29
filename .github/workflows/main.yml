@@ -39,6 +39,10 @@ jobs:
         run: |
           cd backend
           mvn -B package --file pom.xml
+        env:
+          QUARKUS_DATASOURCE_USERNAME: ${{secrets.QUARKUS_DATASOURCE_USERNAME}}
+          QUARKUS_DATASOURCE_PASSWORD: ${{secrets.QUARKUS_DATASOURCE_PASSWORD}}
+          QUARKUS_DATASOURCE_JDBC_URL: ${{secrets.QUARKUS_DATASOURCE_JDBC_URL}}
 
 
   deploy:
