@@ -31,16 +31,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @PlanningEntity
 public class Unit extends PanacheEntity {
 
-    // TODO: change unit to be the owner, rather than the student being owner
-    @JsonIgnoreProperties("units")
-    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JsonManagedReference
-    public List<Student> students;
-
     @PlanningId
     public int unitID;
 
     public String name;
+
+    public String course;
 
     public Duration duration;
 
@@ -49,6 +45,12 @@ public class Unit extends PanacheEntity {
 
     @PlanningVariable
     public LocalTime startTime;
+
+    // TODO: change unit to be the owner, rather than the student being owner
+    @JsonIgnoreProperties("units")
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    public List<Student> students;
 
     /*
      * currently each unit only has 1 'slot' on the timetable, so it can only

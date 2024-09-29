@@ -14,7 +14,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Transient;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -33,6 +32,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @PlanningSolution
 public class Timetable extends PanacheEntity {
+
+    public String campusName;
+
     @ElementCollection
     @ValueRangeProvider
     public List<DayOfWeek> daysOfWeek;
