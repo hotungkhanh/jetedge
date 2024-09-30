@@ -36,11 +36,15 @@ public class TimetableResource {
     private int jobId = 0;
 
     @POST
+    @Transactional
     public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
         jobId += 1;
         String name = "Job" + Integer.toString(jobId);
 
+        // return problem;
+
         Timetable solution = solverManager.solve(name, problem).getFinalBestSolution();
+        solution.persist();
         return solution;
     }
 
