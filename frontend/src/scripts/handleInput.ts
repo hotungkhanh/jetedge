@@ -96,7 +96,7 @@ export async function getTimetableProblem(enrolmentExcel: File, roomSpreadsheet:
   const unitsList = header.slice(14);
   const units: Unit[] = unitsList.map((value, index) => {
     return {
-      unitID: index,
+      unitId: index,
       name: value.toString(),
       duration: 0,
       students: [],
@@ -131,7 +131,7 @@ export async function getTimetableProblem(enrolmentExcel: File, roomSpreadsheet:
     .filter((record) => record['5'] as boolean)
     .map((record) => {
       return {
-        id: record['2'] as string,
+        roomCode: record['2'] as string,
         capacity: record['3'] as number,
         lab: record['4'] as boolean
       }
