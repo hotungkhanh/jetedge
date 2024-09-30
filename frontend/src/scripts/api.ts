@@ -18,7 +18,7 @@ export type TimetableBase = {
 }
 
 export type Unit = {
-  unitID: number,
+  unitId: number,
   name: string,
   duration: number,
   students: Student[],
@@ -36,7 +36,7 @@ export type Student = {
 };
 
 export type Room = {
-  id: string,
+  roomCode: string,
   capacity: number,
   lab: boolean
 }
