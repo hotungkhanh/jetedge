@@ -35,7 +35,7 @@ public class Student extends PanacheEntity{
         joinColumns = @JoinColumn(name = "student_id"),
         inverseJoinColumns = @JoinColumn(name = "unit_id")
     )
-    @JsonManagedReference
+    // @JsonManagedReference
     @JsonIgnore
     public List<Unit> units = new ArrayList<Unit>();
 

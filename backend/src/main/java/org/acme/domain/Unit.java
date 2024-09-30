@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -49,7 +50,7 @@ public class Unit extends PanacheEntity {
     // TODO: change unit to be the owner, rather than the student being owner
     @JsonIgnoreProperties("units")
     @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JsonManagedReference
+    // @JsonManagedReference
     public List<Student> students;
 
     /*

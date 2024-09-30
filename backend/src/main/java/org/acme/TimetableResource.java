@@ -3,6 +3,7 @@ package org.acme;
 import ai.timefold.solver.core.api.solver.SolverManager;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -48,6 +49,13 @@ public class TimetableResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Timetable> view() {
         return Timetable.listAll();
+    }
+
+    @Path("/unit")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Unit handleUnit(Unit unit) {
+        return unit;
     }
 
     @GET
