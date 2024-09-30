@@ -63,7 +63,6 @@ public class Unit extends PanacheEntity {
     @JsonIgnoreProperties("units")
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "room_id")
-    @JsonManagedReference
     @PlanningVariable
     public Room room;
 
@@ -74,7 +73,7 @@ public class Unit extends PanacheEntity {
      */
     @JsonIgnoreProperties("units")
     @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JsonManagedReference
+    // @JsonManagedReference
     @JsonIgnore
     public List<Timetable> timetables = new ArrayList<Timetable>();
 

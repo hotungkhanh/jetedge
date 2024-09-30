@@ -37,7 +37,6 @@ public class Room extends PanacheEntity {
      */
     @JsonIgnoreProperties("room")
     @OneToMany(mappedBy = "room", orphanRemoval = false)
-    @JsonBackReference
     @JsonIgnore
     public List<Unit> units = new ArrayList<Unit>();
 
@@ -46,7 +45,7 @@ public class Room extends PanacheEntity {
      */
     @JsonIgnoreProperties("rooms")
     @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JsonManagedReference
+    // @JsonManagedReference
     @JsonIgnore
     public List<Timetable> timetables = new ArrayList<Timetable>();
 

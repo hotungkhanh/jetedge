@@ -23,6 +23,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a timetable, the solution from the program.
@@ -56,9 +57,10 @@ public class Timetable extends PanacheEntity {
         joinColumns = @JoinColumn(name = "timetable_id"),
         inverseJoinColumns = @JoinColumn(name = "room_id")
     )
-    @JsonManagedReference
+    // @JsonManagedReference
     @ProblemFactCollectionProperty
-    @JsonIgnore
+    // @JsonIgnore
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ValueRangeProvider
     public List<Room> rooms;
 
@@ -74,7 +76,7 @@ public class Timetable extends PanacheEntity {
         joinColumns = @JoinColumn(name = "timetable_id"),
         inverseJoinColumns = @JoinColumn(name = "unit_id")
     )
-    @JsonManagedReference
+    // @JsonManagedReference
     @PlanningEntityCollectionProperty
     public List<Unit> units;
 
