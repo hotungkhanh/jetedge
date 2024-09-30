@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -22,6 +21,7 @@ import jakarta.persistence.OneToMany;
  */
 @Entity
 public class Room extends PanacheEntity {
+    
     @PlanningId
     public String roomCode;
 
@@ -36,7 +36,6 @@ public class Room extends PanacheEntity {
      */
     @JsonIgnoreProperties("room")
     @OneToMany(mappedBy = "room", orphanRemoval = false)
-    @JsonManagedReference
     @JsonIgnore
     public List<Unit> units = new ArrayList<Unit>();
 
@@ -45,7 +44,6 @@ public class Room extends PanacheEntity {
      */
     @JsonIgnoreProperties("rooms")
     @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JsonManagedReference
     @JsonIgnore
     public List<Timetable> timetables = new ArrayList<Timetable>();
 

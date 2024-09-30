@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.CascadeType;
@@ -24,8 +23,6 @@ import jakarta.persistence.ManyToMany;
 @Entity
 public class Student extends PanacheEntity{
 
-    //    String studentID;
-
     public String name;
 
     @JsonIgnoreProperties("students")
@@ -35,7 +32,6 @@ public class Student extends PanacheEntity{
         joinColumns = @JoinColumn(name = "student_id"),
         inverseJoinColumns = @JoinColumn(name = "unit_id")
     )
-    @JsonManagedReference
     @JsonIgnore
     public List<Unit> units = new ArrayList<Unit>();
 
