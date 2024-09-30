@@ -17,11 +17,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 
 /**
  * Represents a unit.
@@ -33,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Unit extends PanacheEntity {
 
     @PlanningId
-    public int unitID;
+    public int unitId;
 
     public String name;
 
@@ -50,7 +47,6 @@ public class Unit extends PanacheEntity {
     // TODO: change unit to be the owner, rather than the student being owner
     @JsonIgnoreProperties("units")
     @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    // @JsonManagedReference
     public List<Student> students;
 
     /*
@@ -73,7 +69,6 @@ public class Unit extends PanacheEntity {
      */
     @JsonIgnoreProperties("units")
     @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    // @JsonManagedReference
     @JsonIgnore
     public List<Timetable> timetables = new ArrayList<Timetable>();
 
@@ -84,13 +79,15 @@ public class Unit extends PanacheEntity {
      * Creates a unit.
      *
      * @param unitID   The unit’s ID.
-     * @param name     The unit’s ID.
+     * @param name     The unit’s name.
+     * @param course   The course that the unit belongs to.
      * @param duration The unit’s duration.
      * @param students The list of students enrolled in the unit.
      */
-    public Unit(int unitID, String name, Duration duration, List<Student> students) {
-        this.unitID = unitID;
+    public Unit(int unitID, String name, String course, Duration duration, List<Student> students) {
+        this.unitId = unitID;
         this.name = name;
+        this.course = course;
         this.duration = duration;
         this.students = students;
         this.setStudentsUnits();
@@ -100,14 +97,16 @@ public class Unit extends PanacheEntity {
      * Creates a unit.
      *
      * @param unitID   The unit’s ID.
-     * @param name     The unit’s ID.
+     * @param name     The unit’s name.
+     * @param course   The course that the unit belongs to.
      * @param duration The unit’s duration.
      * @param students The list of students enrolled in the unit.
      * @param wantsLab Whether the unit wants a laboratory room.
      */
-    public Unit(int unitID, String name, Duration duration, List<Student> students, boolean wantsLab) {
-        this.unitID = unitID;
+    public Unit(int unitID, String name, String course, Duration duration, List<Student> students, boolean wantsLab) {
+        this.unitId = unitID;
         this.name = name;
+        this.course = course;
         this.duration = duration;
         this.students = students;
         this.wantsLab = wantsLab;
@@ -118,15 +117,17 @@ public class Unit extends PanacheEntity {
      * Creates a unit.
      *
      * @param unitID   The unit’s ID.
-     * @param name     The unit’s ID.
+     * @param name     The unit’s name.
+     * @param course   The course that the unit belongs to.
      * @param duration The unit’s duration.
      * @param students The list of students enrolled in the unit.
      * @param wantsLab Whether the unit wants a laboratory room.
      * @param room The unit's room.
      */
-    public Unit(int unitID, String name, DayOfWeek dayOfWeek, LocalTime startTime, Duration duration, List<Student> students, boolean wantsLab, Room room) {
-        this.unitID = unitID;
+    public Unit(int unitID, String name, String course, DayOfWeek dayOfWeek, LocalTime startTime, Duration duration, List<Student> students, boolean wantsLab, Room room) {
+        this.unitId = unitID;
         this.name = name;
+        this.course = course;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.duration = duration;
@@ -135,12 +136,12 @@ public class Unit extends PanacheEntity {
         this.room = room;
     }
 
-    public int getUnitID() {
-        return unitID;
+    public int getUnitId() {
+        return unitId;
     }
 
-    public void setUnitID(int unitID) {
-        this.unitID = unitID;
+    public void setUnitId(int unitID) {
+        this.unitId = unitID;
     }
 
     public String getName() {
