@@ -3,6 +3,7 @@ package org.acme;
 import ai.timefold.solver.core.api.solver.SolverManager;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -35,11 +36,17 @@ public class TimetableResource {
     private int jobId = 0;
 
     @POST
+    @Transactional
     public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
         jobId += 1;
         String name = "Job" + Integer.toString(jobId);
 
+        // generate solution timetable with TimeFold Solver
         Timetable solution = solverManager.solve(name, problem).getFinalBestSolution();
+
+        // store the solution timetable to the database
+        solution.persist();
+
         return solution;
     }
 
@@ -48,6 +55,13 @@ public class TimetableResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Timetable> view() {
         return Timetable.listAll();
+    }
+
+    @Path("/unit")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Unit handleUnit(Unit unit) {
+        return unit;
     }
 
     @GET
@@ -69,10 +83,10 @@ public class TimetableResource {
         Room r2 = new Room("Room2", 4, false);
         Room r3 = new Room("Room3", 4, false);
 
-        Unit u1 = new Unit(1, "1", Duration.ofHours(2), List.of(a, b), true);
-        Unit u2 = new Unit(2, "2", Duration.ofHours(2), List.of(a, c, d, e), true);
-        Unit u3 = new Unit(3, "3", Duration.ofHours(2), List.of(f, g, h, i), false);
-        Unit u4 = new Unit(4, "4", Duration.ofHours(2), List.of(a, b), false);
+        Unit u1 = new Unit(1, "1", "Course A", Duration.ofHours(2), List.of(a, b), true);
+        Unit u2 = new Unit(2, "2", "Course A", Duration.ofHours(2), List.of(a, c, d, e), true);
+        Unit u3 = new Unit(3, "3", "Course B", Duration.ofHours(2), List.of(f, g, h, i), false);
+        Unit u4 = new Unit(4, "4", "Course C", Duration.ofHours(2), List.of(a, b), false);
 
         var problem = new Timetable(
                 List.of(

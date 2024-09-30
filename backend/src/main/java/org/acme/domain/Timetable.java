@@ -14,16 +14,14 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Transient;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a timetable, the solution from the program.
@@ -33,6 +31,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @PlanningSolution
 public class Timetable extends PanacheEntity {
+
+    public String campusName;
+
     @ElementCollection
     @ValueRangeProvider
     public List<DayOfWeek> daysOfWeek;
@@ -54,9 +55,8 @@ public class Timetable extends PanacheEntity {
         joinColumns = @JoinColumn(name = "timetable_id"),
         inverseJoinColumns = @JoinColumn(name = "room_id")
     )
-    @JsonManagedReference
     @ProblemFactCollectionProperty
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ValueRangeProvider
     public List<Room> rooms;
 
@@ -72,7 +72,6 @@ public class Timetable extends PanacheEntity {
         joinColumns = @JoinColumn(name = "timetable_id"),
         inverseJoinColumns = @JoinColumn(name = "unit_id")
     )
-    @JsonManagedReference
     @PlanningEntityCollectionProperty
     public List<Unit> units;
 
@@ -187,7 +186,7 @@ public class Timetable extends PanacheEntity {
         ArrayList<ConflictingUnit> out = new ArrayList<ConflictingUnit>();
         for (var first : units) {
             for (var second : units) {
-                if (first.getUnitID() >= second.getUnitID()) {
+                if (first.getUnitId() >= second.getUnitId()) {
                     continue;
                 }
                 int numStudents = 0;
