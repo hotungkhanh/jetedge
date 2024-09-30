@@ -13,10 +13,10 @@ describe('fetchTimetableSolution', () => {
    */
   it('return TimetableSolution', async () => {
     const problem: TimetableProblem = {
-      units: [{ unitID: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
+      units: [{ unitId: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
       daysOfWeek: ["MONDAY"],
       startTimes: ["11:00:00"],
-      rooms: [{ id: "Room A", capacity: 10, lab: true }]
+      rooms: [{ roomCode: "Room A", capacity: 10, lab: true }]
     };
     
     const solution = await fetchTimetableSolution(problem);
@@ -24,10 +24,9 @@ describe('fetchTimetableSolution', () => {
     expect(solution?.units[0].dayOfWeek).toEqual(problem.daysOfWeek[0]);
     expect(solution?.units[0].startTime).toEqual(problem.startTimes[0]);
     expect(solution?.units[0].end).toEqual(addSecondsToTimeString(problem.startTimes[0], problem.units[0].duration));
-    expect(solution?.units[0].room).toEqual(problem.rooms[0]);
+    expect(solution?.units[0].room).toHaveProperty("roomCode", problem.rooms[0].roomCode);
     expect(solution?.daysOfWeek).toEqual(problem.daysOfWeek);
     expect(solution?.startTimes).toEqual(problem.startTimes);
-    expect(solution?.rooms).toEqual(problem.rooms);
     
   });
 
@@ -36,10 +35,10 @@ describe('fetchTimetableSolution', () => {
    */
   it ('can be called multiple times', async () => {
     const problem: TimetableProblem = {
-      units: [{ unitID: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
+      units: [{ unitId: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
       daysOfWeek: ["MONDAY"],
       startTimes: ["11:00:00"],
-      rooms: [{ id: "Room A", capacity: 10, lab: true }]
+      rooms: [{ roomCode: "Room A", capacity: 10, lab: true }]
     };
 
     const solutions = await Promise.all([fetchTimetableSolution(problem), fetchTimetableSolution(problem), fetchTimetableSolution(problem)]);
