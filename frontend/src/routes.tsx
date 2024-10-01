@@ -6,6 +6,7 @@ import Unit from './pages/spreadsheets/Unit.tsx'
 import Download from './pages/Download.tsx'
 import Enrolment from './pages/Enrolment.tsx'
 import SendData from './pages/SendData.tsx'
+import GanttChart from './components/GanttChart.tsx'
 
 /**
  * Defines the routes configuration for the application.
@@ -34,6 +35,9 @@ const routes = [
   {
     path: "timetablemod",
     element: <TimetableMod />,
+    children: [
+      { path: ":location", element: <GanttChart /> },
+    ],
   },
   {
     path: "download",
