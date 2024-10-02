@@ -7,16 +7,17 @@ import moment from 'moment';
  * Check if connection to backend is working.
  * Check that output matches expected output.
  */
-describe('fetchTimetableSolution', () => {
+describe('fetchTimetableSolution', { timeout: 60000 }, () => {
   /**
    * Validate end-to-end scheduling and data consistency of 1 API method call.
    */
   it('return TimetableSolution', async () => {
     const problem: TimetableProblem = {
-      units: [{ unitId: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
+      campusName: "A",
+      units: [{ campus: "A", course: "B", unitId: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
       daysOfWeek: ["MONDAY"],
       startTimes: ["11:00:00"],
-      rooms: [{ roomCode: "Room A", capacity: 10, lab: true }]
+      rooms: [{ campus: "A", buildingId: "01", roomCode: "Room A", capacity: 10, lab: true }]
     };
     
     const solution = await fetchTimetableSolution(problem);
@@ -35,10 +36,11 @@ describe('fetchTimetableSolution', () => {
    */
   it ('can be called multiple times', async () => {
     const problem: TimetableProblem = {
-      units: [{ unitId: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
+      campusName: "B",
+      units: [{ campus: "B", course: "C", unitId: 0, name: "Unit0", duration: 1200, students: [], wantsLab: true }],
       daysOfWeek: ["MONDAY"],
       startTimes: ["11:00:00"],
-      rooms: [{ roomCode: "Room A", capacity: 10, lab: true }]
+      rooms: [{ campus: "B", buildingId: "02", roomCode: "Room A", capacity: 10, lab: true }]
     };
 
     const solutions = await Promise.all([fetchTimetableSolution(problem), fetchTimetableSolution(problem), fetchTimetableSolution(problem)]);

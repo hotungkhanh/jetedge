@@ -2,7 +2,6 @@ import readXlsxFile, { Row } from 'read-excel-file';
 import { CellValue } from 'jspreadsheet-ce';
 import { TimetableProblem, Unit, Room } from './api';
 import { DB_UNITS, storeSpreadsheetData } from './persistence';
-import { assert } from 'vitest';
 
 /**
  * Function to validate uploaded enrolment data file.
