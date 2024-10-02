@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import BackButton from "../components/BackButton";
 import NextButton from "../components/NextButton";
 import Header from "../components/Header";
-import { DB_ROOMS, DB_UNITS, getFile, getSpreadsheetData } from "../scripts/persistence";
+import { DB_ROOMS, DB_UNITS, getSpreadsheetData } from "../scripts/persistence";
 import { getTimetableProblems } from "../scripts/handleInput";
 import { useState } from "react";
 import { fetchTimetableSolution } from "../scripts/api";
