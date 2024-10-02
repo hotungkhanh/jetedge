@@ -4,7 +4,7 @@ import BackButton from "../components/BackButton";
 import NextButton from "../components/NextButton";
 import Header from "../components/Header";
 import { DB_ROOMS, DB_UNITS, getFile, getSpreadsheetData } from "../scripts/persistence";
-import { getTimetableProblem } from "../scripts/handleInput";
+import { getTimetableProblems } from "../scripts/handleInput";
 import { useState } from "react";
 import { fetchTimetableSolution } from "../scripts/api";
 
@@ -22,23 +22,23 @@ export default function SendData() {
 
   function generateTimetable() {
     setIsGenerated("");
-    Promise.all([getFile(), getSpreadsheetData(DB_ROOMS), getSpreadsheetData(DB_UNITS)])
+    Promise.all([getSpreadsheetData(DB_ROOMS), getSpreadsheetData(DB_UNITS)])
     .then((responses) => {
-      const [enrolment, roomData, unitData] = [...responses];
+      const [roomData, unitData] = [...responses];
       if (!roomData) {
         throw new Error("Error: room data not available");
       }
       else if (!unitData) {
         throw new Error("Error: unit data not available");
       }
-      return getTimetableProblem(enrolment, roomData, unitData);
+      return getTimetableProblems(roomData, unitData);
     })
-    .then((problem) => {
-      return fetchTimetableSolution(problem);
+    .then((problems) => {
+      return Promise.all(problems.map(p => fetchTimetableSolution(p)));
     })
-    .then((solution) => {
-      console.log(solution);
-      setIsGenerated(JSON.stringify(solution, null, 2));
+    .then((solutions) => {
+      console.log(solutions);
+      setIsGenerated(JSON.stringify(solutions, null, 2));
     })
     .catch((error) => {
       alert(error);
