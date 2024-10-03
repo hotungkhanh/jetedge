@@ -4,7 +4,6 @@ import ai.timefold.solver.core.api.solver.SolverManager;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -21,6 +20,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import java.util.UUID;
+
 /**
  * Entry to the timetabling program.
  * Receives a timetabling problem and outputs the solution
@@ -34,13 +35,14 @@ public class TimetableResource {
     @Inject
     SolverManager<Timetable, String> solverManager;
 
-    private int jobId = 0;
-
     @POST
     @Transactional
     public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
-        jobId += 1;
-        String name = "Job" + Integer.toString(jobId);
+        UUID uuid = UUID.randomUUID();
+        String uuidAsString = uuid.toString();
+
+        System.out.println("Your UUID is: " + uuidAsString);
+        String name = "Job" + uuidAsString;
 
         findByCampusAndDelete(problem.campusName);
 
