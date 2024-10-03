@@ -71,6 +71,14 @@ export async function getUnitsList(enrolmentExcel: File) {
   return enrolmentExcel;
 }
 
+/**
+ * Check if input file is valid enrolment data Excel file.
+ * Extract list of units from enrolment data and prefill spreadsheet input page.
+ * Extract list of students per each unit from enrolment data.
+ * 
+ * @param enrolmentExcel enrolment data Excel file
+ * @returns enrolment data Excel file
+ */
 export async function prefillUnitSpreadsheet(enrolmentExcel: File) {
   if (!isExcelFile(enrolmentExcel)) {
     throw new Error(
