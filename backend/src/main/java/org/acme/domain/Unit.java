@@ -46,7 +46,7 @@ public class Unit extends PanacheEntity {
 
     // TODO: change unit to be the owner, rather than the student being owner
     @JsonIgnoreProperties("units")
-    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Student> students;
 
     /*
@@ -57,7 +57,7 @@ public class Unit extends PanacheEntity {
      * etc.
      */
     @JsonIgnoreProperties("units")
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
     @PlanningVariable
     public Room room;
@@ -68,7 +68,7 @@ public class Unit extends PanacheEntity {
      * The timetables that the Unit object belongs to
      */
     @JsonIgnoreProperties("units")
-    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     public List<Timetable> timetables = new ArrayList<Timetable>();
 

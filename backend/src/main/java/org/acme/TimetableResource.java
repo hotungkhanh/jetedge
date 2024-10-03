@@ -4,6 +4,7 @@ import ai.timefold.solver.core.api.solver.SolverManager;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -41,6 +42,8 @@ public class TimetableResource {
         jobId += 1;
         String name = "Job" + Integer.toString(jobId);
 
+        findByCampusAndDelete(problem.campusName);
+
         // generate solution timetable with TimeFold Solver
         Timetable solution = solverManager.solve(name, problem).getFinalBestSolution();
 
@@ -62,6 +65,17 @@ public class TimetableResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Unit handleUnit(Unit unit) {
         return unit;
+    }
+
+    public void findByCampusAndDelete(String campusName) {
+        List<Timetable> timetables = Timetable.listAll();
+        for (Timetable timetable : timetables) {
+            System.out.println("CHECKING NOW\n");
+            if (campusName.equals(timetable.campusName)) {
+                System.out.println("SMTH HAS BEEN DELETED WOOOO\n");
+                timetable.delete();
+            }
+        }
     }
 
     @GET
@@ -88,7 +102,7 @@ public class TimetableResource {
         Unit u3 = new Unit(3, "3", "Course B", Duration.ofHours(2), List.of(f, g, h, i), false);
         Unit u4 = new Unit(4, "4", "Course C", Duration.ofHours(2), List.of(a, b), false);
 
-        var problem = new Timetable(
+        var problem = new Timetable("Campus A",
                 List.of(
                         u1, u2, u3, u4
 //                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
@@ -126,6 +140,9 @@ public class TimetableResource {
          * timetable assignment, while the 'new' Unit does not have the list 
          * of students enrolled, but does have the assigned date and room
          */
+
+        findByCampusAndDelete(problem.campusName);
+
         Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
 
         solution.persist();     

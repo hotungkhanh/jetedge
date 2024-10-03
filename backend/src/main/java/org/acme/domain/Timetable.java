@@ -49,7 +49,7 @@ public class Timetable extends PanacheEntity {
      * campus, hence the many-to-many relationship
      */
     @JsonIgnoreProperties("timetables")
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "room_timetable",
         joinColumns = @JoinColumn(name = "timetable_id"),
@@ -66,7 +66,7 @@ public class Timetable extends PanacheEntity {
      * multiple campuses, so may appear in multiple timetables
      */
     @JsonIgnoreProperties("timetables")
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "unit_timetable",
         joinColumns = @JoinColumn(name = "timetable_id"),
@@ -88,7 +88,8 @@ public class Timetable extends PanacheEntity {
      * @param units      The list of units to be allocated.
      * @param startTimes The list of available starting times.
      */
-    public Timetable(List<Unit> units, List<LocalTime> startTimes) {
+    public Timetable(String campusName, List<Unit> units, List<LocalTime> startTimes) {
+        this.campusName = campusName;
         this.units = units;
         this.startTimes = startTimes;
         this.setUnitTimetable();
@@ -101,7 +102,8 @@ public class Timetable extends PanacheEntity {
      * @param startTimes The list of available starting times.
      * @param rooms      The list of available rooms.
      */
-    public Timetable(List<Unit> units, List<LocalTime> startTimes, List<Room> rooms) {
+    public Timetable(String campusName, List<Unit> units, List<LocalTime> startTimes, List<Room> rooms) {
+        this.campusName = campusName;
         this.units = units;
         this.startTimes = startTimes;
         this.rooms = rooms;
@@ -117,7 +119,8 @@ public class Timetable extends PanacheEntity {
      * @param startTimes The list of available starting times.
      * @param rooms      The list of available rooms.
      */
-    public Timetable(List<Unit> units, List<DayOfWeek> daysOfWeek, List<LocalTime> startTimes, List<Room> rooms) {
+    public Timetable(String campusName, List<Unit> units, List<DayOfWeek> daysOfWeek, List<LocalTime> startTimes, List<Room> rooms) {
+        this.campusName = campusName;
         this.units = units;
         this.daysOfWeek = daysOfWeek;
         this.startTimes = startTimes;
