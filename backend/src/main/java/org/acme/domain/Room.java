@@ -43,7 +43,7 @@ public class Room extends PanacheEntity {
      * A list of timetables that the Room is a part of
      */
     @JsonIgnoreProperties("rooms")
-    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     public List<Timetable> timetables = new ArrayList<Timetable>();
 
