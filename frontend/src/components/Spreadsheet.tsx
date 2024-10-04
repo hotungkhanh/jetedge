@@ -27,9 +27,9 @@ export default function Spreadsheet({ headers, storageKey, ...other }: Spreadshe
   // spreadsheet init options: columns property
   const columns: jspreadsheet.Column[] = headers.map((headerName, idx) => {
     if (other.columns && other.columns.length > idx) {
-      return { title: headerName, width: 200, ...other.columns[idx] };
+      return { title: headerName, width: headerName.length * 10 + 20, ...other.columns[idx] };
     }
-    return { title: headerName, width: 200 };
+    return { title: headerName, width: headerName.length * 10 + 20 };
   });
 
   // spreadsheet init options: contextMenu property
@@ -95,8 +95,8 @@ export default function Spreadsheet({ headers, storageKey, ...other }: Spreadshe
     allowInsertColumn: false,
     includeHeadersOnDownload: true,
     tableOverflow: true,
-    tableWidth: '1150px',
-    tableHeight: '400px',
+    tableWidth: '70vw',
+    tableHeight: '50vh',
     contextMenu: contextMenu,
     // toolbar:[
     //   {

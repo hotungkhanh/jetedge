@@ -12,12 +12,15 @@ export type TimetableSolution = TimetableBase & {
 }
 
 export type TimetableBase = {
+  campusName: string,
   daysOfWeek: Weekday[],
   startTimes: Time[],
   rooms: Room[]
 }
 
 export type Unit = {
+  campus: string,
+  course: string,
   unitId: number,
   name: string,
   duration: number,
@@ -36,6 +39,8 @@ export type Student = {
 };
 
 export type Room = {
+  campus: string,
+  buildingId: string,
   roomCode: string,
   capacity: number,
   lab: boolean
