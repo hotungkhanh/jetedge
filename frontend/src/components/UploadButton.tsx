@@ -2,7 +2,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { getFile, storeFile } from "../scripts/persistence";
-import { getUnitsList, prefillUnitSpreadsheet } from "../scripts/handleInput";
+import { prefillUnitSpreadsheet } from "../scripts/handleInput";
 
 interface InputFileUploadProps {
   setFileChosen: (file: File | null) => void;
