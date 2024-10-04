@@ -20,6 +20,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import java.util.UUID;
+
 /**
  * Entry to the timetabling program.
  * Receives a timetabling problem and outputs the solution
@@ -33,13 +35,16 @@ public class TimetableResource {
     @Inject
     SolverManager<Timetable, String> solverManager;
 
-    private int jobId = 0;
-
     @POST
     @Transactional
     public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
-        jobId += 1;
-        String name = "Job" + Integer.toString(jobId);
+        UUID uuid = UUID.randomUUID();
+        String uuidAsString = uuid.toString();
+
+        System.out.println("Your UUID is: " + uuidAsString);
+        String name = "Job" + uuidAsString;
+
+        findByCampusAndDelete(problem.campusName);
 
         // generate solution timetable with TimeFold Solver
         Timetable solution = solverManager.solve(name, problem).getFinalBestSolution();
@@ -62,6 +67,17 @@ public class TimetableResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Unit handleUnit(Unit unit) {
         return unit;
+    }
+
+    public void findByCampusAndDelete(String campusName) {
+        List<Timetable> timetables = Timetable.listAll();
+        for (Timetable timetable : timetables) {
+            System.out.println("CHECKING NOW\n");
+            if (campusName.equals(timetable.campusName)) {
+                System.out.println("SMTH HAS BEEN DELETED WOOOO\n");
+                timetable.delete();
+            }
+        }
     }
 
     @GET
@@ -88,7 +104,7 @@ public class TimetableResource {
         Unit u3 = new Unit(3, "3", "Course B", Duration.ofHours(2), List.of(f, g, h, i), false);
         Unit u4 = new Unit(4, "4", "Course C", Duration.ofHours(2), List.of(a, b), false);
 
-        var problem = new Timetable(
+        var problem = new Timetable("Campus A",
                 List.of(
                         u1, u2, u3, u4
 //                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
@@ -126,6 +142,9 @@ public class TimetableResource {
          * timetable assignment, while the 'new' Unit does not have the list 
          * of students enrolled, but does have the assigned date and room
          */
+
+        findByCampusAndDelete(problem.campusName);
+
         Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
 
         solution.persist();     

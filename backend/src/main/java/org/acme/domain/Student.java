@@ -26,7 +26,7 @@ public class Student extends PanacheEntity{
     public String name;
 
     @JsonIgnoreProperties("students")
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "student_unit",
         joinColumns = @JoinColumn(name = "student_id"),
