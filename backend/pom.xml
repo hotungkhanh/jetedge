@@ -92,6 +92,10 @@
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-hibernate-orm-panache</artifactId>
     </dependency>
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-smallrye-metrics</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
