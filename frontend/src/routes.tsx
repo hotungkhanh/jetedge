@@ -36,7 +36,7 @@ const routes = [
     path: "timetablemod",
     element: <TimetableMod />,
     children: [
-      { path: ":location", element: <GanttChart /> },
+      { path: ":location" },
     ],
   },
   {

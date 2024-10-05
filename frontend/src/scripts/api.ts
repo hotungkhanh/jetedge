@@ -1,5 +1,5 @@
 /* Timetable solver backend endpoint URL */
-const API_URL = 'http://localhost:8080/timetabling';
+const API_URL = "http://localhost:8080/timetabling";
 
 /* =========================================== Defining types =========================================== */
 
