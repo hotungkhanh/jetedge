@@ -2,13 +2,11 @@ import { useEffect, useRef } from "react";
 import { Id } from "vis-data/declarations/data-interface";
 import { DataSet, Timeline } from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.min.css";
+import { GanttItems } from "../scripts/solutionParsing";
+import { TimetableSolution } from "../scripts/api";
 
-interface TimelineItem {
-  id: number;
-  content: string;
-  start: Date;
-  end: Date;
-  group: number;
+interface GanttProp {
+  solution: TimetableSolution;
 }
 
 var sdt = {
@@ -38,7 +36,7 @@ var sdt = {
   ],
 };
 
-export default function GanttChart() {
+export default function GanttChart({ solution }: GanttProp) {
   const timelineRef = useRef<HTMLDivElement | null>(null);
   const items = useRef(new DataSet<TimelineItem>());
   const groups = useRef(new DataSet());
@@ -170,19 +168,6 @@ export default function GanttChart() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-
-  const testFetch = () => {
-    const fetchPromise = fetch(
-      "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
-    );
-
-    fetchPromise.then((response) => {
-      const jsonPromise = response.json();
-      jsonPromise.then((data) => {
-        console.log(data[0].name);
-      });
-    });
   };
 
   return (
