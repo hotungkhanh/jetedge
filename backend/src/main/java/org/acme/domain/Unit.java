@@ -10,6 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -45,9 +46,12 @@ public class Unit extends PanacheEntity {
     public LocalTime startTime;
 
     // TODO: change unit to be the owner, rather than the student being owner
+    @Transient
     @JsonIgnoreProperties("units")
     @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Student> students;
+
+    public int studentSize;
 
     /*
      * currently each unit only has 1 'slot' on the timetable, so it can only
@@ -90,6 +94,7 @@ public class Unit extends PanacheEntity {
         this.course = course;
         this.duration = duration;
         this.students = students;
+        this.studentSize = this.students.size();
         this.setStudentsUnits();
     }
 
@@ -109,6 +114,7 @@ public class Unit extends PanacheEntity {
         this.course = course;
         this.duration = duration;
         this.students = students;
+        this.studentSize = this.students.size();
         this.wantsLab = wantsLab;
         this.setStudentsUnits();
     }
@@ -132,6 +138,7 @@ public class Unit extends PanacheEntity {
         this.startTime = startTime;
         this.duration = duration;
         this.students = students;
+        this.studentSize = this.students.size();
         this.wantsLab = wantsLab;
         this.room = room;
     }
@@ -206,7 +213,7 @@ public class Unit extends PanacheEntity {
      * @return An int representing the number of students.
      */
     public int getStudentSize() {
-        return students.size();
+        return this.studentSize;
     }
 
     public Room getRoom() {

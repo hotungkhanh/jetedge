@@ -37,7 +37,7 @@ public class TimetableResource {
     SolverManager<Timetable, String> solverManager;
 
     @POST
-//    @RolesAllowed({"user"})
+    @RolesAllowed({"user"})
     @Transactional
     public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
         UUID uuid = UUID.randomUUID();
@@ -59,6 +59,7 @@ public class TimetableResource {
 
     @Path("/view")
     @GET
+    @RolesAllowed({"user"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<Timetable> view() {
         return Timetable.listAll();
@@ -83,7 +84,7 @@ public class TimetableResource {
     }
 
     @GET
-//    @RolesAllowed({"user"})
+    @RolesAllowed({"user"})
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public Timetable solveExample() throws ExecutionException, InterruptedException {
@@ -98,14 +99,14 @@ public class TimetableResource {
         Student h = new Student("h");
         Student i = new Student("i");
 
-        Room r1 = new Room("Room1", 2, true);
-        Room r2 = new Room("Room2", 4, false);
-        Room r3 = new Room("Room3", 4, false);
+        Room r1 = new Room("Room1", "Building1", "Campus1", 2, true);
+        Room r2 = new Room("Room2", "Building2", "Campus2", 4, false);
+        Room r3 = new Room("Room3", "Building3", "Campus3", 4, false);
 
-        Unit u1 = new Unit(1, "1", "Course A", Duration.ofHours(2), List.of(a, b), true);
-        Unit u2 = new Unit(2, "2", "Course A", Duration.ofHours(2), List.of(a, c, d, e), true);
-        Unit u3 = new Unit(3, "3", "Course B", Duration.ofHours(2), List.of(f, g, h, i), false);
-        Unit u4 = new Unit(4, "4", "Course C", Duration.ofHours(2), List.of(a, b), false);
+        Unit u1 = new Unit(1, "This", "Course A", Duration.ofHours(2), List.of(a, b), true);
+        Unit u2 = new Unit(2, "Is", "Course A", Duration.ofHours(2), List.of(a, c, d, e), true);
+        Unit u3 = new Unit(3, "A", "Course B", Duration.ofHours(2), List.of(f, g, h, i), false);
+        Unit u4 = new Unit(4, "Test", "Course C", Duration.ofHours(2), List.of(a, b), false);
 
         var problem = new Timetable("Campus A",
                 List.of(
