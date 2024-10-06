@@ -1,25 +1,27 @@
-import { TimetableSolution } from "./api";
+import { TimetableSolution, Unit } from "./api";
 import {
   TimelineGroup,
   TimelineItem,
 } from "vis-timeline/standalone";
+
+
 export type GanttGroup = TimelineGroup & {
   treeLevel: number;
 };
 
-// export type GanttBuilding = {
-//   id: number;
-//   content: string;
-//   treeLevel: 1;
-//   nestedGroups: number[];
+// export type GanttGroup = {
+//   id: number,
+//   content: string,
+//   treeLevel: number;
+//   nestedGroup?: number[];
 // };
 
-// export type GanttActivity = {
+// export type TimelineItem = {
 //   id: number;
 //   content: string;
-//   start: Date;
-//   end: Date;
-//   group: number | string;
+//   start: string;
+//   end: string;
+//   group: number;
 // };
 
 export type GanttItems = {
@@ -43,6 +45,19 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
 
 
   campusSolution.units.forEach((activity) => {
+    //=============================Handle Rooms=================================
+    if (!groupEnum.has(activity.room.roomCode)) {
+      groupEnum.set(activity.room.roomCode, counter);
+      counter++;
+
+      const ganttRoom: GanttGroup = {
+        id: groupEnum.get(activity.room.roomCode) || 0,
+        content: activity.room.roomCode,
+        treeLevel: 2,
+      };
+      seenRoom.add(activity.room.roomCode);
+      ganttRooms.push(ganttRoom);
+    }
     //=============================Handle Activities============================
     if (!activityEnum.has(activity.unitId)) {
       activityEnum.set(activity.unitId, counter);
@@ -57,20 +72,6 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
       group: groupEnum.get(activity.room.roomCode) || 0,
     };
     ganttActivities.push(ganttActivity);
-
-    //=============================Handle Rooms=================================
-    if (!groupEnum.has(activity.room.roomCode)) {
-      groupEnum.set(activity.room.roomCode, counter);
-      counter++;
-
-      const ganttRoom: GanttGroup = {
-        id: groupEnum.get(activity.room.roomCode) || 0,
-        content: activity.room.roomCode,
-        treeLevel: 2,
-      };
-      seenRoom.add(activity.room.roomCode);
-      ganttRooms.push(ganttRoom);
-    }
     //=============================Handle Buildings=============================
     if (!groupEnum.has(activity.room.buildingId)) {
       groupEnum.set(activity.room.buildingId, counter);
@@ -99,7 +100,6 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
     const buildingCheck = buildingLookup.get(activity.room.buildingId);
     const roomGroup = groupEnum.get(activity.room.roomCode);
     if (buildingCheck && roomGroup) {
-
       if (
         buildingCheck.nestedGroups !== undefined &&
         !buildingCheck.nestedGroups.includes(roomGroup)
@@ -163,12 +163,27 @@ function dateToDayOfWeekAndTime(date: Date) {
   return { dayOfWeek, startTime };
 }
 
-
+//TODO: Parse data to send to backend
 // export function formatSolution2Save(
 //   items: GanttItems): TimetableSolution {
-//     let _return:TimetableSolution;
 
-//   }
+//   let _return:TimetableSolution;
+//   let units:Unit[] = [];
+//   items.activities.forEach((activity)=>{
+//     let unit: Unit = {
+//       unitId:
+//       name:
+//       campus:
+//       course:
+
+//     }
+//   })
+// }
+
+//TODO: Parse data for downloading
+export function format2CSV(items: GanttItems) {
+  items
+}
 
 export function findCampusSolution(
   campus: string,
