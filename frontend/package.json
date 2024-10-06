@@ -24,7 +24,8 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.1",
     "read-excel-file": "^5.8.5",
-    "serve": "^6.5.8"
+    "serve": "^6.5.8",
+    "vis-timeline": "^7.7.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
