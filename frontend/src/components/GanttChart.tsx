@@ -13,9 +13,10 @@ import {
   rawDate,
   toRawDate,
 } from "../scripts/solutionParsing";
-import { Room, TimetableSolution, Unit } from "../scripts/api";
+import { TimetableSolution, Unit } from "../scripts/api";
 import { useParams } from "react-router-dom";
-import { build } from "jspreadsheet-ce";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 export default memo(function GanttChart() {
   const params = useParams();
@@ -53,10 +54,10 @@ export default memo(function GanttChart() {
       let prevSelected: Id | null = null;
 
       const options = {
-        start: "2000-01-01",
-        end: "2000-01-06",
-        min: "2000-01-01",
-        max: "2000-01-07",
+        start: "2024-10-14",
+        end: "2024-10-19",
+        min: "2024-10-14",
+        max: "2024-10-19",
         editable: true,
       };
 
@@ -166,29 +167,40 @@ export default memo(function GanttChart() {
     }
   }, []);
 
-  const convertToCSV = () => {
-    let csvContent = "id,content,start,end,group\n";
+  const convertToCSV = (course:string) => {
+    let csvContent = "id,name,start,end,room,building\n";
     const itemList = items.current.get();
     itemList.forEach((item) => {
-      const start = item.start.toString();
-      const end = item.end ? item.end.toString() : "";
-      csvContent += `${item.id},${item.content},${start},${end},${groups.current.get(item.group as Id)?.content}\n`;
+      if (item.course === course) {
+        const start = item.start.toString();
+        const end = item.end ? item.end.toString() : "";
+        csvContent += `${item.id},${item.content},${start},${end},${
+          groups.current.get(item.group as Id)?.content
+        }, ${
+          groups.current.get(
+            groups.current.get(item.group as Id)
+              ?.parent as Id
+          )?.originalId
+        }\n`;
+      }
     });
 
     return csvContent;
   };
 
   const downloadCSV = () => {
-    const csvData = convertToCSV();
-    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", "timetable.csv");
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const zip = new JSZip();
+    const uniqueNames = new Set(items.current.map((obj) => obj.course));
+    uniqueNames.forEach((course) => {
+      if (course) {
+        const csvData = convertToCSV(course);
+        zip.file(params.location + course + ".csv", csvData);
+      }
+    })
+
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, "timetable.zip");
+    });
   };
 
   const saveData = async () => {
