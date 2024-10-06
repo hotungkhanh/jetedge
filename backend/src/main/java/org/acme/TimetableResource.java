@@ -72,9 +72,7 @@ public class TimetableResource {
     public void findByCampusAndDelete(String campusName) {
         List<Timetable> timetables = Timetable.listAll();
         for (Timetable timetable : timetables) {
-            System.out.println("CHECKING NOW\n");
             if (campusName.equals(timetable.campusName)) {
-                System.out.println("SMTH HAS BEEN DELETED WOOOO\n");
                 timetable.delete();
             }
         }
