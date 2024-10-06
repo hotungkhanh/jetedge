@@ -28,7 +28,6 @@ export type rawDate = {
 };
 
 const startDate = "2024-10-14";
-
 export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
   let ganttActivities: GanttItem[] = [];
   let ganttRooms: GanttGroup[] = [];
@@ -177,7 +176,7 @@ export function toRawDate(date: Date): rawDate {
   const startTime = `${hours}:${minutes}:${seconds}`;
 
   return { dayOfWeek: dayOfWeek as Weekday, time: startTime };
-}
+
 
 //TODO: Parse data to send to backend
 export function formatSolution2Save(items: GanttItems) {
