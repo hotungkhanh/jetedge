@@ -6,12 +6,11 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.SecurityContext;
 
-@Path("/api/users")
+@Path("/login")
 public class UserResource {
 
     @GET
     @RolesAllowed({"user"})
-    @Path("/me")
     public String me(@Context SecurityContext securityContext) {
         return securityContext.getUserPrincipal().getName();
     }
