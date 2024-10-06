@@ -93,9 +93,9 @@ public class TimetableResource {
         Student h = new Student("h");
         Student i = new Student("i");
 
-        Room r1 = new Room("Room1", 2, true);
-        Room r2 = new Room("Room2", 4, false);
-        Room r3 = new Room("Room3", 4, false);
+        Room r1 = new Room("Room1", "building A", "campus A", 2, true);
+        Room r2 = new Room("Room2", "building B", "campus A", 4, false);
+        Room r3 = new Room("Room3", "building A", "campus B", 4, false);
 
         Unit u1 = new Unit(1, "1", "Course A", Duration.ofHours(2), List.of(a, b), true);
         Unit u2 = new Unit(2, "2", "Course A", Duration.ofHours(2), List.of(a, c, d, e), true);
