@@ -117,7 +117,8 @@ export default memo(function GanttChart() {
           if (
             newItem == null ||
             item.id === newItem.id ||
-            item.group !== newItem.group
+            item.group !== newItem.group ||
+            item.type === "background"
           )
             return false;
 
@@ -169,7 +170,7 @@ export default memo(function GanttChart() {
     itemList.forEach((item) => {
       const start = item.start.toString();
       const end = item.end ? item.end.toString() : "";
-      csvContent += `${item.id},${item.content},${start},${end},${item.group}\n`;
+      csvContent += `${item.id},${item.content},${start},${end},${groups.current.get(item.group as Id)?.content}\n`;
     });
 
     return csvContent;
@@ -188,10 +189,15 @@ export default memo(function GanttChart() {
     document.body.removeChild(link);
   };
 
+  const saveData = () => {
+
+  };
+
   return (
     <div>
       <div ref={timelineRef} />
       <button onClick={downloadCSV}> Download Timetable </button>
+      <button onClick={saveData}>Save Changes</button>
     </div>
   );
 })
