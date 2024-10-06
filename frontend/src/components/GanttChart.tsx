@@ -15,6 +15,7 @@ import {
 } from "../scripts/solutionParsing";
 import { Room, TimetableSolution, Unit } from "../scripts/api";
 import { useParams } from "react-router-dom";
+import { build } from "jspreadsheet-ce";
 
 export default memo(function GanttChart() {
   const params = useParams();
@@ -110,22 +111,44 @@ export default memo(function GanttChart() {
             let rawEndDate: rawDate = toRawDate(
               items.current.get(prevSelected)?.end as Date
             );
-            const modded: Unit = {
-              unitId: items.current.get(prevSelected)?.UnitId,
-              room: {
-                campus: items.current.get(prevSelected)?.campus,
-                buildingId: groups.current.get(groups.current.get(items.current.get(prevSelected)?.group as Id)?.parent as Id)?.originalId,
-                roomCode: groups.current.get(items.current.get(prevSelected)?.group as Id)?.originalId,
-              },
-              dayOfWeek: rawStartDate.dayOfWeek,
-              startTime: rawStartDate.time,
-              end: rawEndDate.time,
-            };
-            const index = moddedUnits.findIndex(item => item.unitId === modded.unitId);
-            if (index !== -1) {
-              moddedUnits.splice(index, 1);
+            let unitId:number|undefined = items.current.get(prevSelected)?.UnitId;
+            let campus: string|undefined = items.current.get(prevSelected)?.campus;
+            let buildingId: string|undefined = groups.current.get(
+                    groups.current.get(
+                      items.current.get(prevSelected)?.group as Id
+                    )?.parent as Id
+                  )?.originalId
+            let roomCode: string|undefined = groups.current.get(
+                    items.current.get(prevSelected)?.group as Id
+                  )?.originalId;
+            if ( unitId !== undefined && campus !== undefined && buildingId !== undefined && roomCode !== undefined) {
+              const modded: Unit = {
+                campus: "",
+                name:"",
+                course: "",
+                duration:-1,
+                students:[],
+                wantsLab: false,
+                unitId: unitId,
+                room: {
+                  campus: campus,
+                  buildingId: buildingId,
+                  roomCode: roomCode,
+                  capacity: -1,
+                  lab: false,
+                },
+                dayOfWeek: rawStartDate.dayOfWeek,
+                startTime: rawStartDate.time,
+                end: rawEndDate.time,
+              };
+              const index = moddedUnits.findIndex(
+                (item) => item.unitId === modded.unitId
+              );
+              if (index !== -1) {
+                moddedUnits.splice(index, 1);
+              }
+              moddedUnits.push(modded);
             }
-            moddedUnits.push(modded);
             console.log(moddedUnits);
           }
         }
