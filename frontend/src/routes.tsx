@@ -7,7 +7,6 @@ import Download from './pages/Download.tsx'
 import Enrolment from './pages/Enrolment.tsx'
 import SendData from './pages/SendData.tsx'
 import GanttChart from './components/GanttChart.tsx'
-
 /**
  * Defines the routes configuration for the application.
  * Each route specifies a path and the corresponding component to render.
@@ -33,10 +32,10 @@ const routes = [
     element: <SendData />,
   },
   {
-    path: "timetablemod",
+    path: "timetablemod/*",
     element: <TimetableMod />,
     children: [
-      { path: ":location" },
+      {path: ":location", element: <GanttChart />}
     ],
   },
   {
