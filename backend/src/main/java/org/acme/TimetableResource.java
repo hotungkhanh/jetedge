@@ -6,9 +6,13 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
 import org.acme.domain.Room;
 import org.acme.domain.Student;
 import org.acme.domain.Timetable;
@@ -62,11 +66,61 @@ public class TimetableResource {
         return Timetable.listAll();
     }
 
-    @Path("/unit")
-    @POST
+    /**
+     * Update the time/location of a unit once users make 
+     * drag-and-drop modifications in frontend
+     * 
+     * @param updatedUnit   Unit object with updated time/location
+     */
+    @Path("/update")
+    @PUT
+    @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
-    public Unit handleUnit(Unit unit) {
-        return unit;
+    public Response unitUpdate(Unit updatedUnit) {
+
+        List<Unit> units = Unit.listAll();
+
+        // find existing Unit obj in db by unitId
+        for (Unit unit : units) {
+            if (updatedUnit.unitId == unit.unitId) {
+                assert(unit.isPersistent());
+                // update day of week
+                unit.dayOfWeek = updatedUnit.dayOfWeek;
+                // update startTime
+                unit.startTime = updatedUnit.startTime;
+                // if room is different
+                if (unit.room.roomCode != updatedUnit.room.roomCode 
+                || !unit.room.buildingId.equals(updatedUnit.room.buildingId)) {
+                    // update room
+                    Room newRoom;
+                    if ((newRoom = findRoom(updatedUnit.room)) == null) {
+                        throw new WebApplicationException("Room with building ID " + updatedUnit.room.buildingId + ", and room code " + updatedUnit.room.roomCode + " not found", 404);
+                    }
+                    unit.room = newRoom;
+                }
+                return Response.ok().build();
+            }
+        }
+        return Response.serverError().build();
+    }
+
+    /**
+     * Find existing Room object inside the database with 
+     * desired buildingId and roomCode
+     * 
+     * @param inputRoom     Room object with buildingId and roomCode of desired Room
+     * @return              Room object meeting the input criteria, null otherwise
+     */
+    public Room findRoom(Room inputRoom) {
+        List<Room> rooms = Room.listAll();
+        for (Room room : rooms) {
+            if (room.roomCode.equals(inputRoom.roomCode) 
+            && room.buildingId.equals(inputRoom.buildingId)) {
+                assert(room.isPersistent());
+                return room;
+            }
+        }
+        return null;
     }
 
     public void findByCampusAndDelete(String campusName) {
