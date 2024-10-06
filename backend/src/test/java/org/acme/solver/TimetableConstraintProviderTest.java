@@ -15,9 +15,9 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 public class TimetableConstraintProviderTest {
-    private static final Room ROOM1 = new Room("1", 2, true);
-    private static final Room ROOM2 = new Room("2", 2, false);
-    private static final Room ROOM3 = new Room("3", 2, true);
+    private static final Room ROOM1 = new Room("1", "building A", "campus A", 2, true);
+    private static final Room ROOM2 = new Room("2", "building B", "campus A", 2, false);
+    private static final Room ROOM3 = new Room("3", "building A", "campus B", 2, true);
     private static final Student STUDENT1 = new Student("student1");
     private static final Student STUDENT2 = new Student("student2");
     private static final Student STUDENT3 = new Student("student3");

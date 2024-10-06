@@ -27,6 +27,8 @@ public class Room extends PanacheEntity {
 
     public String buildingId;
 
+    public String campus;
+
     public int capacity;
 
     public boolean isLab;
@@ -53,12 +55,16 @@ public class Room extends PanacheEntity {
     /**
      * Creates a room with its ID and capacity.
      *
-     * @param id       The room’s id.
-     * @param capacity The room's capacity.
-     * @param isLab    Whether the room is a laboratory.
+     * @param id            The room’s id.
+     * @param buildingId    The building that the room belongs to.
+     * @param buildingId    The campus that the room belongs to.
+     * @param capacity      The room's capacity.
+     * @param isLab         Whether the room is a laboratory.
      */
-    public Room(String id, int capacity, boolean isLab) {
+    public Room(String id, String buildingId, String campus, int capacity, boolean isLab) {
         this.roomCode = id;
+        this.buildingId = buildingId;
+        this.campus = campus;
         this.capacity = capacity;
         this.isLab = isLab;
     }
