@@ -124,29 +124,29 @@ function translateToDate(startDate: string, dayOfWeek: string, startTime: string
   return finalDate;
 }
 
-function dateToDayOfWeekAndTime(date: Date) {
-  const daysOfWeek = [
-    "SUNDAY",
-    "MONDAY",
-    "TUESDAY",
-    "WEDNESDAY",
-    "THURSDAY",
-    "FRIDAY",
-    "SATURDAY",
-  ];
+// function dateToDayOfWeekAndTime(date: Date) {
+//   const daysOfWeek = [
+//     "SUNDAY",
+//     "MONDAY",
+//     "TUESDAY",
+//     "WEDNESDAY",
+//     "THURSDAY",
+//     "FRIDAY",
+//     "SATURDAY",
+//   ];
 
-  // Get the day of the week
-  const dayOfWeek = daysOfWeek[date.getDay()];
+//   // Get the day of the week
+//   const dayOfWeek = daysOfWeek[date.getDay()];
 
-  // Get the time in "HH:MM:SS" format
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
+//   // Get the time in "HH:MM:SS" format
+//   const hours = String(date.getHours()).padStart(2, "0");
+//   const minutes = String(date.getMinutes()).padStart(2, "0");
+//   const seconds = String(date.getSeconds()).padStart(2, "0");
 
-  const startTime = `${hours}:${minutes}:${seconds}`;
+//   const startTime = `${hours}:${minutes}:${seconds}`;
 
-  return { dayOfWeek, startTime };
-}
+//   return { dayOfWeek, startTime };
+// }
 
 //TODO: Parse data to send to backend
 export function formatSolution2Save(items: GanttItems) {
