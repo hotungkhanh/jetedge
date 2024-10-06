@@ -7,17 +7,21 @@ import "../styles/ganttUnassignable.css";
 import {
   findCampusSolution,
   GanttGroup,
+  GanttItem,
   GanttItems,
   getGanttItems,
+  rawDate,
+  toRawDate,
 } from "../scripts/solutionParsing";
-import { TimetableSolution } from "../scripts/api";
+import { Room, TimetableSolution, Unit } from "../scripts/api";
 import { useParams } from "react-router-dom";
 
 export default memo(function GanttChart() {
   const params = useParams();
   const timelineRef = useRef<HTMLDivElement | null>(null);
-  const items = useRef(new DataSet<TimelineItem>());
+  const items = useRef(new DataSet<GanttItem>());
   const groups = useRef(new DataSet<GanttGroup>());
+  let moddedUnits: Unit[] = [];
 
   let campusSolutions: TimetableSolution[];
   let check: string | null = sessionStorage.getItem("campusSolutions");
@@ -63,9 +67,9 @@ export default memo(function GanttChart() {
         options
       );
 
-      const hasOverlap = (newItem: TimelineItem | null) => {
+      const hasOverlap = (newItem: GanttItem | null) => {
         const existingItems = items.current.get();
-        return existingItems.some((item: TimelineItem) => {
+        return existingItems.some((item: GanttItem) => {
           if (
             newItem == null ||
             item.id === newItem.id ||
@@ -84,7 +88,7 @@ export default memo(function GanttChart() {
         });
       };
 
-      const validGroup = (item: TimelineItem | null) => {
+      const validGroup = (item: GanttItem | null) => {
         if (item == null) return true;
         const group: GanttGroup|null = groups.current.get(item.group as Id);
         return (group !== null && group.treeLevel === 2);
@@ -100,6 +104,29 @@ export default memo(function GanttChart() {
           }
           if (!inRoom) {
             alert("ASSIGN ACTIVITIES TO ROOMS ONLY");
+          }
+          if (!overlaps && inRoom) {
+            let rawStartDate: rawDate = toRawDate(items.current.get(prevSelected)?.start as Date);
+            let rawEndDate: rawDate = toRawDate(
+              items.current.get(prevSelected)?.end as Date
+            );
+            const modded: Unit = {
+              unitId: items.current.get(prevSelected)?.UnitId,
+              room: {
+                campus: items.current.get(prevSelected)?.campus,
+                buildingId: groups.current.get(groups.current.get(items.current.get(prevSelected)?.group as Id)?.parent as Id)?.originalId,
+                roomCode: groups.current.get(items.current.get(prevSelected)?.group as Id)?.originalId,
+              },
+              dayOfWeek: rawStartDate.dayOfWeek,
+              startTime: rawStartDate.time,
+              end: rawEndDate.time,
+            };
+            const index = moddedUnits.findIndex(item => item.unitId === modded.unitId);
+            if (index !== -1) {
+              moddedUnits.splice(index, 1);
+            }
+            moddedUnits.push(modded);
+            console.log(moddedUnits);
           }
         }
 
@@ -141,8 +168,22 @@ export default memo(function GanttChart() {
     document.body.removeChild(link);
   };
 
-  const saveData = () => {
+  const saveData = async () => {
+    try {
+      const response = await fetch("", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(moddedUnits),
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to save data, error in GanttChart.tsx");
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+    }
   };
 
   return (
