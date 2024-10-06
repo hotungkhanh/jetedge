@@ -2,6 +2,8 @@ import { memo, useEffect, useRef } from "react";
 import { Id } from "vis-data/declarations/data-interface";
 import { DataGroupCollectionType, DataItemCollectionType, DataSet, Timeline, TimelineItem } from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.min.css";
+import "../styles/ganttUnassignable.css";
+
 import {
   findCampusSolution,
   GanttGroup,

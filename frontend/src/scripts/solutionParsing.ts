@@ -41,6 +41,7 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
   const groupEnum = new Map<string, number>();
   let counter = 1; // Global counter for unique IDs across buildings, rooms, and activities
 
+
   campusSolution.units.forEach((activity) => {
     //=============================Handle Activities============================
     if (!activityEnum.has(activity.unitId)) {
@@ -82,21 +83,29 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
       };
       buildingLookup.set(activity.room.buildingId, ganttBuilding);
       ganttBuildings.push(ganttBuilding);
+
+      const unassignable: TimelineItem = {
+        id: counter++,
+        content: "",
+        start: new Date("1000-01-01T05:00:00"),
+        end: new Date("3000-01-01T05:00:00"),
+        group: ganttBuilding.id,
+        type: "background",
+        className: "negative",
+      };
+      ganttActivities.push(unassignable);
     }
 
     const buildingCheck = buildingLookup.get(activity.room.buildingId);
     const roomGroup = groupEnum.get(activity.room.roomCode);
     if (buildingCheck && roomGroup) {
+
       if (
         buildingCheck.nestedGroups !== undefined &&
-        buildingCheck.nestedGroups.includes(roomGroup)
+        !buildingCheck.nestedGroups.includes(roomGroup)
       ) {
-        if (buildingCheck) {
-          buildingCheck.nestedGroups = buildingCheck.nestedGroups || [];
-          if (roomGroup) {
-            buildingCheck.nestedGroups.push(roomGroup);
-          }
-        }
+        buildingCheck.nestedGroups = buildingCheck.nestedGroups || [];
+        buildingCheck.nestedGroups.push(roomGroup);
       }
     } else {
       throw new Error("LOGIC ERROR IN getGanttItems");
