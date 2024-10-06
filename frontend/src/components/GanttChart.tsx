@@ -13,54 +13,6 @@ import {
 import { TimetableSolution } from "../scripts/api";
 import { useParams } from "react-router-dom";
 
-var sdt = {
-  buildings: [
-    {
-      content: "A1",
-      id: "A1",
-      nestedGroups: ["2", "9"],
-      treeLevel: 1,
-    },
-    {
-      content: "A2",
-      id: "A2",
-      nestedGroups: ["3", "10"],
-      treeLevel: 1,
-    },
-  ],
-};
-
-var activities = [
-  {
-    id: 1,
-    content: "Lecture",
-    start: new Date("2000-01-01T05:00:00"),
-    end: new Date("2000-01-01T09:00:00"),
-    group: 1,
-  },
-  {
-    id: 2,
-    content: "Tutorial",
-    start: new Date("2000-01-04T06:00:00"),
-    end: new Date("2000-01-04T08:00:00"),
-    group: 2,
-  },
-  {
-    id: 3,
-    content: "Lab 1",
-    start: new Date("2000-01-05T18:00:00"),
-    end: new Date("2000-01-05T20:00:00"),
-    group: 3,
-  },
-  {
-    id: 4,
-    content: "Lab 2",
-    start: new Date("2000-01-06T18:00:00"),
-    end: new Date("2000-01-06T20:00:00"),
-    group: 4,
-  },
-];
-
 export default memo(function GanttChart() {
   const params = useParams();
   const timelineRef = useRef<HTMLDivElement | null>(null);

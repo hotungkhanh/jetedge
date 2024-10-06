@@ -17,15 +17,6 @@ interface SidebarProps {
 }
 const drawerWidth = 240;
 
-/**
- * Renders a sidebar component with navigation links to Campus, Building, Room,
- * Course, and Unit.
- *
- * @param {SidebarProps} props - The properties passed to Sidebar component
- * @param {number} props.marginTop - The top margin of the sidebar.
- * @param {number} props.width - The width of the sidebar.
- * @returns Sidebar component with navigation links.
- */
 export default function ModSidebar({ marginTop, width }: SidebarProps) {
   let campusSolutions: TimetableSolution[];
   let campusSolutionsStr: string|null = sessionStorage.getItem("campusSolutions");
@@ -52,7 +43,7 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
         <List>
           {campusSolutions && campusSolutions.length > 0 ? (
             campusSolutions.map((solution) => {
-              let campusName = solution.campusName; // Assuming campusName comes from solution
+              let campusName = solution.campusName;
               return (
                 <ListItem key={campusName} disablePadding>
                   <ListItemButton
@@ -68,7 +59,7 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
               );
             })
           ) : (
-            <div>Loading...</div> // Fallback loading state
+            <div>Loading...</div>
           )}
         </List>
       </Drawer>

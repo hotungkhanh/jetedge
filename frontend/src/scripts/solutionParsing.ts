@@ -1,4 +1,4 @@
-import { TimetableSolution, Unit } from "./api";
+import { TimetableSolution } from "./api";
 import {
   TimelineGroup,
   TimelineItem,
@@ -8,21 +8,6 @@ import {
 export type GanttGroup = TimelineGroup & {
   treeLevel: number;
 };
-
-// export type GanttGroup = {
-//   id: number,
-//   content: string,
-//   treeLevel: number;
-//   nestedGroup?: number[];
-// };
-
-// export type TimelineItem = {
-//   id: number;
-//   content: string;
-//   start: string;
-//   end: string;
-//   group: number;
-// };
 
 export type GanttItems = {
   activities: TimelineItem[];
@@ -41,7 +26,7 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
   let _return: GanttItems;
   const activityEnum = new Map<number, number>();
   const groupEnum = new Map<string, number>();
-  let counter = 1; // Global counter for unique IDs across buildings, rooms, and activities
+  let counter = 1;
 
 
   campusSolution.units.forEach((activity) => {
@@ -164,21 +149,9 @@ function dateToDayOfWeekAndTime(date: Date) {
 }
 
 //TODO: Parse data to send to backend
-// export function formatSolution2Save(
-//   items: GanttItems): TimetableSolution {
-
-//   let _return:TimetableSolution;
-//   let units:Unit[] = [];
-//   items.activities.forEach((activity)=>{
-//     let unit: Unit = {
-//       unitId:
-//       name:
-//       campus:
-//       course:
-
-//     }
-//   })
-// }
+export function formatSolution2Save(items: GanttItems) {
+    items
+}
 
 //TODO: Parse data for downloading
 export function format2CSV(items: GanttItems) {
