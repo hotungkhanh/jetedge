@@ -11,3 +11,4 @@
 
 # env variables
 .env
+**/logs/
