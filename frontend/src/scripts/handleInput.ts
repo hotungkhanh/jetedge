@@ -202,13 +202,7 @@ export async function getTimetableProblems(roomSpreadsheet: Record<string, CellV
       problemsByCampus.push({
         campusName: campus,
         units: unitsByCampus[campus],
-        daysOfWeek: [
-          "MONDAY",
-          "TUESDAY",
-          "WEDNESDAY",
-          "THURSDAY",
-          "FRIDAY"
-        ],
+        daysOfWeek: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"],
         startTimes: [
           "08:00:00",
           "09:00:00",
@@ -216,10 +210,13 @@ export async function getTimetableProblems(roomSpreadsheet: Record<string, CellV
           "11:00:00",
           "12:00:00",
           "13:00:00",
+          "14:00:00",
+          "15:00:00",
+          "16:00:00",
+          "17:00:00",
         ],
-        rooms: roomsByCampus[campus]
-
-      })
+        rooms: roomsByCampus[campus],
+      });
     }
     else {
       alert("This campus don't have any rooms: " + campus);

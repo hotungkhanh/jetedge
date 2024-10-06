@@ -7,6 +7,7 @@ import {
 export type GanttItem = TimelineItem & {
   UnitId: number;
   campus: string;
+  course: string;
 }
 
 export type GanttGroup = TimelineGroup & {
@@ -26,7 +27,7 @@ export type rawDate = {
   time: string,
 };
 
-const startDate = "2000-01-03";
+const startDate = "2024-10-14";
 
 export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
   let ganttActivities: GanttItem[] = [];
@@ -77,6 +78,7 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
       campus: campusSolution.campusName,
       id: activityEnum.get(activity.unitId) || 0,
       content: activity.name,
+      course: activity.course,
       start: parseDate(startDate, activity.dayOfWeek, activity.startTime),
       end: parseDate(startDate, activity.dayOfWeek, activity.end),
       group: groupEnum.get(activity.room.roomCode) || 0,
@@ -100,6 +102,7 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
         campus: campusSolution.campusName,
         id: counter++,
         content: "",
+        course: "",
         start: new Date("1000-01-01T05:00:00"),
         end: new Date("3000-01-01T05:00:00"),
         group: ganttBuilding.id,
@@ -173,7 +176,7 @@ export function toRawDate(date: Date): rawDate {
 
   const startTime = `${hours}:${minutes}:${seconds}`;
 
-  return { dayOfWeek: dayOfWeek, time: startTime };
+  return { dayOfWeek: dayOfWeek as Weekday, time: startTime };
 }
 
 //TODO: Parse data to send to backend
