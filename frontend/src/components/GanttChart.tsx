@@ -194,12 +194,21 @@ export default memo(function GanttChart() {
     uniqueNames.forEach((course) => {
       if (course) {
         const csvData = convertToCSV(course);
-        zip.file(params.location + course + ".csv", csvData);
+        zip.file(
+          (params.location as string).replace(/[^a-zA-Z0-9]/g, "_") +
+            "-" +
+            course.replace(/[^a-zA-Z0-9]/g, "_") +
+            ".csv",
+          csvData
+        );
       }
     })
 
     zip.generateAsync({ type: "blob" }).then((content) => {
-      saveAs(content, "timetable.zip");
+      saveAs(
+        content,
+        (params.location as string).replace(/[^a-zA-Z0-9]/g, "_") + ".zip"
+      );
     });
   };
 
