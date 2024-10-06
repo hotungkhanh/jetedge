@@ -1,78 +1,93 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { Id } from "vis-data/declarations/data-interface";
-import { DataSet, Timeline } from "vis-timeline/standalone";
+import { DataGroupCollectionType, DataItemCollectionType, DataSet, Timeline, TimelineItem } from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.min.css";
-import { GanttItems } from "../scripts/solutionParsing";
+import {
+  findCampusSolution,
+  GanttGroup,
+  GanttItems,
+  getGanttItems,
+} from "../scripts/solutionParsing";
 import { TimetableSolution } from "../scripts/api";
-
-interface GanttProp {
-  solution: TimetableSolution;
-}
+import { useParams } from "react-router-dom";
 
 var sdt = {
-  rooms: [
-    { id: 12, treeLevel: 3, content: "1A1" },
-    { id: 13, treeLevel: 3, content: "1A2" },
-    { id: 14, treeLevel: 3, content: "2A1" },
-    { id: 15, treeLevel: 3, content: "2A2" },
-    { id: 16, treeLevel: 3, content: "3A1" },
-    { id: 17, treeLevel: 3, content: "3A2" },
-    { id: 18, treeLevel: 3, content: "1B1" },
-    { id: 19, treeLevel: 3, content: "1B2" },
-  ],
-  grandParents: [
-    { id: 1, content: "Building A", treeLevel: 1, nestedGroups: [5, 6, 7] },
-    { id: 2, content: "Building B", treeLevel: 1, nestedGroups: [8, 9] },
-    { id: 3, content: "Building C", treeLevel: 1, nestedGroups: [10, 11] },
-  ],
-  parents: [
-    { id: 5, treeLevel: 2, content: "Floor 1A", nestedGroups: [12, 13] },
-    { id: 6, treeLevel: 2, content: "Floor 2A", nestedGroups: [14, 15] },
-    { id: 7, treeLevel: 2, content: "Floor 3A", nestedGroups: [16, 17] },
-    { id: 8, treeLevel: 2, content: "Floor 1B", nestedGroups: [18, 19] },
-    { id: 9, treeLevel: 2, content: "Floor 2B" },
-    { id: 10, treeLevel: 2, content: "Floor 1C" },
-    { id: 11, treeLevel: 2, content: "Floor 1C" },
+  buildings: [
+    {
+      content: "A1",
+      id: "A1",
+      nestedGroups: ["2", "9"],
+      treeLevel: 1,
+    },
+    {
+      content: "A2",
+      id: "A2",
+      nestedGroups: ["3", "10"],
+      treeLevel: 1,
+    },
   ],
 };
 
-export default function GanttChart({ solution }: GanttProp) {
+var activities = [
+  {
+    id: 1,
+    content: "Lecture",
+    start: new Date("2000-01-01T05:00:00"),
+    end: new Date("2000-01-01T09:00:00"),
+    group: 1,
+  },
+  {
+    id: 2,
+    content: "Tutorial",
+    start: new Date("2000-01-04T06:00:00"),
+    end: new Date("2000-01-04T08:00:00"),
+    group: 2,
+  },
+  {
+    id: 3,
+    content: "Lab 1",
+    start: new Date("2000-01-05T18:00:00"),
+    end: new Date("2000-01-05T20:00:00"),
+    group: 3,
+  },
+  {
+    id: 4,
+    content: "Lab 2",
+    start: new Date("2000-01-06T18:00:00"),
+    end: new Date("2000-01-06T20:00:00"),
+    group: 4,
+  },
+];
+
+export default memo(function GanttChart() {
+  const params = useParams();
   const timelineRef = useRef<HTMLDivElement | null>(null);
   const items = useRef(new DataSet<TimelineItem>());
-  const groups = useRef(new DataSet());
-  groups.current.add(sdt.grandParents);
-  groups.current.add(sdt.parents);
-  groups.current.add(sdt.rooms);
-  items.current.add([
-    {
-      id: 1,
-      content: "Lecture",
-      start: new Date("2000-01-01T05:00:00"),
-      end: new Date("2000-01-01T09:00:00"),
-      group: 1,
-    },
-    {
-      id: 2,
-      content: "Tutorial",
-      start: new Date("2000-01-04T06:00:00"),
-      end: new Date("2000-01-04T08:00:00"),
-      group: 2,
-    },
-    {
-      id: 3,
-      content: "Lab 1",
-      start: new Date("2000-01-05T18:00:00"),
-      end: new Date("2000-01-05T20:00:00"),
-      group: 3,
-    },
-    {
-      id: 4,
-      content: "Lab 2",
-      start: new Date("2000-01-06T18:00:00"),
-      end: new Date("2000-01-06T20:00:00"),
-      group: 4,
-    },
-  ]);
+  const groups = useRef(new DataSet<GanttGroup>());
+
+  let campusSolutions: TimetableSolution[];
+  let check: string | null = sessionStorage.getItem("campusSolutions");
+  if (check !== null) {
+    campusSolutions = JSON.parse(check);
+  } else {
+    throw new Error("campusSolutions is not in campus, in GanttChart");
+  }
+
+  const solution: TimetableSolution | null = params?.location ? findCampusSolution(
+    params.location,
+    campusSolutions
+  ): null;
+  if (solution === null) {
+    throw new Error("solution is null after findCampusSolution (possibly an error related to campus name)")
+  }
+
+  let timelineData: GanttItems = getGanttItems(solution);
+  console.log("processed data in Gantt", timelineData);
+  groups.current.clear();
+  groups.current.add(timelineData.buildings);
+  groups.current.add(timelineData.rooms);
+  items.current.clear()
+  items.current.add(timelineData.activities);
 
   useEffect(() => {
     if (timelineRef.current) {
@@ -89,8 +104,8 @@ export default function GanttChart({ solution }: GanttProp) {
       // Initialize the timeline
       const timeline = new Timeline(
         timelineRef.current,
-        items.current,
-        groups.current,
+        items.current as DataItemCollectionType,
+        groups.current as DataGroupCollectionType,
         options
       );
 
@@ -116,8 +131,9 @@ export default function GanttChart({ solution }: GanttProp) {
 
       const validGroup = (item: TimelineItem | null) => {
         if (item == null) return true;
-        const group = groups.current.get(item.group);
-        return group.treeLevel === 3;
+        const group: GanttGroup|null = groups.current.get(item.group as Id);
+        return (group !== null && group.treeLevel === 2);
+        
       };
 
       timeline.on("select", (properties) => {
@@ -149,8 +165,8 @@ export default function GanttChart({ solution }: GanttProp) {
     let csvContent = "id,content,start,end,group\n";
     const itemList = items.current.get();
     itemList.forEach((item) => {
-      const start = item.start.toISOString();
-      const end = item.end ? item.end.toISOString() : "";
+      const start = item.start.toString();
+      const end = item.end ? item.end.toString() : "";
       csvContent += `${item.id},${item.content},${start},${end},${item.group}\n`;
     });
 
@@ -176,4 +192,4 @@ export default function GanttChart({ solution }: GanttProp) {
       <button onClick={downloadCSV}> Download Timetable </button>
     </div>
   );
-}
+})
