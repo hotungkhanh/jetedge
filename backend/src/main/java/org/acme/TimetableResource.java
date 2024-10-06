@@ -1,6 +1,7 @@
 package org.acme;
 
 import ai.timefold.solver.core.api.solver.SolverManager;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -36,6 +37,7 @@ public class TimetableResource {
     SolverManager<Timetable, String> solverManager;
 
     @POST
+//    @RolesAllowed({"user"})
     @Transactional
     public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
         UUID uuid = UUID.randomUUID();
@@ -81,6 +83,7 @@ public class TimetableResource {
     }
 
     @GET
+//    @RolesAllowed({"user"})
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public Timetable solveExample() throws ExecutionException, InterruptedException {
@@ -130,7 +133,7 @@ public class TimetableResource {
 
         /*
          * During this solving phase, new Unit objects will be created with the
-         * alloted date and Room assignment.
+         * allotted date and Room assignment.
          * 
          * Currently, the 'old' Unit objects in the 'problem' variable and the
          * 'new' Unit objects in the 'solution' variable are stored as different
