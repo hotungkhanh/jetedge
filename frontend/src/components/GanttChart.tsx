@@ -3,6 +3,7 @@ import { Id } from "vis-data/declarations/data-interface";
 import { DataGroupCollectionType, DataItemCollectionType, DataSet, Timeline } from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.min.css";
 import "../styles/ganttUnassignable.css";
+import { useAuthContext } from "../security/AuthContext";
 
 import {
   findCampusSolution,
@@ -13,13 +14,14 @@ import {
   rawDate,
   toRawDate,
 } from "../scripts/solutionParsing";
-import { TimetableSolution, Unit } from "../scripts/api";
+import { LOCAL_API_URL, TimetableSolution, Unit } from "../scripts/api";
 import { useParams } from "react-router-dom";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
 export default memo(function GanttChart() {
   const params = useParams();
+  const { authHeader } = useAuthContext();
   const timelineRef = useRef<HTMLDivElement | null>(null);
   const items = useRef(new DataSet<GanttItem>());
   const groups = useRef(new DataSet<GanttGroup>());
@@ -218,6 +220,7 @@ export default memo(function GanttChart() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": authHeader,
         },
         body: JSON.stringify(moddedUnits),
       });
@@ -225,6 +228,21 @@ export default memo(function GanttChart() {
       if (!response.ok) {
         throw new Error("Failed to save data, error in GanttChart.tsx");
       }
+
+
+
+      fetch(LOCAL_API_URL + "/timetabling/view", { headers: { 'Authorization': authHeader } })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const timetableSolutions: TimetableSolution[] =
+          data as TimetableSolution[];
+        sessionStorage.setItem("campusSolutions", JSON.stringify(timetableSolutions));
+      });
     } catch (error) {
       console.error("Error saving data:", error);
     }
