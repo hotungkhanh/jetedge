@@ -7,6 +7,7 @@ import { DB_ROOMS, DB_UNITS, getSpreadsheetData } from "../scripts/persistence";
 import { getTimetableProblems } from "../scripts/handleInput";
 import { useState } from "react";
 import { fetchTimetableSolution } from "../scripts/api";
+import { useAuthContext } from '../security/AuthContext';
 
 /**
  * Page for containing UI elements that allow user to send input data to backend.
@@ -19,8 +20,10 @@ import { fetchTimetableSolution } from "../scripts/api";
 export default function SendData() {
 
   const [isGenerated, setIsGenerated] = useState("");
+  const { authHeader } = useAuthContext();
 
   function generateTimetable() {
+    console.log(authHeader);
     setIsGenerated("");
     Promise.all([getSpreadsheetData(DB_ROOMS), getSpreadsheetData(DB_UNITS)])
     .then((responses) => {
@@ -34,7 +37,7 @@ export default function SendData() {
       return getTimetableProblems(roomData, unitData);
     })
     .then((problems) => {
-      return Promise.all(problems.map(p => fetchTimetableSolution(p)));
+      return Promise.all(problems.map(p => fetchTimetableSolution(p, authHeader)));
     })
     .then((solutions) => {
       console.log(solutions);
