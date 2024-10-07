@@ -5,7 +5,8 @@ import Footer from "../components/Footer";
 import BackButton from "../components/BackButton";
 import { Outlet } from "react-router-dom";
 import ModSidebar from "../components/ModSiderbar";
-import { TimetableSolution } from "../scripts/api";
+import { LOCAL_API_URL, TimetableSolution } from "../scripts/api";
+import { useAuthContext } from "../security/AuthContext";
 
 /**
  * Renders the TimetableMod component to display and modify the generated
@@ -16,9 +17,10 @@ import { TimetableSolution } from "../scripts/api";
  */
 export default function TimetableMod() {
   const [loading, setLoading] = useState(true);
+  const { authHeader } = useAuthContext();
 
   useEffect(() => {
-    fetch("http://localhost:8080/timetabling/view")
+    fetch(LOCAL_API_URL + "/timetabling/view", { headers: { 'Authorization': authHeader } })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -54,10 +56,8 @@ export default function TimetableMod() {
 
         <Footer>
           <div className="links-container">
-            <Link to="../">
-              <BackButton />
-            </Link>
-            <Link to="../senddata"></Link>
+            <Link to="../senddata"><BackButton /></Link>
+            <Link to="../"></Link>
           </div>
         </Footer>
     </div>
