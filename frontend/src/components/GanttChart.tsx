@@ -214,8 +214,8 @@ export default memo(function GanttChart() {
 
   const saveData = async () => {
     try {
-      const response = await fetch("", {
-        method: "POST",
+      const response = await fetch("http://localhost:8080/timetabling/update", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
