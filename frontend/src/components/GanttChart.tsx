@@ -1,23 +1,29 @@
 import { memo, useEffect, useRef } from "react";
 import { Id } from "vis-data/declarations/data-interface";
-import { DataGroupCollectionType, DataItemCollectionType, DataSet, Timeline, TimelineItem } from "vis-timeline/standalone";
+import { DataGroupCollectionType, DataItemCollectionType, DataSet, Timeline } from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.min.css";
 import "../styles/ganttUnassignable.css";
 
 import {
   findCampusSolution,
   GanttGroup,
+  GanttItem,
   GanttItems,
   getGanttItems,
+  rawDate,
+  toRawDate,
 } from "../scripts/solutionParsing";
-import { TimetableSolution } from "../scripts/api";
+import { TimetableSolution, Unit } from "../scripts/api";
 import { useParams } from "react-router-dom";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 export default memo(function GanttChart() {
   const params = useParams();
   const timelineRef = useRef<HTMLDivElement | null>(null);
-  const items = useRef(new DataSet<TimelineItem>());
+  const items = useRef(new DataSet<GanttItem>());
   const groups = useRef(new DataSet<GanttGroup>());
+  let moddedUnits: Unit[] = [];
 
   let campusSolutions: TimetableSolution[];
   let check: string | null = sessionStorage.getItem("campusSolutions");
@@ -48,10 +54,10 @@ export default memo(function GanttChart() {
       let prevSelected: Id | null = null;
 
       const options = {
-        start: "2000-01-01",
-        end: "2000-01-06",
-        min: "2000-01-01",
-        max: "2000-01-07",
+        start: "2024-10-14",
+        end: "2024-10-19",
+        min: "2024-10-14",
+        max: "2024-10-19",
         editable: true,
       };
 
@@ -63,9 +69,9 @@ export default memo(function GanttChart() {
         options
       );
 
-      const hasOverlap = (newItem: TimelineItem | null) => {
+      const hasOverlap = (newItem: GanttItem | null) => {
         const existingItems = items.current.get();
-        return existingItems.some((item: TimelineItem) => {
+        return existingItems.some((item: GanttItem) => {
           if (
             newItem == null ||
             item.id === newItem.id ||
@@ -84,7 +90,7 @@ export default memo(function GanttChart() {
         });
       };
 
-      const validGroup = (item: TimelineItem | null) => {
+      const validGroup = (item: GanttItem | null) => {
         if (item == null) return true;
         const group: GanttGroup|null = groups.current.get(item.group as Id);
         return (group !== null && group.treeLevel === 2);
@@ -101,6 +107,51 @@ export default memo(function GanttChart() {
           if (!inRoom) {
             alert("ASSIGN ACTIVITIES TO ROOMS ONLY");
           }
+          if (!overlaps && inRoom) {
+            let rawStartDate: rawDate = toRawDate(items.current.get(prevSelected)?.start as Date);
+            let rawEndDate: rawDate = toRawDate(
+              items.current.get(prevSelected)?.end as Date
+            );
+            let unitId:number|undefined = items.current.get(prevSelected)?.UnitId;
+            let campus: string|undefined = items.current.get(prevSelected)?.campus;
+            let buildingId: string|undefined = groups.current.get(
+                    groups.current.get(
+                      items.current.get(prevSelected)?.group as Id
+                    )?.parent as Id
+                  )?.originalId
+            let roomCode: string|undefined = groups.current.get(
+                    items.current.get(prevSelected)?.group as Id
+                  )?.originalId;
+            if ( unitId !== undefined && campus !== undefined && buildingId !== undefined && roomCode !== undefined) {
+              const modded: Unit = {
+                campus: "",
+                name:"",
+                course: "",
+                duration:-1,
+                students:[],
+                wantsLab: false,
+                unitId: unitId,
+                room: {
+                  campus: campus,
+                  buildingId: buildingId,
+                  roomCode: roomCode,
+                  capacity: -1,
+                  lab: false,
+                },
+                dayOfWeek: rawStartDate.dayOfWeek,
+                startTime: rawStartDate.time,
+                end: rawEndDate.time,
+              };
+              const index = moddedUnits.findIndex(
+                (item) => item.unitId === modded.unitId
+              );
+              if (index !== -1) {
+                moddedUnits.splice(index, 1);
+              }
+              moddedUnits.push(modded);
+            }
+            console.log(moddedUnits);
+          }
         }
 
         if (properties.items.length > 0) {
@@ -116,33 +167,67 @@ export default memo(function GanttChart() {
     }
   }, []);
 
-  const convertToCSV = () => {
-    let csvContent = "id,content,start,end,group\n";
+  const convertToCSV = (course:string) => {
+    let csvContent = "id,name,start,end,room,building\n";
     const itemList = items.current.get();
     itemList.forEach((item) => {
-      const start = item.start.toString();
-      const end = item.end ? item.end.toString() : "";
-      csvContent += `${item.id},${item.content},${start},${end},${groups.current.get(item.group as Id)?.content}\n`;
+      if (item.course === course) {
+        const start = item.start.toString();
+        const end = item.end ? item.end.toString() : "";
+        csvContent += `${item.id},${item.content},${start},${end},${
+          groups.current.get(item.group as Id)?.content
+        }, ${
+          groups.current.get(
+            groups.current.get(item.group as Id)
+              ?.parent as Id
+          )?.originalId
+        }\n`;
+      }
     });
 
     return csvContent;
   };
 
   const downloadCSV = () => {
-    const csvData = convertToCSV();
-    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", "timetable.csv");
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const zip = new JSZip();
+    const uniqueNames = new Set(items.current.map((obj) => obj.course));
+    uniqueNames.forEach((course) => {
+      if (course) {
+        const csvData = convertToCSV(course);
+        zip.file(
+          (params.location as string).replace(/[^a-zA-Z0-9]/g, "_") +
+            "-" +
+            course.replace(/[^a-zA-Z0-9]/g, "_") +
+            ".csv",
+          csvData
+        );
+      }
+    })
+
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(
+        content,
+        (params.location as string).replace(/[^a-zA-Z0-9]/g, "_") + ".zip"
+      );
+    });
   };
 
-  const saveData = () => {
+  const saveData = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/timetabling/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(moddedUnits),
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to save data, error in GanttChart.tsx");
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+    }
   };
 
   return (
