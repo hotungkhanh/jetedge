@@ -1,3 +1,7 @@
 {
-  "conventionalCommits.scopes": ["database", "display ganttchart"]
+  "conventionalCommits.scopes": [
+    "database",
+    "display ganttchart",
+    "timetables"
+  ]
 }
