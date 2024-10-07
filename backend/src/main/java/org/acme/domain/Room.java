@@ -57,7 +57,7 @@ public class Room extends PanacheEntity {
      *
      * @param id            The room’s id.
      * @param buildingId    The building that the room belongs to.
-     * @param buildingId    The campus that the room belongs to.
+     * @param campus    The campus that the room belongs to.
      * @param capacity      The room's capacity.
      * @param isLab         Whether the room is a laboratory.
      */
