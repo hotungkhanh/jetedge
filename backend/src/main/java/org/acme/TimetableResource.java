@@ -1,6 +1,7 @@
 package org.acme;
 
 import ai.timefold.solver.core.api.solver.SolverManager;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -36,6 +37,7 @@ public class TimetableResource {
     SolverManager<Timetable, String> solverManager;
 
     @POST
+    @RolesAllowed({"user"})
     @Transactional
     public Timetable handleRequest(Timetable problem) throws ExecutionException, InterruptedException {
         UUID uuid = UUID.randomUUID();
@@ -57,6 +59,7 @@ public class TimetableResource {
 
     @Path("/view")
     @GET
+    @RolesAllowed({"user"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<Timetable> view() {
         return Timetable.listAll();
@@ -72,13 +75,16 @@ public class TimetableResource {
     public void findByCampusAndDelete(String campusName) {
         List<Timetable> timetables = Timetable.listAll();
         for (Timetable timetable : timetables) {
+            System.out.println("CHECKING NOW\n");
             if (campusName.equals(timetable.campusName)) {
+                System.out.println("SMTH HAS BEEN DELETED WOOOO\n");
                 timetable.delete();
             }
         }
     }
 
     @GET
+    @RolesAllowed({"user"})
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     public Timetable solveExample() throws ExecutionException, InterruptedException {
@@ -93,14 +99,14 @@ public class TimetableResource {
         Student h = new Student("h");
         Student i = new Student("i");
 
-        Room r1 = new Room("Room1", "building A", "campus A", 2, true);
-        Room r2 = new Room("Room2", "building B", "campus A", 4, false);
-        Room r3 = new Room("Room3", "building A", "campus B", 4, false);
+        Room r1 = new Room("Room1", "Building1", "Campus1", 2, true);
+        Room r2 = new Room("Room2", "Building2", "Campus2", 4, false);
+        Room r3 = new Room("Room3", "Building3", "Campus3", 4, false);
 
-        Unit u1 = new Unit(1, "1", "Course A", Duration.ofHours(2), List.of(a, b), true);
-        Unit u2 = new Unit(2, "2", "Course A", Duration.ofHours(2), List.of(a, c, d, e), true);
-        Unit u3 = new Unit(3, "3", "Course B", Duration.ofHours(2), List.of(f, g, h, i), false);
-        Unit u4 = new Unit(4, "4", "Course C", Duration.ofHours(2), List.of(a, b), false);
+        Unit u1 = new Unit(1, "This", "Course A", Duration.ofHours(2), List.of(a, b), true);
+        Unit u2 = new Unit(2, "Is", "Course A", Duration.ofHours(2), List.of(a, c, d, e), true);
+        Unit u3 = new Unit(3, "A", "Course B", Duration.ofHours(2), List.of(f, g, h, i), false);
+        Unit u4 = new Unit(4, "Test", "Course C", Duration.ofHours(2), List.of(a, b), false);
 
         var problem = new Timetable("Campus A",
                 List.of(
@@ -128,7 +134,7 @@ public class TimetableResource {
 
         /*
          * During this solving phase, new Unit objects will be created with the
-         * alloted date and Room assignment.
+         * allotted date and Room assignment.
          * 
          * Currently, the 'old' Unit objects in the 'problem' variable and the
          * 'new' Unit objects in the 'solution' variable are stored as different
