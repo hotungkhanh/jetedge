@@ -56,10 +56,8 @@ export default function TimetableMod() {
 
         <Footer>
           <div className="links-container">
-            <Link to="../">
-              <BackButton />
-            </Link>
-            <Link to="../senddata"></Link>
+            <Link to="../senddata"><BackButton /></Link>
+            <Link to="../"></Link>
           </div>
         </Footer>
     </div>
