@@ -22,9 +22,10 @@ public class User extends PanacheEntity {
 
     /**
      * Adds a new user to the database
+     *
      * @param username the username
      * @param password the unencrypted password (it is encrypted with bcrypt)
-     * @param role the comma-separated roles
+     * @param role     the comma-separated roles
      */
     public static void add(String username, String password, String role) {
         User user = new User();
