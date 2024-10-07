@@ -176,7 +176,7 @@ export function toRawDate(date: Date): rawDate {
   const startTime = `${hours}:${minutes}:${seconds}`;
 
   return { dayOfWeek: dayOfWeek as Weekday, time: startTime };
-
+}
 
 //TODO: Parse data to send to backend
 export function formatSolution2Save(items: GanttItems) {
