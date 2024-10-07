@@ -1,14 +1,10 @@
-package org.acme;
+package org.acme.rest;
 
 import ai.timefold.solver.core.api.solver.SolverManager;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.acme.domain.Room;
 import org.acme.domain.Student;
@@ -19,9 +15,8 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Entry to the timetabling program.
@@ -135,15 +130,15 @@ public class TimetableResource {
         /*
          * During this solving phase, new Unit objects will be created with the
          * allotted date and Room assignment.
-         * 
+         *
          * Currently, the 'old' Unit objects in the 'problem' variable and the
          * 'new' Unit objects in the 'solution' variable are stored as different
          * Units in the database due to our inability to control the behaviour
          * of solverManager.solve
-         * 
+         *
          * i.e. after solving, there will be 2 copies of each Unit in the
-         * database, where the 'old' Unit has the list of students but no 
-         * timetable assignment, while the 'new' Unit does not have the list 
+         * database, where the 'old' Unit has the list of students but no
+         * timetable assignment, while the 'new' Unit does not have the list
          * of students enrolled, but does have the assigned date and room
          */
 
@@ -151,7 +146,7 @@ public class TimetableResource {
 
         Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
 
-        solution.persist();     
+        solution.persist();
         // saves the solution timetable and all related entities to database
 
         return solution;

@@ -5,7 +5,6 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
-
 import org.eclipse.microprofile.config.Config;
 
 @Singleton
