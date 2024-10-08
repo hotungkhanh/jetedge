@@ -1,6 +1,5 @@
 import SemesterInfo from './pages/SemesterInfo.tsx'
 import TimetableMod from './pages/TimetableMod.tsx'
-import Building from './pages/spreadsheets/Building.tsx'
 import Room from './pages/spreadsheets/Room.tsx'
 import Unit from './pages/spreadsheets/Unit.tsx'
 import Download from './pages/Download.tsx'
@@ -33,7 +32,6 @@ const routes = [
     path: "seminfo",
     element: <PrivateRoute element={<SemesterInfo />} />,
     children: [
-      { path: "building", element: <Building /> },
       { path: "room", element: <Room /> },
       { path: "unit", element: <Unit /> },
     ],

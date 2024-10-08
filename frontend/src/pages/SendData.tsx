@@ -57,7 +57,7 @@ export default function SendData() {
       <Footer>
         <button style={{ scale: "2", position: "absolute", top: 20, right: 45 + "%" }} onClick={generateTimetable}>Generate Timetable</button>
         <div className="links-container">
-          <Link to="../seminfo/building"><BackButton /></Link>
+          <Link to="../seminfo/room"><BackButton /></Link>
           <Link to="../timetablemod"><NextButton /></Link>
         </div>
       </Footer>
