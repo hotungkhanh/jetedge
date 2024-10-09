@@ -12,7 +12,6 @@ import { DB_UNITS, storeSpreadsheetData } from './persistence';
 function isExcelFile(file: File) {
   const fileExtension = file.name.split('.').pop();
   if (fileExtension === undefined || !['xlsx', 'xls'].includes(fileExtension)) {
-    alert("Wrong file type, file type must be .xlsx or .xls");
     return false;
   }
   return true;
@@ -33,7 +32,6 @@ function validateEnrolmentHeader(inputHeader: Row) {
     return true;
   }
   else {
-    alert("Enrolment data header row is invalid");
     return false;
   }
 }
