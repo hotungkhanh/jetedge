@@ -132,7 +132,9 @@ export async function prefillUnitSpreadsheet(enrolmentExcel: File) {
 
   const units = unitsMaps.map(m => {
     const unitsData = Array.from(m.values());
-    const transformed = unitsData.map(ud => { return { ...ud, enrolment: JSON.stringify(ud.enrolment) } });
+    const transformed = unitsData
+      .filter((ud) => ud.enrolment.length > 0)
+      .map(ud => { return { ...ud, enrolment: JSON.stringify(ud.enrolment) } });
     return transformed;
   }).flat();
 
