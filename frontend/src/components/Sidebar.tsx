@@ -42,15 +42,6 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
     >
       <List>
 
-        <ListItem key="Building" disablePadding>
-          <ListItemButton component={Link} to="building">
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Building" />
-          </ListItemButton>
-        </ListItem>
-
         <ListItem key="Room" disablePadding>
           <ListItemButton component={Link} to="room">
             <ListItemIcon>
