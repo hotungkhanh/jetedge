@@ -64,7 +64,7 @@ export default function SendData() {
             </>
           ) : (
             <>
-              <Link to="../seminfo/building"><BackButton /></Link>
+              <Link to="../seminfo/room"><BackButton /></Link>
               <Link to="../timetablemod"><NextButton /></Link>
             </>
           )}
