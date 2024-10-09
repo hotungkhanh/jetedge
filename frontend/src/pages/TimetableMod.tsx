@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import BackButton from "../components/BackButton";
 import { Outlet } from "react-router-dom";
 import ModSidebar from "../components/ModSiderbar";
-import { LOCAL_API_URL, TimetableSolution } from "../scripts/api";
+import { REMOTE_API_URL, TimetableSolution } from "../scripts/api";
 import { useAuthContext } from "../security/AuthContext";
 
 /**
@@ -20,7 +20,7 @@ export default function TimetableMod() {
   const { authHeader } = useAuthContext();
 
   useEffect(() => {
-    fetch(LOCAL_API_URL + "/timetabling/view", { headers: { 'Authorization': authHeader } })
+    fetch(REMOTE_API_URL + "/timetabling/view", { headers: { 'Authorization': authHeader } })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

@@ -1,7 +1,7 @@
 import { AuthHeader } from "../security/AuthContext";
 
 /* Timetable solver backend endpoint URL */
-export const API_URL = "http://localhost:8080";
+export const REMOTE_API_URL = "https://jetedge-backend-e1eeff4b0c04.herokuapp.com";
 export const LOCAL_API_URL = "http://localhost:8080";
 
 /* =========================================== Defining types =========================================== */
@@ -64,7 +64,7 @@ export type Time = string;
  */
 export async function fetchTimetableSolution(problem: TimetableProblem, authHeader: AuthHeader, url?: string): Promise<TimetableSolution | null> {
   try {
-    let api_url = API_URL;
+    let api_url = REMOTE_API_URL;
     if (url !== undefined) {
       api_url = url;
     }
@@ -79,7 +79,7 @@ export async function fetchTimetableSolution(problem: TimetableProblem, authHead
 
     if (!response.ok) {
       if (response.status === 500) {
-        alert(response.statusText + " " + response.status + ": server was not able to solve the problem. Please check for missing input (i.e. make sure there are at least 1 available room and no rooms with duplicate ID).");
+        alert(response.statusText + " " + response.status + ": server was not able to solve the problem.");
       }
       throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
     }

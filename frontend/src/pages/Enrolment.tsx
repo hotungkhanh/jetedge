@@ -5,7 +5,7 @@ import Header from "../components/Header.tsx";
 import Footer from "../components/Footer.tsx";
 import Photo from "../assets/frontpage.jpg";
 import { useEffect } from "react";
-import { LOCAL_API_URL, TimetableSolution } from "../scripts/api.ts";
+import { REMOTE_API_URL, TimetableSolution } from "../scripts/api.ts";
 import { useAuthContext } from "../security/AuthContext.tsx";
 import SkipButton from "../components/SkipButton.tsx";
 
@@ -26,7 +26,7 @@ export default function StarterPage() {
   };
   const { authHeader } = useAuthContext();
   useEffect(() => {
-    fetch(LOCAL_API_URL + "/timetabling/view", {
+    fetch(REMOTE_API_URL + "/timetabling/view", {
       headers: { Authorization: authHeader },
     })
       .then((response) => {
