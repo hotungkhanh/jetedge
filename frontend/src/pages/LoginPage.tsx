@@ -4,22 +4,26 @@ import { AuthHeader, useAuthContext } from '../security/AuthContext';
 import '../styles/login.css';
 import VIT_Logo from '../assets/logo.png';
 import { LOCAL_API_URL } from '../scripts/api';
+import LoadingButton from '../components/LoadingButton';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const { setAuthHeader } = useAuthContext();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setLoading(true);
+
     const encodedHeader: AuthHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
     try {
       // Send a request to the backend to validate credentials
       const response = await fetch(LOCAL_API_URL + "/login", {
-        method: 'GET', // or POST depending on your API design
+        method: 'GET',
         headers: {
           'Authorization': encodedHeader,
         },
@@ -34,7 +38,10 @@ export default function LoginPage() {
       }
     }
     catch (error) {
-      console.log(error);
+      alert(error);
+    }
+    finally {
+      setLoading(false);
     }
 
   }
@@ -69,9 +76,17 @@ export default function LoginPage() {
           />
         </div>
 
-        <button type="submit" className="login-button">
-          Login
-        </button>
+        <LoadingButton
+          loading={loading}
+          onClick={() => {}}
+          text="Login"
+          type='submit'
+          sx={{
+            width: '100%',
+            height: '40px',
+            marginTop: '2px',
+          }}
+        />
       </form>
     </div>
   );
