@@ -1,18 +1,13 @@
 package org.acme.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a room.
@@ -21,7 +16,7 @@ import jakarta.persistence.OneToMany;
  */
 @Entity
 public class Room extends PanacheEntity {
-    
+
     @PlanningId
     public String roomCode;
 
@@ -55,11 +50,11 @@ public class Room extends PanacheEntity {
     /**
      * Creates a room with its ID and capacity.
      *
-     * @param id            The room’s id.
-     * @param buildingId    The building that the room belongs to.
-     * @param campus    The campus that the room belongs to.
-     * @param capacity      The room's capacity.
-     * @param isLab         Whether the room is a laboratory.
+     * @param id         The room’s id.
+     * @param buildingId The building that the room belongs to.
+     * @param campus     The campus that the room belongs to.
+     * @param capacity   The room's capacity.
+     * @param isLab      Whether the room is a laboratory.
      */
     public Room(String id, String buildingId, String campus, int capacity, boolean isLab) {
         this.roomCode = id;

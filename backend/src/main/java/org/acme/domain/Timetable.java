@@ -6,22 +6,15 @@ import ai.timefold.solver.core.api.domain.solution.PlanningSolution;
 import ai.timefold.solver.core.api.domain.solution.ProblemFactCollectionProperty;
 import ai.timefold.solver.core.api.domain.valuerange.ValueRangeProvider;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a timetable, the solution from the program.
@@ -44,16 +37,16 @@ public class Timetable extends PanacheEntity {
 
     /*
      * Rooms can belong to multiple timetables because timetables are generated
-     * on a per-campus basis, and although each room can only belong to one 
+     * on a per-campus basis, and although each room can only belong to one
      * campus, the user may choose to generate multiple timetables for each
      * campus, hence the many-to-many relationship
      */
     @JsonIgnoreProperties("timetables")
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-        name = "room_timetable",
-        joinColumns = @JoinColumn(name = "timetable_id"),
-        inverseJoinColumns = @JoinColumn(name = "room_id")
+            name = "room_timetable",
+            joinColumns = @JoinColumn(name = "timetable_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id")
     )
     @ProblemFactCollectionProperty
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -68,9 +61,9 @@ public class Timetable extends PanacheEntity {
     @JsonIgnoreProperties("timetables")
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-        name = "unit_timetable",
-        joinColumns = @JoinColumn(name = "timetable_id"),
-        inverseJoinColumns = @JoinColumn(name = "unit_id")
+            name = "unit_timetable",
+            joinColumns = @JoinColumn(name = "timetable_id"),
+            inverseJoinColumns = @JoinColumn(name = "unit_id")
     )
     @PlanningEntityCollectionProperty
     public List<Unit> units;
