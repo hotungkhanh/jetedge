@@ -25,6 +25,9 @@ export default function SendData() {
 
   function generateTimetable() {
     setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 120000);
     Promise.all([getSpreadsheetData(DB_ROOMS), getSpreadsheetData(DB_UNITS)])
     .then((responses) => {
       const [roomData, unitData] = [...responses];
@@ -41,11 +44,11 @@ export default function SendData() {
     })
     .then((solutions) => {
       console.log(solutions);
-      setLoading(false);
+      // setLoading(false);
     })
     .catch((error) => {
       alert(error);
-      setLoading(false);
+      // setLoading(false);
     })
   }
 
