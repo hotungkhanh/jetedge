@@ -8,6 +8,7 @@ import { getTimetableProblems } from "../scripts/handleInput";
 import { useState } from "react";
 import { fetchTimetableSolution } from "../scripts/api";
 import { useAuthContext } from '../security/AuthContext';
+import LoadingButton from "../components/LoadingButton";
 
 /**
  * Page for containing UI elements that allow user to send input data to backend.
@@ -19,12 +20,11 @@ import { useAuthContext } from '../security/AuthContext';
  */
 export default function SendData() {
 
-  const [isGenerated, setIsGenerated] = useState("");
+  const [loading, setLoading] = useState(false);
   const { authHeader } = useAuthContext();
 
   function generateTimetable() {
-    console.log(authHeader);
-    setIsGenerated("");
+    setLoading(true);
     Promise.all([getSpreadsheetData(DB_ROOMS), getSpreadsheetData(DB_UNITS)])
     .then((responses) => {
       const [roomData, unitData] = [...responses];
@@ -41,24 +41,33 @@ export default function SendData() {
     })
     .then((solutions) => {
       console.log(solutions);
-      setIsGenerated(JSON.stringify(solutions, null, 2));
+      setLoading(false);
     })
     .catch((error) => {
       alert(error);
+      setLoading(false);
     })
   }
 
   return (
     <>
       <Header />
-      <div style={{ backgroundColor: "#ffefe3", minHeight: 70+"vh", maxHeight: 70+"vh", maxWidth: 50+"vw", margin: "0 auto", marginTop: 20, overflow: "scroll" }}>
-        <pre>{isGenerated.toString()}</pre>
+      <div style={{ display: "flex", justifyContent: "center", height: "80vh" }}>
+        <LoadingButton loading={loading} onClick={generateTimetable} text="Generate Timetable" sx={{ width: 300+"px", height: 50+"px", alignSelf: "center" }} />
       </div>
       <Footer>
-        <button style={{ scale: "2", position: "absolute", top: 20, right: 45 + "%" }} onClick={generateTimetable}>Generate Timetable</button>
         <div className="links-container">
-          <Link to="../seminfo/room"><BackButton /></Link>
-          <Link to="../timetablemod"><NextButton /></Link>
+          {loading ? (
+            <>
+              <BackButton disabled={loading} />
+              <NextButton disabled={loading} />
+            </>
+          ) : (
+            <>
+              <Link to="../seminfo/room"><BackButton /></Link>
+              <Link to="../timetablemod"><NextButton /></Link>
+            </>
+          )}
         </div>
       </Footer>
     </>
