@@ -94,16 +94,16 @@ public class TimetableResource {
         Student h = new Student("h");
         Student i = new Student("i");
 
-        Room r1 = new Room("Room1", "Building1", "Campus1", 2, true);
-        Room r2 = new Room("Room2", "Building2", "Campus2", 4, false);
-        Room r3 = new Room("Room3", "Building3", "Campus3", 4, false);
+        Room r1 = new Room("Room1", "Building1", "Adelaide", 2, true);
+        Room r2 = new Room("Room2", "Building2", "Adelaide", 4, false);
+        Room r3 = new Room("Room3", "Building3", "Adelaide", 4, false);
 
         Unit u1 = new Unit(1, "This", "Course A", Duration.ofHours(2), List.of(a, b), true);
         Unit u2 = new Unit(2, "Is", "Course A", Duration.ofHours(2), List.of(a, c, d, e), true);
         Unit u3 = new Unit(3, "A", "Course B", Duration.ofHours(2), List.of(f, g, h, i), false);
         Unit u4 = new Unit(4, "Test", "Course C", Duration.ofHours(2), List.of(a, b), false);
 
-        var problem = new Timetable("Campus A",
+        var problem = new Timetable("Adelaide",
                 List.of(
                         u1, u2, u3, u4
 //                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
