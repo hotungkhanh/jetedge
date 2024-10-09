@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthHeader, useAuthContext } from '../security/AuthContext';
 import '../styles/login.css';
 import VIT_Logo from '../assets/logo.png';
-import { LOCAL_API_URL } from '../scripts/api';
+import { REMOTE_API_URL } from '../scripts/api';
 import LoadingButton from '../components/LoadingButton';
 
 export default function LoginPage() {
@@ -22,7 +22,7 @@ export default function LoginPage() {
 
     try {
       // Send a request to the backend to validate credentials
-      const response = await fetch(LOCAL_API_URL + "/login", {
+      const response = await fetch(REMOTE_API_URL + "/login", {
         method: 'GET',
         headers: {
           'Authorization': encodedHeader,
