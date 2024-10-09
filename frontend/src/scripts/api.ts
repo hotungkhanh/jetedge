@@ -1,8 +1,8 @@
 import { AuthHeader } from "../security/AuthContext";
 
 /* Timetable solver backend endpoint URL */
-const API_URL = "http://localhost:8080/timetabling";
-export const LOCAL_API_URL = "http://localhost:8080"
+export const API_URL = "http://localhost:8080";
+export const LOCAL_API_URL = "http://localhost:8080";
 
 /* =========================================== Defining types =========================================== */
 
@@ -62,9 +62,13 @@ export type Time = string;
  * @param problem A TimetableProblem is a list of units with no allocated time and room.
  * @returns A TimetableSolution with all units allocated a time and a room.
  */
-export async function fetchTimetableSolution(problem: TimetableProblem, authHeader: AuthHeader): Promise<TimetableSolution | null> {
+export async function fetchTimetableSolution(problem: TimetableProblem, authHeader: AuthHeader, url?: string): Promise<TimetableSolution | null> {
   try {
-    const response = await fetch(API_URL, {
+    let api_url = API_URL;
+    if (url !== undefined) {
+      api_url = url;
+    }
+    const response = await fetch(api_url+"/timetabling", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
