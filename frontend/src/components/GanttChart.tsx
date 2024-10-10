@@ -208,7 +208,7 @@ export default memo(function GanttChart() {
             "-" +
             course.replace(/[^a-zA-Z0-9]/g, "_") +
             ".csv",
-          csvData
+          csvData.replace(/\u00A0/g, "")// TODO: TEST THIS OUT
         );
       }
     })

@@ -1,3 +1,7 @@
 .vis-item.vis-background.negative {
   background-color: rgba(255, 0, 0, 0.2);
 }
+
+.modified {
+  background-color: "red";
+}
