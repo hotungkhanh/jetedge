@@ -5,6 +5,6 @@ const router = createBrowserRouter(routes);
 
 export default function App() {
   return (
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   )
 }

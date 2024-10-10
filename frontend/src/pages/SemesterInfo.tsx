@@ -25,7 +25,7 @@ export default function SemesterInfo() {
 
       <Footer>
         <div className="links-container">
-          <Link to="../enrolment"><BackButton/></Link>
+          <Link to="../"><BackButton/></Link>
           <Link to="../senddata"><NextButton/></Link>
         </div>
       </Footer>

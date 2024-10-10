@@ -1,15 +1,17 @@
 package org.acme.solver;
 
-import ai.timefold.solver.test.api.score.stream.ConstraintVerifier;
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
-import org.acme.domain.*;
-import org.junit.jupiter.api.Test;
-
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
+
+import org.acme.domain.*;
+
+import jakarta.inject.Inject;
+import ai.timefold.solver.test.api.score.stream.ConstraintVerifier;
+import org.junit.jupiter.api.Test;
+
+import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 public class TimetableConstraintProviderTest {
@@ -35,7 +37,7 @@ public class TimetableConstraintProviderTest {
     void studentConflict() {
         Unit firstUnit = new Unit(1, "unit1", "Course A", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1), true, ROOM1);
         Unit conflictingUnit = new Unit(2, "unit2", "Course A", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT1), false, ROOM2);
-        Unit nonConflictingUnit = new Unit(3, "unit3", "Course B", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2), true, ROOM3);
+        Unit nonConflictingUnit = new Unit(3, "unit3","Course B", DAY_OF_WEEK, START_TIME, DURATION, List.of(STUDENT2), true, ROOM3);
         ConflictingUnit conflictingUnitPair = new ConflictingUnit(firstUnit, conflictingUnit, 1);
 
         constraintVerifier.verifyThat(TimetableConstraintProvider::studentConflict)

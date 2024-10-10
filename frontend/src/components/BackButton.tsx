@@ -6,12 +6,11 @@ import { Button } from '@mui/material';
  * Displays a button with an arrow icon and text 'Back'.
  * @returns JSX element representing the back button
  */
-export default function BackButton({ disabled=false } : {disabled?: boolean}) {
+export default function BackButton() {
   return (
     <Button 
       variant='outlined' 
       startIcon={<ArrowBackIcon/>}
-      disabled={disabled}
       sx={{
       color: 'white',
       borderColor: 'white',

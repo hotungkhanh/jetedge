@@ -12,6 +12,7 @@ import { DB_UNITS, storeSpreadsheetData } from './persistence';
 function isExcelFile(file: File) {
   const fileExtension = file.name.split('.').pop();
   if (fileExtension === undefined || !['xlsx', 'xls'].includes(fileExtension)) {
+    alert("Wrong file type, file type must be .xlsx or .xls");
     return false;
   }
   return true;
@@ -32,6 +33,7 @@ function validateEnrolmentHeader(inputHeader: Row) {
     return true;
   }
   else {
+    alert("Enrolment data header row is invalid");
     return false;
   }
 }
@@ -132,9 +134,7 @@ export async function prefillUnitSpreadsheet(enrolmentExcel: File) {
 
   const units = unitsMaps.map(m => {
     const unitsData = Array.from(m.values());
-    const transformed = unitsData
-      .filter((ud) => ud.enrolment.length > 0)
-      .map(ud => { return { ...ud, enrolment: JSON.stringify(ud.enrolment) } });
+    const transformed = unitsData.map(ud => { return { ...ud, enrolment: JSON.stringify(ud.enrolment) } });
     return transformed;
   }).flat();
 
