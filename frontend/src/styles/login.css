@@ -1,0 +1,79 @@
+/* Container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+/* Form */
+.login-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Logo */
+.login-logo {
+  width: 30%; /* Adjust the size of the logo */
+  height: auto;
+  margin-bottom: 0.5rem; /* Space between logo and title */
+}
+
+/* Title */
+.login-title {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 24px;
+  text-align: center;
+}
+
+/* Input Wrapper */
+.input-group {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Input */
+.login-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #f05a22;
+}
+
+/* Button */
+.login-button {
+  background-color: #f05a22;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #e0481f;
+}
+
+.login-button:active {
+  background-color: #cc3d1b;
+}

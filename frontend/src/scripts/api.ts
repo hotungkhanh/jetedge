@@ -1,5 +1,8 @@
+import { AuthHeader } from "../security/AuthContext";
+
 /* Timetable solver backend endpoint URL */
-const API_URL = "http://localhost:8080/timetabling";
+export const REMOTE_API_URL = "https://jetedge-backend-e1eeff4b0c04.herokuapp.com";
+export const LOCAL_API_URL = "http://localhost:8080";
 
 /* =========================================== Defining types =========================================== */
 
@@ -59,19 +62,24 @@ export type Time = string;
  * @param problem A TimetableProblem is a list of units with no allocated time and room.
  * @returns A TimetableSolution with all units allocated a time and a room.
  */
-export async function fetchTimetableSolution(problem: TimetableProblem): Promise<TimetableSolution | null> {
+export async function fetchTimetableSolution(problem: TimetableProblem, authHeader: AuthHeader, url?: string): Promise<TimetableSolution | null> {
   try {
-    const response = await fetch(API_URL, {
+    let api_url = REMOTE_API_URL;
+    if (url !== undefined) {
+      api_url = url;
+    }
+    const response = await fetch(api_url+"/timetabling", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': authHeader,
       },
       body: JSON.stringify(problem)
     });
 
     if (!response.ok) {
       if (response.status === 500) {
-        alert(response.statusText + " " + response.status + ": server was not able to solve the problem. Please check for missing input (i.e. make sure there are at least 1 available room and no rooms with duplicate ID).");
+        alert(response.statusText + " " + response.status + ": server was not able to solve the problem.");
       }
       throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
     }

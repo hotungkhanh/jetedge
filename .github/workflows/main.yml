@@ -44,6 +44,8 @@ jobs:
           QUARKUS_DATASOURCE_PASSWORD: ${{secrets.QUARKUS_DATASOURCE_PASSWORD}}
           QUARKUS_DATASOURCE_JDBC_URL: ${{secrets.QUARKUS_DATASOURCE_JDBC_URL}}
 
+          FRONTEND_USERNAME: ${{secrets.FRONTEND_USERNAME}}
+          FRONTEND_PASSWORD: ${{secrets.FRONTEND_PASSWORD}}
 
   deploy:
     needs: build
