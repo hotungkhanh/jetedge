@@ -3,16 +3,23 @@ package org.acme.domain;
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 import ai.timefold.solver.core.api.domain.variable.PlanningVariable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Represents a unit.
@@ -48,8 +55,8 @@ public class Unit extends PanacheEntity {
 
     /*
      * currently each unit only has 1 'slot' on the timetable, so it can only
-     * be associated with one room, but in the final product, we would most
-     * likely have to change this to a many-to-many relationship
+     * be associated with one room, but in the final product, we would most 
+     * likely have to change this to a many-to-many relationship 
      * i.e. list of Rooms, because we might want to separate lecture/tutorial
      * etc.
      */
@@ -121,7 +128,7 @@ public class Unit extends PanacheEntity {
      * @param duration The unit’s duration.
      * @param students The list of students enrolled in the unit.
      * @param wantsLab Whether the unit wants a laboratory room.
-     * @param room     The unit's room.
+     * @param room The unit's room.
      */
     public Unit(int unitID, String name, String course, DayOfWeek dayOfWeek, LocalTime startTime, Duration duration, List<Student> students, boolean wantsLab, Room room) {
         this.unitId = unitID;
@@ -187,7 +194,7 @@ public class Unit extends PanacheEntity {
 
     public void setStudents(List<Student> students) {
         this.students = students;
-        this.setStudentsUnits();
+        this.setStudentsUnits();;
     }
 
     /**
