@@ -14,7 +14,7 @@ import {
   rawDate,
   toRawDate,
 } from "../scripts/solutionParsing";
-import { LOCAL_API_URL, TimetableSolution, Unit } from "../scripts/api";
+import { REMOTE_API_URL, TimetableSolution, Unit } from "../scripts/api";
 import { useParams } from "react-router-dom";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -223,7 +223,7 @@ export default memo(function GanttChart() {
 
   const saveData = async () => {
     try {
-      const response = await fetch("http://localhost:8080/timetabling/update", {
+      const response = await fetch(REMOTE_API_URL + "/timetabling/update", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -238,7 +238,7 @@ export default memo(function GanttChart() {
 
 
 
-      fetch(LOCAL_API_URL + "/timetabling/view", { headers: { 'Authorization': authHeader } })
+      fetch(REMOTE_API_URL + "/timetabling/view", { headers: { 'Authorization': authHeader } })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
