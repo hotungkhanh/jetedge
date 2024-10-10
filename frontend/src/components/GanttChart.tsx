@@ -18,6 +18,7 @@ import { LOCAL_API_URL, TimetableSolution, Unit } from "../scripts/api";
 import { useParams } from "react-router-dom";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { Button } from "@mui/material";
 
 export default memo(function GanttChart() {
   const params = useParams();
@@ -60,7 +61,13 @@ export default memo(function GanttChart() {
         end: "2024-10-19",
         min: "2024-10-14",
         max: "2024-10-19",
-        editable: true,
+        editable: {
+          add: false, // add new items by double tapping
+          updateTime: true, // drag items horizontally
+          updateGroup: true, // drag items from one group to another
+          remove: false, // delete an item by tapping the delete button top right
+          overrideItems: false, // allow these options to override item.editable
+        },
       };
 
       // Initialize the timeline
@@ -251,8 +258,43 @@ export default memo(function GanttChart() {
   return (
     <div>
       <div ref={timelineRef} />
-      <button onClick={downloadCSV}> Download Timetable </button>
-      <button onClick={saveData}>Save Changes</button>
+      <Button
+        onClick={downloadCSV}
+        variant="outlined"
+        size="small"
+        sx={{
+          color: "black",
+          borderColor: "black",
+          "&:hover": {
+            color: "#f05a22",
+            borderColor: "#f05a22",
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+          },
+          borderRadius: "3px",
+          marginTop: "5px",
+        }}
+      >
+        Download Timetable
+      </Button>
+      <Button
+        onClick={saveData}
+        variant="outlined"
+        size="small"
+        sx={{
+          color: "black",
+          borderColor: "black",
+          "&:hover": {
+            color: "#f05a22",
+            borderColor: "#f05a22",
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+          },
+          borderRadius: "3px",
+          marginTop: "5px",
+          marginLeft: "7px"
+        }}
+      >
+        Save Changes
+      </Button>
     </div>
   );
 })
