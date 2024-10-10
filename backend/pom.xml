@@ -98,11 +98,7 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-metrics</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-narayana-jta</artifactId>
+      <artifactId>quarkus-security-jpa</artifactId>
     </dependency>
   </dependencies>
 
