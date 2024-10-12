@@ -48,17 +48,29 @@ export default function StarterPage() {
     <Box className="app-container">
       <Header />
       <Box className="content">
-        <Box className="description" sx={{ minWidth: 550+"px" }}>
+        <Box className="description" sx={{ minWidth: 550 + "px" }}>
           <span style={timeStyle}>Time</span>
           <span style={tablerStyle}>tabler</span>
-          <span style={{ margin: -3, fontSize: 15, marginLeft: 5, opacity: 0.4 }}>The smartest Timetabler ever</span>
-          <p style={{ color: "#f05a22", fontSize: 20 }}>A timetabling website for the Victorian Institute of Technology</p>
-          <p>   -Team JetEdge</p>
+          <span
+            style={{ margin: -3, fontSize: 15, marginLeft: 5, opacity: 0.4 }}
+          >
+            The smartest Timetabler ever
+          </span>
+          <p style={{ color: "#f05a22", fontSize: 20 }}>
+            A timetabling website for the Victorian Institute of Technology
+          </p>
+          <p> -Team JetEdge</p>
           <UploadPopUp></UploadPopUp>
-          <SkipButton/>
+          <SkipButton />
         </Box>
         <Box className="imageBox">
-          <img src={Photo} alt="logo.exe" width="900" height="auto"/>
+          <img
+            src={Photo}
+            alt="logo.exe"
+            width="auto"
+            height="100%"
+            object-fit = "cover"
+          />
         </Box>
       </Box>
       <Footer />
