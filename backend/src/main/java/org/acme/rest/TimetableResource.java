@@ -6,6 +6,8 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
 import org.acme.domain.Room;
 import org.acme.domain.Student;
 import org.acme.domain.Timetable;
@@ -52,6 +54,82 @@ public class TimetableResource {
         return solution;
     }
 
+    /**
+     * Takes a list of Units as input to updates exisiting timetable once users 
+     * make drag-and-drop modifications in frontend
+     * 
+     * @param updatedUnits  List of all Unit updates
+     * @return              A Response object indicating status
+     */
+    @Path("/update")
+    @PUT
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response timetableUpdate(List<Unit> updatedUnits) {
+        List<Unit> dbUnits = Unit.listAll();
+        for (Unit updatedUnit : updatedUnits) {
+            if (unitUpdate(updatedUnit, dbUnits) == null) {
+                return Response.serverError().build();
+            }
+        }
+        return Response.ok().build();
+    }
+
+    /**
+     * Update the time/location of a unit
+     * 
+     * @param updatedUnit   Unit object with updated time/location
+     * @param dbUnits       List of all Unit objects in the database
+     * @return              The updated Unit, null otherwise
+     */
+    @PUT
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Unit unitUpdate(Unit updatedUnit, List<Unit> dbUnits) {
+        // find existing Unit obj in db by unitId
+        for (Unit unit : dbUnits) {
+            if (updatedUnit.unitId == unit.unitId) {
+                assert(unit.isPersistent());
+                // update day of week
+                unit.dayOfWeek = updatedUnit.dayOfWeek;
+                // update startTime
+                unit.startTime = updatedUnit.startTime;
+                // if room is different
+                if (unit.room.roomCode != updatedUnit.room.roomCode 
+                || !unit.room.buildingId.equals(updatedUnit.room.buildingId)) {
+                    // update room
+                    Room newRoom;
+                    if ((newRoom = findRoom(updatedUnit.room)) == null) {
+                        throw new WebApplicationException("Room with building ID " + updatedUnit.room.buildingId + ", and room code " + updatedUnit.room.roomCode + " not found", 404);
+                    }
+                    unit.room = newRoom;
+                }
+                return unit;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Find existing Room object inside the database with 
+     * desired buildingId and roomCode
+     * 
+     * @param inputRoom     Room object with buildingId and roomCode of desired Room
+     * @return              Room object meeting the input criteria, null otherwise
+     */
+    public Room findRoom(Room inputRoom) {
+        List<Room> rooms = Room.listAll();
+        for (Room room : rooms) {
+            if (room.roomCode.equals(inputRoom.roomCode) 
+            && room.buildingId.equals(inputRoom.buildingId)) {
+                assert(room.isPersistent());
+                return room;
+            }
+        }
+        return null;
+    }
+
+
     @Path("/view")
     @GET
     @RolesAllowed({"user"})
@@ -60,19 +138,10 @@ public class TimetableResource {
         return Timetable.listAll();
     }
 
-    @Path("/unit")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Unit handleUnit(Unit unit) {
-        return unit;
-    }
-
     public void findByCampusAndDelete(String campusName) {
         List<Timetable> timetables = Timetable.listAll();
         for (Timetable timetable : timetables) {
-            System.out.println("CHECKING NOW\n");
             if (campusName.equals(timetable.campusName)) {
-                System.out.println("SMTH HAS BEEN DELETED WOOOO\n");
                 timetable.delete();
             }
         }
