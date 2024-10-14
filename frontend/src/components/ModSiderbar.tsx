@@ -9,6 +9,7 @@ import { Routes, Route, Link } from "react-router-dom";
 
 import GanttChart from "./GanttChart";
 import { TimetableSolution } from "../scripts/api";
+import { useState } from "react";
 
 interface SidebarProps {
   marginTop: number;
@@ -17,6 +18,12 @@ interface SidebarProps {
 const drawerWidth = 240;
 
 export default function ModSidebar({ marginTop, width }: SidebarProps) {
+  const [selectedCampus, setSelectedCampus] = useState(null);
+
+  const handleItemClick = (campusName) => {
+    setSelectedCampus(campusName); // Update the selected campus
+  };
+
   let campusSolutions: TimetableSolution[];
   let campusSolutionsStr: string|null = sessionStorage.getItem("campusSolutions");
   if (campusSolutionsStr !== null) {
@@ -48,6 +55,13 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
                   <ListItemButton
                     component={Link}
                     to={`/timetablemod/${campusName.toLowerCase()}`}
+                    onClick={() => handleItemClick(campusName)}
+                    sx={{
+                      backgroundColor:
+                        selectedCampus === campusName
+                          ? "lightgrey"
+                          : "transparent",
+                    }}
                   >
                     <ListItemIcon>
                       <InboxIcon />

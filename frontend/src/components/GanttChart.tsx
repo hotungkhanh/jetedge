@@ -29,7 +29,6 @@ export default function GanttChart() {
   const groups = useRef(new DataSet<GanttGroup>());
   const moddedUnits = useRef<Unit[]>([]);
   const [open, setOpen] = useState(false);
-  // console.log("modded is", moddedUnits);
   let campusSolutions: TimetableSolution[];
   let check: string | null = sessionStorage.getItem("campusSolutions");
   if (check !== null) {
@@ -70,6 +69,7 @@ export default function GanttChart() {
           remove: false, // delete an item by tapping the delete button top right
           overrideItems: false, // allow these options to override item.editable
         },
+        showCurrentTime: false,
       };
 
       // Initialize the timeline
@@ -161,7 +161,6 @@ export default function GanttChart() {
               }
               moddedUnits.current.push(modded);
             }
-            console.log(moddedUnits.current);
           }
         }
 
@@ -226,7 +225,6 @@ export default function GanttChart() {
   const saveData = async () => {
     try {
       setOpen(true);
-      console.log("fetching: ", JSON.stringify(moddedUnits.current));
       const response = await fetch(REMOTE_API_URL + "/timetabling/update", {
         method: "PUT",
         headers: {
@@ -240,7 +238,6 @@ export default function GanttChart() {
       }
       // Clear moddedUnits if the first fetch was successful
       moddedUnits.current = [];
-      console.log("Clearing modded", moddedUnits.current.length);
 
       // Second fetch request (GET) only runs after the first one completes
       const viewResponse = await fetch(REMOTE_API_URL + "/timetabling/view", {
@@ -259,7 +256,6 @@ export default function GanttChart() {
         "campusSolutions",
         JSON.stringify(timetableSolutions)
       );
-      console.log("DONE");
       setOpen(false);
     } catch (error) {
       console.error("Error saving data:", error);
