@@ -18,9 +18,9 @@ interface SidebarProps {
 const drawerWidth = 240;
 
 export default function ModSidebar({ marginTop, width }: SidebarProps) {
-  const [selectedCampus, setSelectedCampus] = useState(null);
+  const [selectedCampus, setSelectedCampus] = useState<string>("");
 
-  const handleItemClick = (campusName) => {
+  const handleItemClick = (campusName: string) => {
     setSelectedCampus(campusName); // Update the selected campus
   };
 

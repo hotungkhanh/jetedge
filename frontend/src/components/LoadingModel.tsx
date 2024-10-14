@@ -1,6 +1,5 @@
-import * as React from "react";
+
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -28,7 +27,7 @@ export default function LoadingModal({open}: LoadingModalProp) {
         <Box sx={style}>
           <CircularProgress
             size="80px"
-            sx={{ color: "#f05a22", position: "absolute" }}
+            sx={{ color: "white", position: "absolute" }}
           />
         </Box>
       </Modal>
