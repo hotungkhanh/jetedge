@@ -1,9 +1,10 @@
-import { memo, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Id } from "vis-data/declarations/data-interface";
 import { DataGroupCollectionType, DataItemCollectionType, DataSet, Timeline } from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.min.css";
 import "../styles/ganttUnassignable.css";
 import { useAuthContext } from "../security/AuthContext";
+import LoadingModal from "./LoadingModel";
 
 import {
   findCampusSolution,
@@ -20,14 +21,14 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { Button } from "@mui/material";
 
-export default memo(function GanttChart() {
+export default function GanttChart() {
   const params = useParams();
   const { authHeader } = useAuthContext();
   const timelineRef = useRef<HTMLDivElement | null>(null);
   const items = useRef(new DataSet<GanttItem>());
   const groups = useRef(new DataSet<GanttGroup>());
-  let moddedUnits: Unit[] = [];
-
+  const moddedUnits = useRef<Unit[]>([]);
+  const [open, setOpen] = useState(false);
   let campusSolutions: TimetableSolution[];
   let check: string | null = sessionStorage.getItem("campusSolutions");
   if (check !== null) {
@@ -35,24 +36,24 @@ export default memo(function GanttChart() {
   } else {
     throw new Error("campusSolutions is not in campus, in GanttChart");
   }
-
-  const solution: TimetableSolution | null = params?.location ? findCampusSolution(
-    params.location,
-    campusSolutions
-  ): null;
+  const solution: TimetableSolution | null = params?.location
+    ? findCampusSolution(params.location, campusSolutions)
+    : null;
   if (solution === null) {
-    throw new Error("solution is null after findCampusSolution (possibly an error related to campus name)")
+    throw new Error(
+      "solution is null after findCampusSolution (possibly an error related to campus name)"
+    );
   }
 
   let timelineData: GanttItems = getGanttItems(solution);
-  console.log("processed data in Gantt", timelineData);
   groups.current.clear();
   groups.current.add(timelineData.buildings);
   groups.current.add(timelineData.rooms);
-  items.current.clear()
+  items.current.clear();
   items.current.add(timelineData.activities);
 
   useEffect(() => {
+    
     if (timelineRef.current) {
       let prevSelected: Id | null = null;
 
@@ -68,6 +69,7 @@ export default memo(function GanttChart() {
           remove: false, // delete an item by tapping the delete button top right
           overrideItems: false, // allow these options to override item.editable
         },
+        showCurrentTime: false,
       };
 
       // Initialize the timeline
@@ -151,15 +153,14 @@ export default memo(function GanttChart() {
                 startTime: rawStartDate.time,
                 end: rawEndDate.time,
               };
-              const index = moddedUnits.findIndex(
+              const index = moddedUnits.current.findIndex(
                 (item) => item.unitId === modded.unitId
               );
               if (index !== -1) {
-                moddedUnits.splice(index, 1);
+                moddedUnits.current.splice(index, 1);
               }
-              moddedUnits.push(modded);
+              moddedUnits.current.push(modded);
             }
-            console.log(moddedUnits);
           }
         }
 
@@ -223,33 +224,39 @@ export default memo(function GanttChart() {
 
   const saveData = async () => {
     try {
+      setOpen(true);
       const response = await fetch(REMOTE_API_URL + "/timetabling/update", {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": authHeader,
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(moddedUnits),
+        body: JSON.stringify(moddedUnits.current),
       });
 
       if (!response.ok) {
         throw new Error("Failed to save data, error in GanttChart.tsx");
       }
+      // Clear moddedUnits if the first fetch was successful
+      moddedUnits.current = [];
 
-
-
-      fetch(REMOTE_API_URL + "/timetabling/view", { headers: { 'Authorization': authHeader } })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const timetableSolutions: TimetableSolution[] =
-          data as TimetableSolution[];
-        sessionStorage.setItem("campusSolutions", JSON.stringify(timetableSolutions));
+      // Second fetch request (GET) only runs after the first one completes
+      const viewResponse = await fetch(REMOTE_API_URL + "/timetabling/view", {
+        headers: { Authorization: authHeader },
       });
+
+      if (!viewResponse.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // Parse the JSON response and store in sessionStorage
+      const data = await viewResponse.json();
+      const timetableSolutions: TimetableSolution[] =
+        data as TimetableSolution[];
+      sessionStorage.setItem(
+        "campusSolutions",
+        JSON.stringify(timetableSolutions)
+      );
+      setOpen(false);
     } catch (error) {
       console.error("Error saving data:", error);
     }
@@ -290,11 +297,12 @@ export default memo(function GanttChart() {
           },
           borderRadius: "3px",
           marginTop: "5px",
-          marginLeft: "7px"
+          marginLeft: "7px",
         }}
       >
         Save Changes
       </Button>
+      <LoadingModal open={open}></LoadingModal>
     </div>
   );
-})
+}
