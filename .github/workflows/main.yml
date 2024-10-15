@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - develop
 
 jobs:
   build:
@@ -12,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js for Frontend
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'  # Specify your Node.js version
+          node-version: '20.17.0'
 
       - name: Install Frontend Dependencies
         run: |
@@ -27,22 +26,31 @@ jobs:
       - name: Build Frontend
         run: |
           cd frontend
-          npm run build  # Adjust if necessary
+          npm run build
 
-      # - name: Set up Java for Backend
-      #   uses: actions/setup-java@v2
-      #   with:
-      #     java-version: '22.0.2'  # Specify your Java version
+      - name: Set up Java for Backend
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          java-version: '22.0.2'
+          
+      - name: Build Backend with Maven
+        run: |
+          cd backend
+          mvn -B package --file pom.xml
+        env:
+          QUARKUS_DATASOURCE_USERNAME: ${{secrets.QUARKUS_DATASOURCE_USERNAME}}
+          QUARKUS_DATASOURCE_PASSWORD: ${{secrets.QUARKUS_DATASOURCE_PASSWORD}}
+          QUARKUS_DATASOURCE_JDBC_URL: ${{secrets.QUARKUS_DATASOURCE_JDBC_URL}}
 
-      # - name: Build Backend
-      #   run: |
-      #     cd backend
-      #     mvn package  # Use ./gradlew build for Gradle
+          FRONTEND_USERNAME: ${{secrets.FRONTEND_USERNAME}}
+          FRONTEND_PASSWORD: ${{secrets.FRONTEND_PASSWORD}}
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: akhileshns/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
@@ -50,9 +58,9 @@ jobs:
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           appdir: "frontend"
 
-      # - uses: akhileshns/heroku-deploy@v3.13.15
-      #   with:
-      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-      #     heroku_app_name: ${{secrets.HEROKU_BACKEND_APP_NAME}}
-      #     heroku_email: ${{secrets.HEROKU_EMAIL}}
-      #     appdir: "backend"
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_BACKEND_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          appdir: "backend"

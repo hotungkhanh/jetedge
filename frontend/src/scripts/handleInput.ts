@@ -12,7 +12,6 @@ import { DB_UNITS, storeSpreadsheetData } from './persistence';
 function isExcelFile(file: File) {
   const fileExtension = file.name.split('.').pop();
   if (fileExtension === undefined || !['xlsx', 'xls'].includes(fileExtension)) {
-    alert("Wrong file type, file type must be .xlsx or .xls");
     return false;
   }
   return true;
@@ -33,12 +32,12 @@ function validateEnrolmentHeader(inputHeader: Row) {
     return true;
   }
   else {
-    alert("Enrolment data header row is invalid");
     return false;
   }
 }
 
 /**
+ * Deprecated.
  * Extract list of units from enrolment data and prefill spreadsheet input page.
  * 
  * @param enrolmentExcel enrolment data Excel file
@@ -71,14 +70,14 @@ export async function getUnitsList(enrolmentExcel: File) {
 }
 
 /**
- * Parse user input to create the timetabling problem.
+ * Check if input file is valid enrolment data Excel file.
+ * Extract list of units from enrolment data and prefill spreadsheet input page.
+ * Extract list of students per each unit from enrolment data.
  * 
  * @param enrolmentExcel enrolment data Excel file
- * @param roomSpreadsheet information of all rooms (spreadsheet input from user)
- * @param unitSpreadsheet information of all units (spreadsheet input from user)
- * @returns a TimetableProblem, which includes all available rooms, start times and unallocated units
+ * @returns enrolment data Excel file
  */
-export async function getTimetableProblem(enrolmentExcel: File, roomSpreadsheet: Record<string, CellValue>[], unitSpreadsheet: Record<string, CellValue>[]) {
+export async function prefillUnitSpreadsheet(enrolmentExcel: File) {
   if (!isExcelFile(enrolmentExcel)) {
     throw new Error(
       "File is not .xlsx or .xls"
@@ -93,72 +92,136 @@ export async function getTimetableProblem(enrolmentExcel: File, roomSpreadsheet:
     )
   }
 
-  const unitsList = header.slice(14);
-  const units: Unit[] = unitsList.map((value, index) => {
-    return {
-      unitID: index,
-      name: value.toString(),
-      duration: 0,
-      students: [],
-      wantsLab: false
-    }
-  });
+  type UnitMapRecord = {
+    0: CellValue,
+    1: CellValue,
+    2: CellValue,
+    3: CellValue,
+    4: CellValue,
+    5: CellValue,
+    enrolment: string[]
+  }
+  type UnitMap = Map<string, UnitMapRecord>;
 
-  unitSpreadsheet.map((record, index) => {
-    if (index >= units.length) {
-    }
-    else {
-      const totalDuration = (Number(record['1']) + Number(record['2']) + Number(record['3'])) * 60;
-      const wantsLab = Number(record['3']) > 0;
-      units[index].duration = totalDuration;
-      units[index].wantsLab = wantsLab;
-    }
-  })
+  // array of maps, each map correspond to 1 unit
+  // each map maps the campus-course pair to a record that stores student enrolment
+  const unitsMaps: UnitMap[] = [];
 
-  // check each row and add students to each unit they're enrolled in
-  for (let i = 0; i < body.length; i++) {
-    const enrolments = body[i].slice(14);
-    for (let j = 0; j < enrolments.length; j++) {
-      if (enrolments[j] === "ENRL") {
-        units[j].students.push({
-          name: body[i][0].toString()
-        })
+  for (let i = 14; i < header.length; i++) {
+    unitsMaps.push(new Map());
+    const currentMap = unitsMaps[unitsMaps.length - 1];
+    const unitCode = header[i] as CellValue;
+
+    for (let j = 0; j < body.length; j++) {
+      const row = body[j];
+      const campus = row[7] as CellValue;
+      const course = row[6] as CellValue;
+      const student = row[0] as CellValue;
+      const enrolment = row[i] as CellValue;
+      const key = campus.toString() + course.toString();
+
+      if (!currentMap.has(key)) {
+        currentMap.set(key, { 0: campus, 1: course, 2: unitCode, 3: '', 4: '', 5: '', enrolment: [] });
+      }
+
+      if (enrolment === "ENRL") {
+        currentMap.get(key)?.enrolment.push(student.toString());
       }
     }
   }
+
+  const units = unitsMaps.map(m => {
+    const unitsData = Array.from(m.values());
+    const transformed = unitsData
+      .filter((ud) => ud.enrolment.length > 0)
+      .map(ud => { return { ...ud, enrolment: JSON.stringify(ud.enrolment) } });
+    return transformed;
+  }).flat();
+
+  storeSpreadsheetData(units, DB_UNITS);
+  return enrolmentExcel;
+}
+
+/**
+ * Parse user input to create the timetabling problems split by campus.
+ * 
+ * @param roomSpreadsheet information of all rooms (spreadsheet input from user)
+ * @param unitSpreadsheet information of all units (spreadsheet input from user)
+ * @returns a TimetableProblem, which includes all available rooms, start times and unallocated units
+ */
+export async function getTimetableProblems(roomSpreadsheet: Record<string, CellValue>[], unitSpreadsheet: Record<string, CellValue>[]) {
+  const units: Unit[] = unitSpreadsheet.map((record, index) => {
+    const totalDuration = (Number(record['3']) + Number(record['4']) + Number(record['5'])) * 60;
+    const wantsLab = Number(record['5']) > 0;
+
+    return {
+      campus: record['0'] as string,
+      course: record['1'] as string,
+      unitId: index,
+      name: record['2'] as string,
+      duration: totalDuration,
+      students: JSON.parse(record.enrolment as string),
+      wantsLab: wantsLab
+    }
+  });
 
   const rooms: Room[] = roomSpreadsheet
     .filter((record) => record['5'] as boolean)
     .map((record) => {
       return {
-        id: record['2'] as string,
+        campus: record['0'] as string,
+        buildingId: record['1'] as string,
+        roomCode: record['2'] as string,
         capacity: record['3'] as number,
         lab: record['4'] as boolean
       }
     });
 
+  const unitsByCampus = units.reduce((acc: Record<string, Unit[]>, unit) => {
+    if (!acc[unit.campus]) {
+      acc[unit.campus] = [];
+    }
 
-  const problem: TimetableProblem = {
-    units: units,
-    daysOfWeek: [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY"
-    ],
-    startTimes: [
-      "08:00:00",
-      "09:00:00",
-      "10:00:00",
-      "11:00:00",
-      "12:00:00",
-      "13:00:00",
-    ],
-    rooms: rooms
+    acc[unit.campus].push(unit);
+    return acc;
+  }, {});
+
+  const roomsByCampus = rooms.reduce((acc: Record<string, Room[]>, room) => {
+    if (!acc[room.campus]) {
+      acc[room.campus] = [];
+    }
+
+    acc[room.campus].push(room);
+    return acc;
+  }, {});
+
+  const problemsByCampus: TimetableProblem[] = [];
+
+  for (const campus in unitsByCampus) {
+    if (roomsByCampus[campus]) {
+      problemsByCampus.push({
+        campusName: campus,
+        units: unitsByCampus[campus],
+        daysOfWeek: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"],
+        startTimes: [
+          "08:00:00",
+          "09:00:00",
+          "10:00:00",
+          "11:00:00",
+          "12:00:00",
+          "13:00:00",
+          "14:00:00",
+          "15:00:00",
+          "16:00:00",
+          "17:00:00",
+        ],
+        rooms: roomsByCampus[campus],
+      });
+    }
+    else {
+      alert("This campus don't have any rooms: " + campus);
+    }
   }
-
-  console.log(problem);
-
-  return problem;
+  console.log(problemsByCampus);
+  return problemsByCampus;
 }

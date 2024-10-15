@@ -6,6 +6,10 @@ import ai.timefold.solver.core.api.domain.solution.PlanningSolution;
 import ai.timefold.solver.core.api.domain.solution.ProblemFactCollectionProperty;
 import ai.timefold.solver.core.api.domain.valuerange.ValueRangeProvider;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -17,23 +21,55 @@ import java.util.List;
  *
  * @author Jet Edge
  */
+@Entity
 @PlanningSolution
-public class Timetable {
+public class Timetable extends PanacheEntity {
 
-    @ValueRangeProvider
-    private List<DayOfWeek> daysOfWeek;
-    @ValueRangeProvider
-    private List<LocalTime> startTimes;
+    public String campusName;
 
+    @ElementCollection
+    @ValueRangeProvider
+    public List<DayOfWeek> daysOfWeek;
+
+    @ElementCollection
+    @ValueRangeProvider
+    public List<LocalTime> startTimes;
+
+    /*
+     * Rooms can belong to multiple timetables because timetables are generated
+     * on a per-campus basis, and although each room can only belong to one
+     * campus, the user may choose to generate multiple timetables for each
+     * campus, hence the many-to-many relationship
+     */
+    @JsonIgnoreProperties("timetables")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "room_timetable",
+            joinColumns = @JoinColumn(name = "timetable_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id")
+    )
     @ProblemFactCollectionProperty
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ValueRangeProvider
-    private List<Room> rooms;
+    public List<Room> rooms;
 
+    /*
+     * Units can belong to multiple timetables because again, timetables are
+     * generated on a per-campus basis, but each unit can be taught across
+     * multiple campuses, so may appear in multiple timetables
+     */
+    @JsonIgnoreProperties("timetables")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "unit_timetable",
+            joinColumns = @JoinColumn(name = "timetable_id"),
+            inverseJoinColumns = @JoinColumn(name = "unit_id")
+    )
     @PlanningEntityCollectionProperty
-    private List<Unit> units;
+    public List<Unit> units;
 
     @PlanningScore
-    private HardSoftScore score;
+    public HardSoftScore score;
 
     public Timetable() {
 
@@ -45,9 +81,11 @@ public class Timetable {
      * @param units      The list of units to be allocated.
      * @param startTimes The list of available starting times.
      */
-    public Timetable(List<Unit> units, List<LocalTime> startTimes) {
+    public Timetable(String campusName, List<Unit> units, List<LocalTime> startTimes) {
+        this.campusName = campusName;
         this.units = units;
         this.startTimes = startTimes;
+        this.setUnitTimetable();
     }
 
     /**
@@ -57,10 +95,13 @@ public class Timetable {
      * @param startTimes The list of available starting times.
      * @param rooms      The list of available rooms.
      */
-    public Timetable(List<Unit> units, List<LocalTime> startTimes, List<Room> rooms) {
+    public Timetable(String campusName, List<Unit> units, List<LocalTime> startTimes, List<Room> rooms) {
+        this.campusName = campusName;
         this.units = units;
         this.startTimes = startTimes;
         this.rooms = rooms;
+        this.setUnitTimetable();
+        this.setRoomTimetable();
     }
 
     /**
@@ -71,7 +112,8 @@ public class Timetable {
      * @param startTimes The list of available starting times.
      * @param rooms      The list of available rooms.
      */
-    public Timetable(List<Unit> units, List<DayOfWeek> daysOfWeek, List<LocalTime> startTimes, List<Room> rooms) {
+    public Timetable(String campusName, List<Unit> units, List<DayOfWeek> daysOfWeek, List<LocalTime> startTimes, List<Room> rooms) {
+        this.campusName = campusName;
         this.units = units;
         this.daysOfWeek = daysOfWeek;
         this.startTimes = startTimes;
@@ -118,6 +160,18 @@ public class Timetable {
         this.score = score;
     }
 
+    public void setUnitTimetable() {
+        for (Unit unit : this.units) {
+            unit.timetables.add(this);
+        }
+    }
+
+    public void setRoomTimetable() {
+        for (Room room : this.rooms) {
+            room.timetables.add(this);
+        }
+    }
+
     /**
      * Identify conflicting units having common students at the same time.
      *
@@ -128,7 +182,7 @@ public class Timetable {
         ArrayList<ConflictingUnit> out = new ArrayList<ConflictingUnit>();
         for (var first : units) {
             for (var second : units) {
-                if (first.getUnitID() >= second.getUnitID()) {
+                if (first.getUnitId() >= second.getUnitId()) {
                     continue;
                 }
                 int numStudents = 0;

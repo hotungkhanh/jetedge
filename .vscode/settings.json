@@ -1,0 +1,7 @@
+{
+  "conventionalCommits.scopes": [
+    "database",
+    "display ganttchart"
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
+}

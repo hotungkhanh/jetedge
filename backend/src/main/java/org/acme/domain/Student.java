@@ -1,5 +1,12 @@
 package org.acme.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -7,11 +14,20 @@ import java.util.Objects;
  *
  * @author Jet Edge
  */
-public class Student {
+@Entity
+public class Student extends PanacheEntity {
 
-    //    String studentID;
+    public String name;
 
-    String name;
+    @JsonIgnoreProperties("students")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "student_unit",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "unit_id")
+    )
+    @JsonIgnore
+    public List<Unit> units = new ArrayList<Unit>();
 
     public Student() {
     }
