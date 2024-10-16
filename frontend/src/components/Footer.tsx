@@ -14,7 +14,7 @@ export default function Footer({ children } : { children?: React.ReactNode }) {
     bottom: 0,
     left: 0,
     width: 100+"%",
-    height: "10vh",
+    height: "60px",
     zIndex: 10000,
   };
 
