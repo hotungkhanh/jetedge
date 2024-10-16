@@ -1,4 +1,4 @@
-import { AppBar, Box, CssBaseline, Toolbar } from "@mui/material";
+import { AppBar, Box, CssBaseline } from "@mui/material";
 import VIT_Logo from '../assets/logo.png';
 
 /**
