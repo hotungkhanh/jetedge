@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { AppBar, Box, CssBaseline, Toolbar } from "@mui/material";
 import VIT_Logo from '../assets/logo.png';
 
 /**
@@ -6,20 +6,21 @@ import VIT_Logo from '../assets/logo.png';
  * @returns JSX element representing the header with a logo.
  */
 export default function Header() {
-    const headerStyle = {
-        backgroundColor: "#F5F5f5",
-        color: "white",
-        padding: "20px",
-        textAlign: "left"
-    };
     return (
-      <Box className="header" sx={headerStyle}>
-        <img
-          src={VIT_Logo}
-          alt="logo.exe"
-          width="150"
-          height="auto"
-        />
+      <Box sx={{ height: "17vh", margin: "0" }}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            height: "17vh",
+            padding: "20px",
+            backgroundColor: "#F5F5f5",
+            boxShadow: "none",
+          }}
+        >
+          <img src={VIT_Logo} alt="logo.exe" width="200" height="auto" />
+        </AppBar>
       </Box>
     );
 }

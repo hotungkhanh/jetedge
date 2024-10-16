@@ -5,6 +5,8 @@ import Footer from "../components/Footer.tsx";
 import '../styles/seminfo.css';
 import NextButton from "../components/NextButton.tsx";
 import BackButton from "../components/BackButton.tsx";
+import { AppBar, Box, CssBaseline, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
+import VIT_Logo from "../assets/logo.png";
 
 /**
  * Renders the SemesterInfo component with a header, sidebar, spreadsheet, 
@@ -15,8 +17,8 @@ import BackButton from "../components/BackButton.tsx";
 export default function SemesterInfo() {
   return (
     <div>
-      <Header />      
-      <Sidebar width={240} marginTop={12.5}/>
+      <Header />
+      <Sidebar width={240} marginTop={17}/>
 
       {/* Spreadsheet */}
       <div style={{ marginLeft: 300 + "px", overflow: "hidden" }}>
@@ -31,5 +33,5 @@ export default function SemesterInfo() {
       </Footer>
 
     </div>
-  )
+  );
 }

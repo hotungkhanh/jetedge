@@ -8,6 +8,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 
 import { Link } from "react-router-dom";
+import { Box, Toolbar } from "@mui/material";
 
 
 interface SidebarProps {
@@ -34,12 +35,12 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          marginTop: marginTop,
         },
       }}
       variant="permanent"
       anchor="left"
     >
+      <Box sx={{height: marginTop + "vh"}} />
       <List>
         <ListItem key="Room" disablePadding>
           <ListItemButton component={Link} to="room">
