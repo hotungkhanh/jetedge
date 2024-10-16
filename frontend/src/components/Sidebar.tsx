@@ -4,8 +4,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-// import MailIcon from "@mui/icons-material/Mail";
+import SchoolIcon from "@mui/icons-material/School";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 
 import { Link } from "react-router-dom";
 
@@ -41,11 +41,10 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
       anchor="left"
     >
       <List>
-
         <ListItem key="Room" disablePadding>
           <ListItemButton component={Link} to="room">
             <ListItemIcon>
-              <InboxIcon />
+              <MeetingRoomIcon />
             </ListItemIcon>
             <ListItemText primary="Room" />
           </ListItemButton>
@@ -54,12 +53,11 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
         <ListItem key="Unit" disablePadding>
           <ListItemButton component={Link} to="unit">
             <ListItemIcon>
-              <InboxIcon />
+              <SchoolIcon />
             </ListItemIcon>
             <ListItemText primary="Unit" />
           </ListItemButton>
         </ListItem>
-
       </List>
     </Drawer>
   );

@@ -11,14 +11,15 @@ export default function Header() {
         color: "white",
         padding: "20px",
         textAlign: "left",
+        height: "12vh"
     };
     return (
       <Box className="header" sx={headerStyle}>
         <img
           src={VIT_Logo}
           alt="logo.exe"
-          width="150"
-          height="auto"
+          height="90%"
+          width="auto"
         />
       </Box>
     );

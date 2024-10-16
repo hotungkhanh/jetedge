@@ -16,7 +16,7 @@ export default function SemesterInfo() {
   return (
     <div>
       <Header />      
-      <Sidebar width={240} marginTop={12.5}/>
+      <Sidebar width={240} marginTop={16}/>
 
       {/* Spreadsheet */}
       <div style={{ marginLeft: 300 + "px", overflow: "hidden" }}>

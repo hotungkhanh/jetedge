@@ -7,6 +7,7 @@ import { Button } from "@mui/material";
 import ProceedButton from "./ProceedButton.tsx";
 import DisplayFile from "./DisplayFile.tsx";
 
+
 /**
  * UploadPopUp component for displaying a modal with file upload functionality.
  * Manages the state of the modal being open or closed and the file chosen
@@ -33,9 +34,13 @@ export default function UploadPopUp() {
           "&:hover": {
             backgroundColor: "#f05a22", // Custom hover color
           },
+          padding: "3% 5% 3% 5%",
+          borderRadius: "999px",
+          fontSize: "medium",
+          marginTop: "2%"
         }}
       >
-        Get Started
+        Generate Timetable
       </Button>
       <Modal
         aria-labelledby="unstyled-modal-title"

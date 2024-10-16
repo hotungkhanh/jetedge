@@ -3,7 +3,7 @@ import "../styles/enrolment.css";
 import UploadPopUp from "../components/UploadPopUp.tsx";
 import Header from "../components/Header.tsx";
 import Footer from "../components/Footer.tsx";
-import Photo from "../assets/frontpage.jpg";
+import Photo from "../assets/frontpage2.jpg";
 import { useEffect } from "react";
 import { REMOTE_API_URL, TimetableSolution } from "../scripts/api.ts";
 import { useAuthContext } from "../security/AuthContext.tsx";
@@ -48,32 +48,49 @@ export default function StarterPage() {
     <Box className="app-container">
       <Header />
       <Box className="content">
-        <Box className="description" sx={{ minWidth: 550 + "px" }}>
+        <Box
+          className="description"
+          sx={{ minWidth: 550 + "px", textAlign: "center" }}
+        >
           <span style={timeStyle}>Time</span>
           <span style={tablerStyle}>tabler</span>
-          <span
-            style={{ margin: -3, fontSize: 15, marginLeft: 5, opacity: 0.4 }}
-          >
-            The smartest Timetabler ever
-          </span>
-          <p style={{ color: "#f05a22", fontSize: 20 }}>
-            A timetabling website for the Victorian Institute of Technology
+          <p>
+            The VIT Timetabling Portal is a platform for VIT Support Service
+            Team staff to manage unit and class schedules across all campuses.
+            Designed for ease of use, the portal allows staff to view and adjust
+            schedules, assign classrooms, all in one centralized system. It
+            automatically generates timetables, handling large datasets of up to
+            ten thousand students. The drag-and-drop feature allows easy manual
+            adjustments, updating both location and time simultaneously with a
+            Gantt Chart.
           </p>
-          <p> -Team JetEdge</p>
+          <p>A Product by JetEdge</p>
           <UploadPopUp></UploadPopUp>
-          <SkipButton />
         </Box>
         <Box className="imageBox">
           <img
             src={Photo}
-            alt="logo.exe"
-            width="auto"
-            height="100%"
-            object-fit = "cover"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
           />
         </Box>
       </Box>
-      <Footer />
+      <Footer>
+        <div style={{
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: '50%',
+          marginRight: "5%",
+        }}>
+          <SkipButton/>
+        </div>
+      </Footer>
     </Box>
   );
 }
