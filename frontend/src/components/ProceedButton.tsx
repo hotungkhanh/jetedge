@@ -19,6 +19,19 @@ export default function ProceedButton({ fileChosen }: ProceedButtonProps) {
   if (fileChosen === null) {
     return <Button disabled> Proceed </Button>
   } else {
-    return <Button onClick={() => navigate("/seminfo/room")}> Proceed</Button>;
+    return (
+      <Button
+        onClick={() => navigate("/seminfo/room")}
+        sx={{
+          color: "#f05a22",
+          "&:hover": {
+            backgroundColor: "#fef6f4",
+          },
+        }}
+      >
+        {" "}
+        Proceed
+      </Button>
+    );
   }
 }

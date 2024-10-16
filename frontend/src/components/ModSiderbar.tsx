@@ -2,9 +2,7 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { Routes, Route, Link } from "react-router-dom";
 
 import GanttChart from "./GanttChart";
@@ -59,14 +57,17 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
                     sx={{
                       backgroundColor:
                         selectedCampus === campusName
-                          ? "lightgrey"
+                          ? "#f8d5ac"
                           : "transparent",
+                      "&:hover": {
+                        backgroundColor: "#fdefe0",
+                      },
                     }}
                   >
-                    <ListItemIcon>
-                      <InboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={campusName} />
+                    <ListItemText
+                      primary={campusName}
+                      sx={{ textAlign: "Center" }}
+                    />
                   </ListItemButton>
                 </ListItem>
               );
