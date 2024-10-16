@@ -49,7 +49,7 @@ export default function UploadPopUp() {
         onClose={handleClose}
         slots={{ backdrop: StyledBackdrop }}
       >
-        <ModalContent sx={{ width: 500, height: 120 }}>
+        <ModalContent sx={{ width: 500, height: 180 }}>
           <DisplayFile fileChosen={fileChosen}/>
           <UploadButton setFileChosen={setFileChosen}></UploadButton>
           <ProceedButton fileChosen={fileChosen}></ProceedButton>

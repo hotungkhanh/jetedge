@@ -9,7 +9,7 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import GanttChart from "./GanttChart";
 import { TimetableSolution } from "../scripts/api";
 import { useState } from "react";
-import { ListItemIcon } from "@mui/material";
+import { Box, ListItemIcon } from "@mui/material";
 
 interface SidebarProps {
   marginTop: number;
@@ -40,12 +40,12 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            marginTop: marginTop,
           },
         }}
         variant="permanent"
         anchor="left"
       >
+        <Box sx={{ height: marginTop + "vh"}} />
         <List>
           {campusSolutions && campusSolutions.length > 0 ? (
             campusSolutions.map((solution) => {
@@ -64,11 +64,9 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
                     }}
                   >
                     <ListItemIcon>
-                      <LocationCityIcon/>
+                      <LocationCityIcon />
                     </ListItemIcon>
-                    <ListItemText
-                      primary={campusName}
-                    />
+                    <ListItemText primary={campusName} />
                   </ListItemButton>
                 </ListItem>
               );
@@ -89,7 +87,7 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
                 <Route
                   key={campusName}
                   path={`timetablemod/${campusName.toLowerCase()}`}
-                  element={<GanttChart/>}
+                  element={<GanttChart />}
                 />
               );
             })}
