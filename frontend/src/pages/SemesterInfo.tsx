@@ -5,8 +5,6 @@ import Footer from "../components/Footer.tsx";
 import '../styles/seminfo.css';
 import NextButton from "../components/NextButton.tsx";
 import BackButton from "../components/BackButton.tsx";
-import { AppBar, Box, CssBaseline, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
-import VIT_Logo from "../assets/logo.png";
 
 /**
  * Renders the SemesterInfo component with a header, sidebar, spreadsheet, 
