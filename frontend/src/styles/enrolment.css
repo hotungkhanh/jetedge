@@ -12,7 +12,7 @@
 }
 
 .description {
-  margin: 20%;
+  margin: 13%;
 }
 
 .description span {
@@ -22,11 +22,16 @@
 
 .description p {
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size:larger;
+  opacity: 0.7;
+  text-align: center;
 }
 
 .imageBox {
+  flex: 1;
+  max-height: 80vh;
   overflow: hidden;
-  position: relative;
+  /* position: relative; */
 }
 body {
     margin: 0;

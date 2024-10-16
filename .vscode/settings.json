@@ -1,7 +1,8 @@
 {
   "conventionalCommits.scopes": [
     "database",
-    "display ganttchart"
+    "display ganttchart",
+    "enrolment page"
   ],
   "java.configuration.updateBuildConfiguration": "interactive"
 }
