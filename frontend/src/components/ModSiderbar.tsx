@@ -4,10 +4,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { Routes, Route, Link } from "react-router-dom";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
 
 import GanttChart from "./GanttChart";
 import { TimetableSolution } from "../scripts/api";
 import { useState } from "react";
+import { ListItemIcon } from "@mui/material";
 
 interface SidebarProps {
   marginTop: number;
@@ -57,16 +59,15 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
                     sx={{
                       backgroundColor:
                         selectedCampus === campusName
-                          ? "#f8d5ac"
+                          ? "lightgrey"
                           : "transparent",
-                      "&:hover": {
-                        backgroundColor: "#fdefe0",
-                      },
                     }}
                   >
+                    <ListItemIcon>
+                      <LocationCityIcon/>
+                    </ListItemIcon>
                     <ListItemText
                       primary={campusName}
-                      sx={{ textAlign: "Center" }}
                     />
                   </ListItemButton>
                 </ListItem>
