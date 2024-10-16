@@ -19,7 +19,11 @@ export default function Header() {
             boxShadow: "none",
           }}
         >
-          <img src={VIT_Logo} alt="logo.exe" width="200" height="auto" />
+          <img
+            src={VIT_Logo}
+            alt="logo.exe"
+            style={{ width: "15%", height: "auto", objectFit: "cover" }}
+          />
         </AppBar>
       </Box>
     );
