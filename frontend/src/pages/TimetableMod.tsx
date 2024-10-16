@@ -41,14 +41,11 @@ export default function TimetableMod() {
   return (
     <div>
         <Header />
-        <ModSidebar width={240} marginTop={12.5} />
+        <ModSidebar width={240} marginTop={16} />
 
         <div
           style={{
             marginLeft: 250 + "px",
-            padding: 10,
-            overflowY: "scroll",
-            height: 550 + "px",
           }}
         >
           <Outlet />

@@ -1,5 +1,6 @@
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function SkipButton() {
   const navigate = useNavigate();
@@ -19,13 +20,15 @@ export default function SkipButton() {
     return (
       <Button
         onClick={() => navigate("/timetablemod")}
-        variant="contained"
+        variant="outlined"
+        endIcon={<ArrowForwardIcon />}
         sx={{
-          backgroundColor: "#f05a22",
+          color: "white",
+          borderColor: "white",
           "&:hover": {
-            backgroundColor: "#f05a22", 
+            borderColor: "white",
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
           },
-          marginTop: "20px"
         }}
       >
         Modify Timetable

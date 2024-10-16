@@ -264,7 +264,12 @@ export default function GanttChart() {
 
   return (
     <div>
-      <div ref={timelineRef} />
+      <div style={{
+            padding: 10,
+            overflowY: "scroll",
+            height: "60vh"}}>
+        <div ref={timelineRef} />
+      </div>
       <Button
         onClick={downloadCSV}
         variant="outlined"
