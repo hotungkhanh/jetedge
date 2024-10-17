@@ -45,7 +45,7 @@ export default function ModSidebar({ marginTop, width }: SidebarProps) {
         variant="permanent"
         anchor="left"
       >
-        <Box sx={{ height: marginTop + "vh"}} />
+        <Box sx={{ height: marginTop + "px"}} />
         <List>
           {campusSolutions && campusSolutions.length > 0 ? (
             campusSolutions.map((solution) => {

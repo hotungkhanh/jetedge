@@ -7,22 +7,28 @@ import VIT_Logo from '../assets/logo.png';
  */
 export default function Header() {
     return (
-      <Box sx={{ height: "17vh", margin: "0" }}>
+      <Box sx={{ height: "130px", margin: "0" }}>
         <CssBaseline />
         <AppBar
           position="fixed"
           sx={{
             zIndex: (theme) => theme.zIndex.drawer + 1,
-            height: "17vh",
+            height: "130px",
             padding: "20px",
             backgroundColor: "#F5F5f5",
-            boxShadow: "none",
+            boxShadow: "none"
           }}
         >
           <img
             src={VIT_Logo}
             alt="logo.exe"
-            style={{ width: "15%", height: "auto", objectFit: "cover" }}
+            style={{width: "230px",
+                  height: "auto",
+    // objectFit: "contain",
+    // maxHeight: "100%",
+    // maxWidth: "100%",
+    // alignSelf: "flex-start", // Aligns left in a flex container
+    }}
           />
         </AppBar>
       </Box>
