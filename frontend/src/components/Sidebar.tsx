@@ -40,7 +40,7 @@ export default function Sidebar({ marginTop, width }: SidebarProps) {
       variant="permanent"
       anchor="left"
     >
-      <Box sx={{height: marginTop + "vh"}} />
+      <Box sx={{height: marginTop + "px"}} />
       <List>
         <ListItem key="Room" disablePadding>
           <ListItemButton component={Link} to="room">

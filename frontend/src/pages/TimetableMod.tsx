@@ -41,7 +41,7 @@ export default function TimetableMod() {
   return (
     <div>
         <Header />
-        <ModSidebar width={240} marginTop={17} />
+        <ModSidebar width={240} marginTop={130} />
 
         <div
           style={{
