@@ -15,8 +15,8 @@ import BackButton from "../components/BackButton.tsx";
 export default function SemesterInfo() {
   return (
     <div>
-      <Header />      
-      <Sidebar width={240} marginTop={16}/>
+      <Header />
+      <Sidebar width={240} marginTop={130}/>
 
       {/* Spreadsheet */}
       <div style={{ marginLeft: 300 + "px", overflow: "hidden" }}>
@@ -31,5 +31,5 @@ export default function SemesterInfo() {
       </Footer>
 
     </div>
-  )
+  );
 }
