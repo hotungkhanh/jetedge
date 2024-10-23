@@ -42,7 +42,11 @@ export default function StarterPage() {
           "campusSolutions",
           JSON.stringify(timetableSolutions)
         );
-      });
+      })
+      .finally(() => {
+        // Dispatch custom event to notify other components of the change
+        window.dispatchEvent(new Event("fetchSolutionFinished"));
+      })
   }, []);
   return (
     <Box className="app-container">
@@ -88,7 +92,7 @@ export default function StarterPage() {
           gap: '50%',
           marginRight: "5%",
         }}>
-          <SkipButton/>
+          <SkipButton />
         </div>
       </Footer>
     </Box>
