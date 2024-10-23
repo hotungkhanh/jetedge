@@ -20,7 +20,7 @@ export default function TimetableMod() {
   const { authHeader } = useAuthContext();
 
   useEffect(() => {
-    fetch(REMOTE_API_URL + "/timetabling/view", { headers: { 'Authorization': authHeader } })
+    fetch(REMOTE_API_URL + "/timetabling", { headers: { 'Authorization': authHeader } })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
