@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { fetchTimetableSolution, LOCAL_API_URL, TimetableProblem } from '../scripts/api';
+import { fetchTimetableSolution, REMOTE_API_URL, TimetableProblem } from '../scripts/api';
 import moment from 'moment';
 import { AuthHeader } from '../security/AuthContext';
 
@@ -23,7 +23,7 @@ describe('fetchTimetableSolution', { timeout: 200000 }, () => {
 
     const authHeader: AuthHeader = `Basic ${btoa(`${import.meta.env.VITE_FRONTEND_USERNAME}:${import.meta.env.VITE_FRONTEND_PASSWORD}`)}`;
 
-    const solution = await fetchTimetableSolution(problem, authHeader, LOCAL_API_URL);
+    const solution = await fetchTimetableSolution(problem, authHeader, REMOTE_API_URL);
     expect(solution).not.toBeNull();
     expect(solution?.units[0].dayOfWeek).toEqual(problem.daysOfWeek[0]);
     expect(solution?.units[0].startTime).toEqual(problem.startTimes[0]);
@@ -55,7 +55,7 @@ describe('fetchTimetableSolution', { timeout: 200000 }, () => {
     };
 
     const authHeader: AuthHeader = `Basic ${btoa(`${import.meta.env.VITE_FRONTEND_USERNAME}:${import.meta.env.VITE_FRONTEND_PASSWORD}`)}`;
-    const solutions = await Promise.all([fetchTimetableSolution(problem0, authHeader, LOCAL_API_URL), fetchTimetableSolution(problem1, authHeader, LOCAL_API_URL)]);
+    const solutions = await Promise.all([fetchTimetableSolution(problem0, authHeader, REMOTE_API_URL), fetchTimetableSolution(problem1, authHeader, REMOTE_API_URL)]);
     
     for (let i = 0; i < solutions.length; i++) {
       expect(solutions[i]).not.toBeNull();
