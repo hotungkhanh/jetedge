@@ -1,10 +1,29 @@
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useEffect, useState } from "react";
 
 export default function SkipButton() {
   const navigate = useNavigate();
-  if (sessionStorage.getItem("campusSolutions") === undefined) {
+  const [hasSolution, setHasSolution] = useState(false);
+
+  useEffect(() => {
+    const checkHasSolution = () => {
+      const campusSolutions = sessionStorage.getItem("campusSolutions");
+      setHasSolution(campusSolutions !== null);
+    };
+
+    checkHasSolution();
+    window.addEventListener("fetchSolutionFinished", checkHasSolution);
+
+    return () => {
+      window.removeEventListener("fetchSolutionFinished", checkHasSolution);
+    };
+
+  }, []);
+
+
+  if (!hasSolution) {
     return (
       <Button
         disabled
