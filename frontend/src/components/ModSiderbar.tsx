@@ -17,11 +17,18 @@ interface SidebarProps {
 }
 const drawerWidth = 240;
 
+/**
+ * Functional component for the ModSidebar that displays a list of campus 
+ * solutions with links to their respective Gantt charts.
+ * 
+ * @param marginTop The top margin for the sidebar.
+ * @param width The width of the sidebar.
+ */
 export default function ModSidebar({ marginTop, width }: SidebarProps) {
   const [selectedCampus, setSelectedCampus] = useState<string>("");
 
   const handleItemClick = (campusName: string) => {
-    setSelectedCampus(campusName); // Update the selected campus
+    setSelectedCampus(campusName);
   };
 
   let campusSolutions: TimetableSolution[];

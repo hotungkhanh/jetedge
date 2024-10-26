@@ -3,6 +3,12 @@ import { useNavigate } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useEffect, useState } from "react";
 
+/**
+ * Functional component for rendering a Skip Button that allows users to 
+ * modify their timetable directly from the front page.
+ * Uses sessionStorage to check for existing campus solutions and conditionally 
+ * renders different button styles based on the presence of solutions.
+ */
 export default function SkipButton() {
   const navigate = useNavigate();
   const [hasSolution, setHasSolution] = useState(false);
