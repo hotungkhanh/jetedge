@@ -38,7 +38,6 @@ public class Unit extends PanacheEntity {
     @PlanningVariable
     public LocalTime startTime;
 
-    // TODO: change unit to be the owner, rather than the student being owner
     @Transient
     @JsonIgnoreProperties("units")
     @ManyToMany(mappedBy = "units", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
