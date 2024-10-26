@@ -289,7 +289,8 @@ export default function GanttChart() {
 
       moddedUnits.current = [];
 
-      const viewResponse = await fetch(REMOTE_API_URL + "/timetabling/view", {
+      // Second fetch request (GET) only runs after the first one completes
+      const viewResponse = await fetch(REMOTE_API_URL + "/timetabling", {
         headers: { Authorization: authHeader },
       });
 

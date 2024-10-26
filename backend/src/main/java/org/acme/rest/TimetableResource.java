@@ -82,7 +82,6 @@ public class TimetableResource {
      * @param dbUnits       List of all Unit objects in the database
      * @return              The updated Unit, null otherwise
      */
-    @PUT
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     public Unit unitUpdate(Unit updatedUnit, List<Unit> dbUnits) {
@@ -129,8 +128,6 @@ public class TimetableResource {
         return null;
     }
 
-
-    @Path("/view")
     @GET
     @RolesAllowed({"user"})
     @Produces(MediaType.APPLICATION_JSON)
@@ -147,6 +144,7 @@ public class TimetableResource {
         }
     }
 
+    @Path("/example")
     @GET
     @RolesAllowed({"user"})
     @Transactional
@@ -175,48 +173,31 @@ public class TimetableResource {
         var problem = new Timetable("Adelaide",
                 List.of(
                         u1, u2, u3, u4
-//                        new Unit(5, "5", Duration.ofHours(2), List.of(c, d, e)),
-//                        new Unit(6, "6", Duration.ofHours(2), List.of(f, g, h, i))
                 ),
 
                 List.of(
                         DayOfWeek.MONDAY,
                         DayOfWeek.TUESDAY,
-                        DayOfWeek.WEDNESDAY
-//                        DayOfWeek.THURSDAY,
-//                        DayOfWeek.FRIDAY
+                        DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY,
+                        DayOfWeek.FRIDAY
                 ),
 
                 List.of(
-                        LocalTime.of(15, 0)
-//                        LocalTime.of(17, 0)
-//                        LocalTime.of(16,0),
-//                        LocalTime.of(23,0)
+                        LocalTime.of(15, 0),
+                        LocalTime.of(17, 0),
+                        LocalTime.of(16,0),
+                        LocalTime.of(23,0)
                 ),
                 List.of(r1, r2, r3)
         );
-
-        /*
-         * During this solving phase, new Unit objects will be created with the
-         * allotted date and Room assignment.
-         *
-         * Currently, the 'old' Unit objects in the 'problem' variable and the
-         * 'new' Unit objects in the 'solution' variable are stored as different
-         * Units in the database due to our inability to control the behaviour
-         * of solverManager.solve
-         *
-         * i.e. after solving, there will be 2 copies of each Unit in the
-         * database, where the 'old' Unit has the list of students but no
-         * timetable assignment, while the 'new' Unit does not have the list
-         * of students enrolled, but does have the assigned date and room
-         */
 
         findByCampusAndDelete(problem.campusName);
 
         Timetable solution = solverManager.solve("job 1", problem).getFinalBestSolution();
 
-        solution.persist();
         // saves the solution timetable and all related entities to database
+        solution.persist();
 
         return solution;
     }

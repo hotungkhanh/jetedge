@@ -25,7 +25,7 @@ export default function StarterPage() {
   };
   const { authHeader } = useAuthContext();
   useEffect(() => {
-    fetch(REMOTE_API_URL + "/timetabling/view", {
+    fetch(REMOTE_API_URL + "/timetabling", {
       headers: { Authorization: authHeader },
     })
       .then((response) => {

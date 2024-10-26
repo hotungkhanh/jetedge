@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - handover
+      
 
 jobs:
   build:
@@ -26,7 +28,11 @@ jobs:
       - name: Build Frontend
         run: |
           cd frontend
+          npm run test
           npm run build
+        env:
+          VITE_FRONTEND_USERNAME: ${{secrets.FRONTEND_USERNAME}}
+          VITE_FRONTEND_PASSWORD: ${{secrets.FRONTEND_PASSWORD}}
 
       - name: Set up Java for Backend
         uses: actions/setup-java@v4
