@@ -6,6 +6,13 @@ import VIT_Logo from '../assets/logo.png';
 import { REMOTE_API_URL } from '../scripts/api';
 import LoadingButton from '../components/LoadingButton';
 
+/**
+ * Component for rendering the login page with username and password input 
+ * fields.
+ * Handles form submission to validate credentials with the backend.
+ * If credentials are valid, sets the authorization header and navigates to 
+ * the enrolment page.
+ */
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
