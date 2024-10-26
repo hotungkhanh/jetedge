@@ -32,7 +32,7 @@ export default function UploadPopUp() {
         sx={{
           backgroundColor: "#f05a22",
           "&:hover": {
-            backgroundColor: "#f05a22", // Custom hover color
+            backgroundColor: "#f05a22",
           },
           padding: "3% 5% 3% 5%",
           borderRadius: "999px",

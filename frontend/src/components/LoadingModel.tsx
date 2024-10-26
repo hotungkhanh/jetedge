@@ -15,6 +15,12 @@ interface LoadingModalProp {
   open: boolean;
 }
 
+/**
+ * Renders a modal component for displaying a loading indicator.
+ * 
+ * @param {boolean} open - Determines whether the modal is open or closed.
+ * @returns {JSX.Element} A modal component with a circular loading indicator.
+ */
 export default function LoadingModal({open}: LoadingModalProp) {
 
   return (
