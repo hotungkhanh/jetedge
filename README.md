@@ -7,8 +7,84 @@
 
 <hr/>
 
+## Demo
 
-## Dependencies
+https://vit-timetabling-230c1835ad5a.herokuapp.com
+
+<br/>
+
+
+## Features
+
+<details>
+  <summary>Login</summary>
+  
+  * 
+</details>
+<details>
+  <summary>Welcome Page</summary>
+  
+  * 
+</details>
+<details>
+  <summary>Upload File</summary>
+  
+  * 
+</details>
+<details>
+  <summary>Information Page</summary>
+  
+  * 
+</details>
+<details>
+  <summary>Generate Timetable</summary>
+  
+  * 
+</details>
+<details>
+  <summary>Display and Download Timetables</summary>
+  
+  * 
+</details>
+
+<br/>
+
+## Documentation
+
+<details>
+  <summary>User Stories</summary>
+  
+  * 
+</details>
+<details>
+
+  <summary>Motivational Model</summary>
+  <img src="docs\Motivational Model.png"/><br/>
+
+</details>
+<details>
+
+  <summary>Domain Model</summary>
+  <img src="docs\Domain Model.png"/><br/>
+
+</details>
+<details>
+
+  <summary>Flow Diagram</summary>
+  <img src="docs\Flow Diagram.png"/><br/>
+  
+</details>
+<details>
+
+  <summary>Architecture Diagram</summary>
+  <img src="docs\Architecture Diagram.png"/><br/>
+
+</details>
+
+<br/>
+
+
+## System requirements
 
 Before cloning and attempting to run this code, you will need:
 
@@ -21,7 +97,7 @@ Before cloning and attempting to run this code, you will need:
 
 <br/>
 
-## How to run the app
+## Installation guide
 
 ### Running the frontend
 Move into the frontend folder with:
@@ -61,6 +137,31 @@ Run in production mode:
 - Database: PostgreSQL
 - CI/CD: GitHub Actions
 - Deployment: Heroku
+
+<br/>
+
+## Testing
+
+<details>
+  <summary>User Stories</summary>
+  
+  * 
+</details>
+<details>
+  <summary>Domain Model</summary>
+  
+  * 
+</details>
+<details>
+  <summary>Flow Diagram</summary>
+  
+  * 
+</details>
+<details>
+  <summary>Architecture Diagram</summary>
+  
+  * 
+</details>
 
 <br/>
 
