@@ -142,26 +142,13 @@ Run in production mode:
 
 ## Testing
 
-<details>
-  <summary>User Stories</summary>
-  
-  * 
-</details>
-<details>
-  <summary>Domain Model</summary>
-  
-  * 
-</details>
-<details>
-  <summary>Flow Diagram</summary>
-  
-  * 
-</details>
-<details>
-  <summary>Architecture Diagram</summary>
-  
-  * 
-</details>
+- Unit Testing
+  - [Frontend](tests/Unit%20Testing%20(Frontend).pdf)
+  - [Backend](tests/Unit%20Testing%20(Backend).pdf)
+- [Integration Testing](tests/Integration%20Testing.pdf)
+- [System Testing](tests/System%20Testing.pdf)
+- [Security Testing](tests/Security%20Testing.pdf)
+- [User Acceptance Testing](tests/User%20Acceptance%20Testing.pdf)
 
 <br/>
 
