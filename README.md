@@ -218,6 +218,58 @@ Run in production mode:
 
 <br/>
 
+## Deployment guidelines
+
+You can deploy this site to any hosting platform of your choice, but we have selected Heroku. To ensure smooth deployments and updates, follow the steps outlined below for managing the frontend and backend of the "Timetabling for VIT" application.
+
+<details>
+
+  <summary>Frontend Deployment</summary>
+
+  - [Current Deployment URL](https://vit-timetabling-230c1835ad5a.herokuapp.com/)
+  - Process: The frontend is deployed as a Node.js app on Heroku.
+  - Update Instructions:
+    - Automatic Deployment: Push updates to the `main` branch on GitHub to automatically trigger the CI/CD pipeline for deployment on Heroku.
+    - Manual Deployment: If needed, log in to Heroku, access the frontend app, and deploy manually via the Heroku CLI.
+
+</details>
+<details>
+
+  <summary>Backend Deployment</summary>
+
+  - [Current Deployment URL](https://jetedge-backend-e1eeff4b0c04.herokuapp.com/)
+  - Process: The backend is deployed as a Java app on Heroku.
+  - Update Instructions:
+    - Automatic Deployment: Push updates to the `main` branch on GitHub to automatically trigger the CI/CD pipeline for deployment on Heroku.
+    - Manual Deployment: If needed, log in to Heroku, access the backend app, and deploy manually via the Heroku CLI.
+
+</details>
+<details>
+
+  <summary>CI/CD Pipeline</summary>
+
+  - Platform: GitHub Actions
+  - [Pipeline Link](.github\workflows\main.yml)
+  - Setup: The pipeline automates deployments for both frontend and backend. Pushing to the `main` branch triggers automatic deployment to Heroku.
+
+</details>
+
+Notes
+- Environment Variables: Ensure all required variables are updated in your local environment, GitHub Actions secrets, and Heroku app settings
+  - FRONTEND_USERNAME, FRONTEND_PASSWORD: Login details for accessing the website.
+  - HEROKU_EMAIL, HEROKU_API_KEY, HEROKU_FRONTEND_APP_NAME, HEROKU_BACKEND_APP_NAME: Heroku credentials for automated deployment.
+  - QUARKUS_DATASOURCE_USERNAME, QUARKUS_DATASOURCE_PASSWORD, QUARKUS_DATASOURCE_JDBC_URL: Database credentials for the backend.
+- Error Handling: Review Heroku logs for any deployment or runtime issues. Logs are accessible via the Heroku dashboard or by running heroku logs --tail in the command line.
+- Security: Keep all credentials secure by storing them in environment variables and avoid hard-coding sensitive information.
+
+<br/>
+
+## Changelog
+
+*
+
+<br/>
+
 ## Contributors
 
 <a href="https://github.com/dh-giang-vu">
