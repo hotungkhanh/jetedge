@@ -18,33 +18,52 @@ https://vit-timetabling-230c1835ad5a.herokuapp.com
 
 <details>
   <summary>Login</summary>
-  
-  * 
+
+  Users can log in with a pre-set username and password provided by Team Jet Edge.
 </details>
 <details>
   <summary>Welcome Page</summary>
-  
-  * 
+
+  After logging in, users are presented with two options:
+  - Generate Timetable: Starts the process of uploading a student enrolment Excel file to generate a new timetable.
+  - Modify Timetable: Allows users to edit existing timetables by navigating to the Timetable Page.
 </details>
 <details>
   <summary>Upload File</summary>
-  
-  * 
+
+  - Selecting “Generate Timetable” on the Welcome Page brings up the "Upload File" pop-up window.
+  - Click **UPLOAD FILE** at the top to select and upload the student enrolment Excel file.
+  - After uploading, click **PROCEED** at the bottom to move to the Information Page.
 </details>
 <details>
   <summary>Information Page</summary>
-  
-  * 
+
+  On the Information Page, users can edit room and unit information as needed.
+  - Certain columns (Campus, Course, Unit Code, Enrolled Students) in the Unit Table are parsed directly from the uploaded Excel file and cannot be modified.
+  - Right-clicking on a cell opens a context menu for more options, such as inserting or deleting rows.
+
+Once editing is complete, click **NEXT** at the bottom right to proceed to the Generate Timetable page.
 </details>
 <details>
   <summary>Generate Timetable</summary>
   
-  * 
+  - Click **GENERATE TIMETABLE** to start the timetabling process.
+  - The processing icon will indicate progress and return to its original state once generation is complete.
+  - Click **NEXT** at the bottom right to move to the Timetable Page.
 </details>
 <details>
-  <summary>Display and Download Timetables</summary>
+  <summary>Display Timetable</summary>
   
-  * 
+  - Users can view the timetable by campus by selecting campus names on the left-hand side of the page.
+  - Drag-and-Drop Editing: Users can drag and drop units to adjust room and time allocations as needed. Click **SAVE CHANGES** to apply edits to the database.
+  - Note: The system will display a warning if:
+    - A unit overlaps with another time slot (“OVERLAPPED”).
+    - A unit is assigned outside a designated room (“ASSIGN ACTIVITIES TO ROOMS ONLY”).
+</details>
+<details>
+  <summary>Download Timetable</summary>
+  
+  If no further changes are needed, click **DOWNLOAD TIMETABLE** at the bottom to download the campus timetable as a ZIP file.
 </details>
 
 <br/>
