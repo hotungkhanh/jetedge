@@ -56,7 +56,7 @@ Once editing is complete, click **NEXT** at the bottom right to proceed to the G
   
   - Users can view the timetable by campus by selecting campus names on the left-hand side of the page.
   - Drag-and-Drop Editing: Users can drag and drop units to adjust room and time allocations as needed. Click **SAVE CHANGES** to apply edits to the database.
-  - Note: The system will display a warning if:
+  - **Note**: The system will display a warning if:
     - A unit overlaps with another time slot (“OVERLAPPED”).
     - A unit is assigned outside a designated room (“ASSIGN ACTIVITIES TO ROOMS ONLY”).
 </details>
@@ -64,6 +64,8 @@ Once editing is complete, click **NEXT** at the bottom right to proceed to the G
   <summary>Download Timetable</summary>
   
   If no further changes are needed, click **DOWNLOAD TIMETABLE** at the bottom to download the campus timetable as a ZIP file.
+
+  **Note**: Each campus has a ZIP file containing three timetables, one for each course offered at that campus. Therefore, to download all 12 timetables (4 campuses × 3 courses per campus = 12 timetables), the user only needs to download four ZIP files, one per campus.
 </details>
 
 <br/>
@@ -143,7 +145,13 @@ Once editing is complete, click **NEXT** at the bottom right to proceed to the G
 <details>
 
   <summary>Architecture Diagram</summary>
-  <img src="docs\Architecture Diagram.png"/><br/>
+  <img src="docs/Architecture Diagram.png"/><br/>
+
+</details>
+<details>
+
+  <summary>Database ER Diagram</summary>
+  <img src="docs/Database ER Diagram.png"/><br/>
 
 </details>
 
@@ -254,12 +262,12 @@ You can deploy this site to any hosting platform of your choice, but we have sel
 
 </details>
 
-Notes
+**Notes**
 - Environment Variables: Ensure all required variables are updated in your local environment, GitHub Actions secrets, and Heroku app settings
   - FRONTEND_USERNAME, FRONTEND_PASSWORD: Login details for accessing the website.
   - HEROKU_EMAIL, HEROKU_API_KEY, HEROKU_FRONTEND_APP_NAME, HEROKU_BACKEND_APP_NAME: Heroku credentials for automated deployment.
   - QUARKUS_DATASOURCE_USERNAME, QUARKUS_DATASOURCE_PASSWORD, QUARKUS_DATASOURCE_JDBC_URL: Database credentials for the backend.
-- Error Handling: Review Heroku logs for any deployment or runtime issues. Logs are accessible via the Heroku dashboard or by running heroku logs --tail in the command line.
+- Error Handling: Review Heroku logs for any deployment or runtime issues. Logs are accessible via the Heroku dashboard or by running `heroku logs --tail` in the command line.
 - Security: Keep all credentials secure by storing them in environment variables and avoid hard-coding sensitive information.
 
 <br/>
