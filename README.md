@@ -53,7 +53,7 @@ Once editing is complete, click **NEXT** at the bottom right to proceed to the G
   - Click **NEXT** at the bottom right to move to the Timetable Page.
 </details>
 <details>
-  <summary>Display Timetable</summary>
+  <summary>Display and Modify Timetable</summary>
   
   - Users can view the timetable by campus by selecting campus names on the left-hand side of the page.
   - Drag-and-Drop Editing: Users can drag and drop units to adjust room and time allocations as needed. Click **SAVE CHANGES** to apply edits to the database.
