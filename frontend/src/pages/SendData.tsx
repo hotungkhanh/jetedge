@@ -16,7 +16,6 @@ import LoadingButton from "../components/LoadingButton";
  *                      (will remove and replace with display page in next sprint).
  * 
  * @returns button for sending timetable problem and temporary display for timetable solution.
- * TODO: change button and UI elements to fit with VIT themes.
  */
 export default function SendData() {
 

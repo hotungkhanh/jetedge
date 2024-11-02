@@ -14,7 +14,6 @@ import SkipButton from "../components/SkipButton.tsx";
  * Includes a description box with time and tabler elements, lorem ipsum text, 
  * and an UploadPopUp component.
  * Utilizes the Header and Footer components for layout consistency.
- * TODO: replace lorem ipsum with actual texts, replace better quality img
  */
 export default function StarterPage() {
   const timeStyle = {
@@ -26,7 +25,7 @@ export default function StarterPage() {
   };
   const { authHeader } = useAuthContext();
   useEffect(() => {
-    fetch(REMOTE_API_URL + "/timetabling/view", {
+    fetch(REMOTE_API_URL + "/timetabling", {
       headers: { Authorization: authHeader },
     })
       .then((response) => {
@@ -42,7 +41,11 @@ export default function StarterPage() {
           "campusSolutions",
           JSON.stringify(timetableSolutions)
         );
-      });
+      })
+      .finally(() => {
+        // Dispatch custom event to notify other components of the change
+        window.dispatchEvent(new Event("fetchSolutionFinished"));
+      })
   }, []);
   return (
     <Box className="app-container">
@@ -88,7 +91,7 @@ export default function StarterPage() {
           gap: '50%',
           marginRight: "5%",
         }}>
-          <SkipButton/>
+          <SkipButton />
         </div>
       </Footer>
     </Box>

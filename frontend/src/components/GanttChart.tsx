@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Id } from "vis-data/declarations/data-interface";
-import { DataGroupCollectionType, DataItemCollectionType, DataSet, Timeline } from "vis-timeline/standalone";
+import {
+  DataGroupCollectionType,
+  DataItemCollectionType,
+  DataSet,
+  Timeline,
+} from "vis-timeline/standalone";
 import "vis-timeline/styles/vis-timeline-graph2d.min.css";
 import "../styles/ganttUnassignable.css";
 import { useAuthContext } from "../security/AuthContext";
@@ -21,6 +26,14 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { Button } from "@mui/material";
 
+/**
+ * Component for displaying a Gantt chart with interactive functionalities.
+ * Retrieves timetable solutions, initializes the timeline, handles item
+ * selection, CSV conversion, downloading, and saving data.
+ *
+ * Throws errors if timetable solutions are missing in the database or if there
+ * are issues during data saving.
+ */
 export default function GanttChart() {
   const params = useParams();
   const { authHeader } = useAuthContext();
@@ -53,7 +66,6 @@ export default function GanttChart() {
   items.current.add(timelineData.activities);
 
   useEffect(() => {
-    
     if (timelineRef.current) {
       let prevSelected: Id | null = null;
 
@@ -80,6 +92,12 @@ export default function GanttChart() {
         options
       );
 
+      /**
+       * Checks if an unit overlaps with existing units in the Gantt chart.
+       *
+       * @param newItem The new unit to check for overlap
+       * @returns Boolean indicating if there is an overlap
+       */
       const hasOverlap = (newItem: GanttItem | null) => {
         const existingItems = items.current.get();
         return existingItems.some((item: GanttItem) => {
@@ -101,13 +119,22 @@ export default function GanttChart() {
         });
       };
 
+      /**
+       * Checks if the given unit belongs to a room rather than a building.
+       * @param item - The unit to be validated.
+       * @returns True if the item belongs to a room, false otherwise.
+       */
       const validGroup = (item: GanttItem | null) => {
         if (item == null) return true;
-        const group: GanttGroup|null = groups.current.get(item.group as Id);
-        return (group !== null && group.treeLevel === 2);
-        
+        const group: GanttGroup | null = groups.current.get(item.group as Id);
+        return group !== null && group.treeLevel === 2;
       };
 
+      /**
+       * Handles the selection event on the timeline,
+       * checks for overlaps and valid room assignments,
+       * and updates the list of modified units accordingly.
+       */
       timeline.on("select", (properties) => {
         if (prevSelected !== null) {
           const overlaps = hasOverlap(items.current.get(prevSelected));
@@ -119,27 +146,35 @@ export default function GanttChart() {
             alert("ASSIGN ACTIVITIES TO ROOMS ONLY");
           }
           if (!overlaps && inRoom) {
-            let rawStartDate: rawDate = toRawDate(items.current.get(prevSelected)?.start as Date);
+            let rawStartDate: rawDate = toRawDate(
+              items.current.get(prevSelected)?.start as Date
+            );
             let rawEndDate: rawDate = toRawDate(
               items.current.get(prevSelected)?.end as Date
             );
-            let unitId:number|undefined = items.current.get(prevSelected)?.UnitId;
-            let campus: string|undefined = items.current.get(prevSelected)?.campus;
-            let buildingId: string|undefined = groups.current.get(
-                    groups.current.get(
-                      items.current.get(prevSelected)?.group as Id
-                    )?.parent as Id
-                  )?.originalId
-            let roomCode: string|undefined = groups.current.get(
-                    items.current.get(prevSelected)?.group as Id
-                  )?.originalId;
-            if ( unitId !== undefined && campus !== undefined && buildingId !== undefined && roomCode !== undefined) {
+            let unitId: number | undefined =
+              items.current.get(prevSelected)?.UnitId;
+            let campus: string | undefined =
+              items.current.get(prevSelected)?.campus;
+            let buildingId: string | undefined = groups.current.get(
+              groups.current.get(items.current.get(prevSelected)?.group as Id)
+                ?.parent as Id
+            )?.originalId;
+            let roomCode: string | undefined = groups.current.get(
+              items.current.get(prevSelected)?.group as Id
+            )?.originalId;
+            if (
+              unitId !== undefined &&
+              campus !== undefined &&
+              buildingId !== undefined &&
+              roomCode !== undefined
+            ) {
               const modded: Unit = {
                 campus: "",
-                name:"",
+                name: "",
                 course: "",
-                duration:-1,
-                students:[],
+                duration: -1,
+                students: [],
                 wantsLab: false,
                 unitId: unitId,
                 room: {
@@ -177,7 +212,13 @@ export default function GanttChart() {
     }
   }, []);
 
-  const convertToCSV = (course:string) => {
+  /**
+   * Converts the items related to a specific course into CSV format.
+   *
+   * @param course - The course for which items need to be converted to CSV.
+   * @returns A string representing the items related to the course in CSV format.
+   */
+  const convertToCSV = (course: string) => {
     let csvContent = "id,name,start,end,room,building\n";
     const itemList = items.current.get();
     itemList.forEach((item) => {
@@ -187,10 +228,8 @@ export default function GanttChart() {
         csvContent += `${item.id},${item.content},${start},${end},${
           groups.current.get(item.group as Id)?.content
         }, ${
-          groups.current.get(
-            groups.current.get(item.group as Id)
-              ?.parent as Id
-          )?.originalId
+          groups.current.get(groups.current.get(item.group as Id)?.parent as Id)
+            ?.originalId
         }\n`;
       }
     });
@@ -198,6 +237,10 @@ export default function GanttChart() {
     return csvContent;
   };
 
+  /**
+   * Downloads a zip file containing CSV files for each unique course in the
+   * items list.
+   */
   const downloadCSV = () => {
     const zip = new JSZip();
     const uniqueNames = new Set(items.current.map((obj) => obj.course));
@@ -212,7 +255,7 @@ export default function GanttChart() {
           csvData.replace(/\u00A0/g, " ")
         );
       }
-    })
+    });
 
     zip.generateAsync({ type: "blob" }).then((content) => {
       saveAs(
@@ -222,13 +265,20 @@ export default function GanttChart() {
     });
   };
 
+  /**
+   * Asynchronously saves data to the remote API backend.
+   * Opens a loading modal during the save operation.
+   * Handles PUT and GET requests to update and view timetable data.
+   * Parses the JSON response and stores timetable solutions in sessionStorage.
+   * Catches and logs any errors that occur during the save operation.
+   */
   const saveData = async () => {
     try {
       setOpen(true);
       const response = await fetch(REMOTE_API_URL + "/timetabling/update", {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(moddedUnits.current),
       });
@@ -236,19 +286,17 @@ export default function GanttChart() {
       if (!response.ok) {
         throw new Error("Failed to save data, error in GanttChart.tsx");
       }
-      // Clear moddedUnits if the first fetch was successful
+
       moddedUnits.current = [];
 
       // Second fetch request (GET) only runs after the first one completes
-      const viewResponse = await fetch(REMOTE_API_URL + "/timetabling/view", {
+      const viewResponse = await fetch(REMOTE_API_URL + "/timetabling", {
         headers: { Authorization: authHeader },
       });
 
       if (!viewResponse.ok) {
         throw new Error("Network response was not ok");
       }
-
-      // Parse the JSON response and store in sessionStorage
       const data = await viewResponse.json();
       const timetableSolutions: TimetableSolution[] =
         data as TimetableSolution[];
@@ -264,10 +312,13 @@ export default function GanttChart() {
 
   return (
     <div>
-      <div style={{
-            padding: 10,
-            overflowY: "scroll",
-            height: "60vh"}}>
+      <div
+        style={{
+          padding: 10,
+          overflowY: "scroll",
+          height: "60vh",
+        }}
+      >
         <div ref={timelineRef} />
       </div>
       <Button

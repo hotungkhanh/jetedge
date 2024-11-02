@@ -24,11 +24,7 @@ export default function Header() {
             alt="logo.exe"
             style={{width: "230px",
                   height: "auto",
-    // objectFit: "contain",
-    // maxHeight: "100%",
-    // maxWidth: "100%",
-    // alignSelf: "flex-start", // Aligns left in a flex container
-    }}
+                }}
           />
         </AppBar>
       </Box>

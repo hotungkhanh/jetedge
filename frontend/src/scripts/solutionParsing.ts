@@ -1,14 +1,11 @@
 import { TimetableSolution, Weekday } from "./api";
-import {
-  TimelineGroup,
-  TimelineItem,
-} from "vis-timeline/standalone";
+import { TimelineGroup, TimelineItem } from "vis-timeline/standalone";
 
 export type GanttItem = TimelineItem & {
   UnitId: number;
   campus: string;
   course: string;
-}
+};
 
 export type GanttGroup = TimelineGroup & {
   treeLevel: number;
@@ -23,11 +20,19 @@ export type GanttItems = {
 };
 
 export type rawDate = {
-  dayOfWeek: Weekday,
-  time: string,
+  dayOfWeek: Weekday;
+  time: string;
 };
 
 const startDate = "2024-10-14";
+/**
+ * Format the given backend solution into suitable format for displaying in the
+ * Ganttchart.
+ *
+ * @param campusSolution The timetable solution for a specific campus.
+ * @returns GanttItems containing activities, rooms, and buildings for
+ * visualization.
+ */
 export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
   let ganttActivities: GanttItem[] = [];
   let ganttRooms: GanttGroup[] = [];
@@ -38,31 +43,27 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
   const groupEnum = new Map<string, number>();
   let counter = 1;
 
-
   campusSolution.units.forEach((activity) => {
-    // console.log("start");
     if (!activityEnum.has(activity.unitId)) {
       activityEnum.set(activity.unitId, counter);
       counter++;
     }
-    let newRoom:boolean;
-    let newBuilding:boolean;
+    let newRoom: boolean;
+    let newBuilding: boolean;
     newRoom = false;
     newBuilding = false;
     if (!groupEnum.has(activity.room.roomCode)) {
       groupEnum.set(activity.room.roomCode, counter);
       counter++;
       newRoom = true;
-      
     }
     if (!groupEnum.has(activity.room.buildingId)) {
       groupEnum.set(activity.room.buildingId, counter);
       counter++;
       newBuilding = true;
     }
-    // console.log(buildingLookup.get(activity.room.buildingId)?.nestedGroups);
     //=============================Handle Rooms=================================
-    if (newRoom) {  
+    if (newRoom) {
       const ganttRoom: GanttGroup = {
         originalId: activity.room.roomCode,
         id: groupEnum.get(activity.room.roomCode) || 0,
@@ -87,7 +88,7 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
     //=============================Handle Buildings=============================
     if (newBuilding) {
       const ganttBuilding: GanttGroup = {
-        originalId:activity.room.buildingId,
+        originalId: activity.room.buildingId,
         id: groupEnum.get(activity.room.buildingId) || 0,
         content: activity.room.buildingId,
         treeLevel: 1,
@@ -114,7 +115,6 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
 
     const buildingCheck = buildingLookup.get(activity.room.buildingId);
     const roomGroup = groupEnum.get(activity.room.roomCode);
-    // console.log(roomGroup);
     if (buildingCheck && roomGroup) {
       if (
         buildingCheck.nestedGroups !== undefined &&
@@ -125,7 +125,6 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
     } else {
       throw new Error("LOGIC ERROR IN getGanttItems");
     }
-    // console.log("end");
   });
 
   _return = {
@@ -136,8 +135,29 @@ export function getGanttItems(campusSolution: TimetableSolution): GanttItems {
   return _return;
 }
 
-function parseDate(startDate: string, dayOfWeek: string, startTime: string):Date {
-  const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+/**
+ * Parses the output backend date format into suitable frontend format for
+ * displaying
+ *
+ * @param startDate The starting date in string format (e.g., '2024-10-14')
+ * @param dayOfWeek The day of the week in string format (e.g., 'MONDAY').
+ * @param startTime The starting time in string format (e.g., 'HH:MM:SS').
+ * @returns The calculated final date based on the input parameters.
+ */
+function parseDate(
+  startDate: string,
+  dayOfWeek: string,
+  startTime: string
+): Date {
+  const daysOfWeek = [
+    "SUNDAY",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+  ];
 
   const baseDate = new Date(startDate);
 
@@ -146,14 +166,21 @@ function parseDate(startDate: string, dayOfWeek: string, startTime: string):Date
 
   const dayDifference = (targetDayIndex + 7 - currentDayIndex) % 7;
 
-  const [hours, minutes, seconds] = startTime.split(':').map(Number);
+  const [hours, minutes, seconds] = startTime.split(":").map(Number);
 
   const finalDate = new Date(baseDate);
   finalDate.setDate(baseDate.getDate() + dayDifference);
-  finalDate.setHours(hours, minutes, seconds, 0); 
+  finalDate.setHours(hours, minutes, seconds, 0);
   return finalDate;
 }
 
+/**
+ * Converts a JavaScript Date object to the correct format for the backend
+ * framework.
+ * @param date The Date object to convert.
+ * @returns The rawDate object with the day of the week (as Weekday enum) and
+ * the time in "HH:MM:SS" format.
+ */
 export function toRawDate(date: Date): rawDate {
   const daysOfWeek = [
     "SUNDAY",
@@ -178,16 +205,13 @@ export function toRawDate(date: Date): rawDate {
   return { dayOfWeek: dayOfWeek as Weekday, time: startTime };
 }
 
-//TODO: Parse data to send to backend
-export function formatSolution2Save(items: GanttItems) {
-    items
-}
-
-//TODO: Parse data for downloading
-export function format2CSV(items: GanttItems) {
-  items
-}
-
+/**
+ * Finds a specific campus solution from a list of timetable solutions.
+ * @param campus - The name of the campus to search for.
+ * @param solutions - An array of timetable solutions to search within.
+ * @returns The timetable solution corresponding to the specified campus,
+ * or null if not found.
+ */
 export function findCampusSolution(
   campus: string,
   solutions: TimetableSolution[]
