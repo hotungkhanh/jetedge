@@ -279,16 +279,6 @@ This should complete the setup. Once you run the Quarkus backend server, the nec
 
 <br/>
 
-## Tech Stack
-
-- Frontend: JavaScript with Node.js
-- Backend: Java with Quarkus
-- Database: PostgreSQL
-- CI/CD: GitHub Actions
-- Deployment: Heroku
-
-<br/>
-
 ## Testing
 
 - Unit Testing
@@ -347,11 +337,53 @@ You can deploy this site to any hosting platform of your choice, but we have sel
 
 <br/>
 
+
 ## Changelog
 
-*
+### Changes in Sprint 3 (23 September — 20 October)
+
+- Removed deprecated student endpoints, renamed API endpoints for consistency https://github.com/hotungkhanh/jetedge/pull/55  
+
+- bugfix: sidebar now does not overflow into headers https://github.com/hotungkhanh/jetedge/pull/53  
+
+- Reformatted the “enrolment“ page, “Save Changes“ and “Download Timetable“ button will now always be visible in the “timetablemod“ page https://github.com/hotungkhanh/jetedge/pull/52  
+
+- ”Save Changes” now saves timetable’s changes into database https://github.com/hotungkhanh/jetedge/pull/51   
+
+- Deployed frontend now uses the deployed backend https://github.com/hotungkhanh/jetedge/pull/46  
+
+- Add a skip button to jump directly to the previously generated timetable https://github.com/hotungkhanh/jetedge/pull/44  
+
+- Disable buttons in “senddata“ when timetable is not yet generated, only enabling when backend has finished generating https://github.com/hotungkhanh/jetedge/pull/43  
+
+- Removed the “Building“ tab from the sidebar in “seminfo“ https://github.com/hotungkhanh/jetedge/pull/41  
+
+- Update tab name to “Timetabling for VIT“ https://github.com/hotungkhanh/jetedge/pull/39  
+
+- User authentication required for database access, routes are now private and login is required on frontend https://github.com/hotungkhanh/jetedge/pull/35  
+
+- Implement dynamic sidebar, able to update accordingly to campuses sent from backend. Timetable are now displayed in gantt-chart format https://github.com/hotungkhanh/jetedge/pull/32  
+
+### Changes in Sprint 2 (2 September — 22 September)
+
+- Increase transaction timeout limit, and removed the storage of students for faster transactions https://github.com/hotungkhanh/jetedge/pull/31
+
+- Deploy frontend https://github.com/hotungkhanh/jetedge/pull/23
+
+- Handle empty input in “seminfo“: an alert will pop up if input is empty while trying to solve a problem. Unit List in “seminfo/units“ are now also read-only https://github.com/hotungkhanh/jetedge/pull/13  
+
+- Frontend is now connected to a functional backend https://github.com/hotungkhanh/jetedge/pull/10  
+
+- Persistence in the frontend “seminfo“ page https://github.com/hotungkhanh/jetedge/pull/9  
+
+### Changes in Sprint 1 (12 August — 1 September)
+
+- Build file upload page for enrolment info https://github.com/hotungkhanh/jetedge/pull/4 
+
+- Build semester info data input page https://github.com/hotungkhanh/jetedge/pull/2 
 
 <br/>
+
 
 ## Contributors
 
