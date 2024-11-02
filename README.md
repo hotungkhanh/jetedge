@@ -330,9 +330,9 @@ You can deploy this site to any hosting platform of your choice, but we have sel
 
 **Notes**
 - Environment Variables: Ensure all required variables are updated in your local environment, GitHub Actions secrets, and Heroku app settings
-  - **FRONTEND_USERNAME, FRONTEND_PASSWORD**: Login details for accessing the website.
-  - **HEROKU_EMAIL, HEROKU_API_KEY, HEROKU_FRONTEND_APP_NAME, HEROKU_BACKEND_APP_NAME**: Heroku credentials for automated deployment.
-  - **QUARKUS_DATASOURCE_USERNAME, QUARKUS_DATASOURCE_PASSWORD, QUARKUS_DATASOURCE_JDBC_URL**: Database credentials for the backend.
+  - `FRONTEND_USERNAME`, `FRONTEND_PASSWORD`: Login details for accessing the website.
+  - `HEROKU_EMAIL`, `HEROKU_API_KEY`, `HEROKU_FRONTEND_APP_NAME`, `HEROKU_BACKEND_APP_NAME`: Heroku credentials for automated deployment.
+  - `QUARKUS_DATASOURCE_USERNAME`, `QUARKUS_DATASOURCE_PASSWORD`, `QUARKUS_DATASOURCE_JDBC_URL`: Database credentials for the backend.
 - Error Handling: Review Heroku logs for any deployment or runtime issues. Logs are accessible via the Heroku dashboard or by running `heroku logs --tail` in the command line.
 - Security: Keep all credentials secure by storing them in environment variables and avoid hard-coding sensitive information.
 
