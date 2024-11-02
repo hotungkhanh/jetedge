@@ -128,19 +128,19 @@ Once editing is complete, click **NEXT** at the bottom right to proceed to the G
 <details>
 
   <summary>Motivational Model</summary>
-  <img src="docs\Motivational Model.png"/><br/>
+  <img src="docs/Motivational Model.png"/><br/>
 
 </details>
 <details>
 
   <summary>Domain Model</summary>
-  <img src="docs\Domain Model.png"/><br/>
+  <img src="docs/Domain Model.png"/><br/>
 
 </details>
 <details>
 
   <summary>Flow Diagram</summary>
-  <img src="docs\Flow Diagram.png"/><br/>
+  <img src="docs/Flow Diagram.png"/><br/>
   
 </details>
 <details>
@@ -323,7 +323,7 @@ You can deploy this site to any hosting platform of your choice, but we have sel
   <summary>CI/CD Pipeline</summary>
 
   - Platform: GitHub Actions
-  - [Pipeline Link](.github\workflows\main.yml)
+  - [Pipeline Link](.github/workflows/main.yml)
   - Setup: The pipeline automates deployments for both frontend and backend. Pushing to the `main` branch triggers automatic deployment to Heroku.
 
 </details>
