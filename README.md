@@ -160,14 +160,35 @@ Once editing is complete, click **NEXT** at the bottom right to proceed to the G
 
 ## System requirements
 
-Before cloning and attempting to run this code, you will need:
+This timetabling web application is built with the following coding and deployment environment configurations (please find setup guides linked for each):
 
-- Node.js: Required for the frontend development, which uses JavaScript and Node.js.
-- Java 11 or later: Required for running the backend developed with the Quarkus framework.
-- Maven: For managing Java dependencies and building the backend.
-- PostgreSQL: The database used in this project, along with pgAdmin for database management.
-- Git: For version control and cloning the repository. (Optional, repo can also be downloaded as .zip)
-- Heroku CLI: To deploy and manage the application on Heroku. (Optional, for deployment only)
+- [Windows 11](https://www.microsoft.com/en-us/software-download/windows11) (ideal): the project was developed solely on Windows 11 machines.
+
+  - If you use another operating system, there may be slight differences to configuration, but this will be beyond the scope of this document.
+
+- [Java Development Kit](https://www.oracle.com/au/java/technologies/downloads/) (JDK) version `22.0.2`: language for backend development.
+
+  - Minimum requirement: JDK 17+ with `JAVA_HOME` configured appropriately on your machine.
+
+- [Apache Maven version](https://maven.apache.org/download.cgi) `4.0.0`: build-automation and project management tool for Java-based projects.
+
+- [PostgreSQL version](https://www.postgresql.org/download/) `16.4`: database for timetable storage.
+
+  - Offers [pgAdmin](https://www.pgadmin.org/) for data administration and further manipulation (comes with standard download).
+
+- [Node.js](https://nodejs.org/en/download/package-manager) version `20.17.0`: JavaScript runtime environment for frontend development.
+
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) version `2+`: version control and collaborative development.
+
+  - Git preserves backwards compatibility very well, any recent version should work fine, too.
+
+- [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) version `7.0.0`: deployment and workflow management.
+
+- For the versions of plugins, packages, and frameworks used, they are specified in the configuration files of the repository and you do not need to perform any installations or take any additional action. Please refer to:
+
+  - The `jetedge/backend/pom.xml` file located in the repository for backend dependencies.
+
+  - The `jetedge/frontend/package.json` file located in the repository for frontend dependencies.
 
 <br/>
 
@@ -264,9 +285,9 @@ You can deploy this site to any hosting platform of your choice, but we have sel
 
 **Notes**
 - Environment Variables: Ensure all required variables are updated in your local environment, GitHub Actions secrets, and Heroku app settings
-  - FRONTEND_USERNAME, FRONTEND_PASSWORD: Login details for accessing the website.
-  - HEROKU_EMAIL, HEROKU_API_KEY, HEROKU_FRONTEND_APP_NAME, HEROKU_BACKEND_APP_NAME: Heroku credentials for automated deployment.
-  - QUARKUS_DATASOURCE_USERNAME, QUARKUS_DATASOURCE_PASSWORD, QUARKUS_DATASOURCE_JDBC_URL: Database credentials for the backend.
+  - **FRONTEND_USERNAME, FRONTEND_PASSWORD**: Login details for accessing the website.
+  - **HEROKU_EMAIL, HEROKU_API_KEY, HEROKU_FRONTEND_APP_NAME, HEROKU_BACKEND_APP_NAME**: Heroku credentials for automated deployment.
+  - **QUARKUS_DATASOURCE_USERNAME, QUARKUS_DATASOURCE_PASSWORD, QUARKUS_DATASOURCE_JDBC_URL**: Database credentials for the backend.
 - Error Handling: Review Heroku logs for any deployment or runtime issues. Logs are accessible via the Heroku dashboard or by running `heroku logs --tail` in the command line.
 - Security: Keep all credentials secure by storing them in environment variables and avoid hard-coding sensitive information.
 
