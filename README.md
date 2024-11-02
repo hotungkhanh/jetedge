@@ -194,34 +194,88 @@ This timetabling web application is built with the following coding and deployme
 
 ## Installation guide
 
-### Running the frontend
-Move into the frontend folder with:
-`cd frontend`
+### Repository Setup
 
-Install all the packages with (only needs to be done once):
-`npm i`
+If you wish to build upon the codebase, please first ensure your machine meets the prerequisites outlined in the previous section, then follow the steps below to create a local coding environment.
 
-Run in development mode with:
-`npm run dev`
+1. Navigate to the JetEdge GitHub repository and fork it.
 
-Build for production with:
-`npm run build`
+    - Forking instructions: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo 
 
-Run in production mode:
-`npm run preview`
+2. In your terminal of choice, navigate inside the folder in which you wish to clone the forked repository.
 
-### Running the backend
-Move into the backend folder with:
-`cd backend`
+3. Clone the forked repository.
+```
+git clone https://github.com/{your-github-name}/jetedge.git
+```
+4. Navigate inside the cloned folder.
+```
+cd jetedge
+```
+5. Navigate inside the backend folder for backend setup.
+```
+cd backend
+```
+6. Create a `.env` file in `backend` folder with database and login information
 
-Run in development mode with:
-`./mvnw compile quarkus:dev`
+7. Navigate inside the frontend folder for frontend setup.
+```
+cd frontend
+```
+8. Create a `.env` file with the login information.
 
-Package the project as a JAR file with (only needs to be done once):
-`./mvnw package`
+    - These constants are for testing purposes, please ensure they are consistent with the credentials in the backend/.env file.
 
-Run in production mode:
-`java -jar target/quarkus-app/quarkus-run.jar`
+9. Install dependencies.
+```
+npm install
+```
+10. In preparation to run the code locally, please navigate inside `frontend` folder and replace all instances of the constant `REMOTE_API_URL` with `LOCAL_API_URL`.
+
+11. Run the frontend and backend simultaneously in development mode, with two separate terminal windows
+
+12. Run the frontend in development mode.
+```
+cd jetedge/frontend
+npm run dev
+```
+13. Run the backend in development mode.
+```
+cd jetedge/backend
+./mvnw compile quarkus:dev
+```
+If you wish to run the servers in production mode locally:
+
+1. Execute the following to build and run the frontend server in production mode.
+```
+cd frontend
+npm run build
+npm run preview
+```
+2. Execute the following to package and run the backend server in production mode.
+```
+cd backend
+./mvnw package
+java -jar target/quarkus-app/quarkus-run.jar
+```
+
+### pgAdmin Setup
+
+If you wish to perform data administration tasks on the Azure cloud-based PostgreSQL database we provide, please follow the [guide](https://www.sqlshack.com/accessing-azure-database-for-postgresql-using-pgadmin/) to connect the cloud database with your local pgAdmin.
+
+### PostgreSQL Database Setup
+
+If you wish to set up your own PostgreSQL database, please read the steps below to help you get started.
+
+Firstly, for context, the JetEdge team used an Azure Student License for the duration of this project. The setup will vary depending on the type of license you have and we presume VIT will not be using the Student License. Therefore, we will provide an overview of how to set up your own database along with the resources you will find helpful.
+
+If you are considering to use Azure database for PostgreSQL, please check Azure’s pricing model here: https://azure.microsoft.com/en-au/pricing/details/postgresql/server/
+
+Now if you decide to go ahead with setting up your own Azure PostgreSQL database, the first step is to create an account for the Azure portal, then perform database setup and deployment on Azure. This video provides a step-by-step setup guide for someone with a general license: https://www.youtube.com/watch?v=AsL7MI8b0m4 
+
+After this, please extract the datasource username, password, and JDBC url, and enter them into the .env. file located in the backend folder for the appropriate constants. 
+
+This should complete the setup. Once you run the Quarkus backend server, the necessary tables in the database will be automatically set up and ready for use. 
 
 <br/>
 
