@@ -41,6 +41,7 @@ https://vit-timetabling-230c1835ad5a.herokuapp.com
   On the Information Page, users can edit room and unit information as needed.
   - Certain columns (Campus, Course, Unit Code, Enrolled Students) in the Unit Table are parsed directly from the uploaded Excel file and cannot be modified.
   - Right-clicking on a cell opens a context menu for more options, such as inserting or deleting rows.
+  - Editing the information page can be done by copying and pasting data from an existing pre-formatted Excel file.
 
 Once editing is complete, click **NEXT** at the bottom right to proceed to the Generate Timetable page.
 </details>
